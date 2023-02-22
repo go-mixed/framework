@@ -1,8 +1,8 @@
 package mail
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/queue"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/queue"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ServiceProvider struct {

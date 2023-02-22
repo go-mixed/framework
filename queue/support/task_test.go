@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"gopkg.in/go-mixed/framework/contracts/queue"
-	"gopkg.in/go-mixed/framework/support/file"
-	testingfile "gopkg.in/go-mixed/framework/testing/file"
+	"gopkg.in/go-mixed/framework.v1/contracts/queue"
+	"gopkg.in/go-mixed/framework.v1/support/file"
+	testingfile "gopkg.in/go-mixed/framework.v1/testing/file"
 )
 
 type Test struct {

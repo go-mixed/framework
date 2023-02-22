@@ -1,6 +1,6 @@
 package log
 
-import "gopkg.in/go-mixed/framework/facades"
+import "gopkg.in/go-mixed/framework.v1/facades"
 
 type ServiceProvider struct {
 }

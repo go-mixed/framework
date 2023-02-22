@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"gopkg.in/go-mixed/framework/contracts/auth/access"
+	"gopkg.in/go-mixed/framework.v1/contracts/auth/access"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"

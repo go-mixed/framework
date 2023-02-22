@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 
-	access "gopkg.in/go-mixed/framework/contracts/auth/access"
+	access "gopkg.in/go-mixed/framework.v1/contracts/auth/access"
 
 	mock "github.com/stretchr/testify/mock"
 )

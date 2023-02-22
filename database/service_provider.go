@@ -3,9 +3,9 @@ package database
 import (
 	"context"
 
-	consolecontract "gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/database/console"
-	"gopkg.in/go-mixed/framework/facades"
+	consolecontract "gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/database/console"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ServiceProvider struct {

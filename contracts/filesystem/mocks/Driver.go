@@ -6,7 +6,7 @@ import (
 	context "context"
 
 	mock "github.com/stretchr/testify/mock"
-	filesystem "gopkg.in/go-mixed/framework/contracts/filesystem"
+	filesystem "gopkg.in/go-mixed/framework.v1/contracts/filesystem"
 
 	time "time"
 )

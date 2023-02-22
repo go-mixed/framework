@@ -1,7 +1,7 @@
 package facades
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/container"
+	"gopkg.in/go-mixed/framework.v1/contracts/container"
 )
 
 var Container container.IContainer

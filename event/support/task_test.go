@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"gopkg.in/go-mixed/framework/contracts/event"
+	"gopkg.in/go-mixed/framework.v1/contracts/event"
 )
 
 type TestEvent struct {

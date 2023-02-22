@@ -7,9 +7,9 @@ import (
 
 	"github.com/jordan-wright/email"
 
-	"gopkg.in/go-mixed/framework/contracts/mail"
-	queuecontract "gopkg.in/go-mixed/framework/contracts/queue"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/mail"
+	queuecontract "gopkg.in/go-mixed/framework.v1/contracts/queue"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type Application struct {

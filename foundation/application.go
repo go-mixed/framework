@@ -1,14 +1,14 @@
 package foundation
 
 import (
-	"gopkg.in/go-mixed/framework/container"
+	"gopkg.in/go-mixed/framework.v1/container"
 	"os"
 	"strings"
 
-	"gopkg.in/go-mixed/framework/config"
-	"gopkg.in/go-mixed/framework/contracts"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/support"
+	"gopkg.in/go-mixed/framework.v1/config"
+	"gopkg.in/go-mixed/framework.v1/contracts"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/support"
 )
 
 var app Application

@@ -19,10 +19,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	configmocks "gopkg.in/go-mixed/framework/contracts/config/mocks"
-	httpcontract "gopkg.in/go-mixed/framework/contracts/http"
-	"gopkg.in/go-mixed/framework/contracts/validation"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	configmocks "gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
+	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
+	"gopkg.in/go-mixed/framework.v1/contracts/validation"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 func TestRun(t *testing.T) {

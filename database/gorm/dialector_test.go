@@ -12,10 +12,10 @@ import (
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 
-	"gopkg.in/go-mixed/framework/contracts/config/mocks"
-	contractsdatabase "gopkg.in/go-mixed/framework/contracts/database"
-	"gopkg.in/go-mixed/framework/contracts/database/orm"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	"gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
+	contractsdatabase "gopkg.in/go-mixed/framework.v1/contracts/database"
+	"gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 func TestDialector(t *testing.T) {

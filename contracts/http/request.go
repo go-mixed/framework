@@ -3,8 +3,8 @@ package http
 import (
 	"net/http"
 
-	"gopkg.in/go-mixed/framework/contracts/filesystem"
-	"gopkg.in/go-mixed/framework/contracts/validation"
+	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
+	"gopkg.in/go-mixed/framework.v1/contracts/validation"
 )
 
 //go:generate mockery --name=Request

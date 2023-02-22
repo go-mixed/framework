@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	httpcontract "gopkg.in/go-mixed/framework/contracts/http"
+	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
 )
 
 type GinResponse struct {

@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	"gopkg.in/go-mixed/framework/contracts/cache"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/cache"
+	"gopkg.in/go-mixed/framework.v1/facades"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/pkg/errors"

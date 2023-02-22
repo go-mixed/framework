@@ -2,10 +2,10 @@ package config
 
 import (
 	"flag"
-	"gopkg.in/go-mixed/framework/contracts/container"
+	"gopkg.in/go-mixed/framework.v1/contracts/container"
 
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/testing"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/testing"
 )
 
 type ServiceProvider struct {

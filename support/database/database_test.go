@@ -3,7 +3,7 @@ package database
 import (
 	"testing"
 
-	"gopkg.in/go-mixed/framework/database/orm"
+	"gopkg.in/go-mixed/framework.v1/database/orm"
 
 	"github.com/stretchr/testify/assert"
 )

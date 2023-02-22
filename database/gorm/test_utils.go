@@ -6,11 +6,11 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/spf13/cast"
 
-	configmocks "gopkg.in/go-mixed/framework/contracts/config/mocks"
-	"gopkg.in/go-mixed/framework/contracts/database"
-	contractsorm "gopkg.in/go-mixed/framework/contracts/database/orm"
-	testingdocker "gopkg.in/go-mixed/framework/testing/docker"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	configmocks "gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
+	"gopkg.in/go-mixed/framework.v1/contracts/database"
+	contractsorm "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	testingdocker "gopkg.in/go-mixed/framework.v1/testing/docker"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 const (

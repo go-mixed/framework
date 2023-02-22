@@ -3,7 +3,7 @@ package filesystem
 import (
 	"testing"
 
-	"gopkg.in/go-mixed/framework/testing/mock"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"

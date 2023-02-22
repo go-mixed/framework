@@ -5,8 +5,8 @@ import (
 
 	"github.com/unrolled/secure"
 
-	contractshttp "gopkg.in/go-mixed/framework/contracts/http"
-	"gopkg.in/go-mixed/framework/facades"
+	contractshttp "gopkg.in/go-mixed/framework.v1/contracts/http"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 func Tls(host ...string) contractshttp.Middleware {

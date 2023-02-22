@@ -3,7 +3,7 @@ package support
 import (
 	"strings"
 
-	"gopkg.in/go-mixed/framework/contracts/schedule"
+	"gopkg.in/go-mixed/framework.v1/contracts/schedule"
 )
 
 type Event struct {

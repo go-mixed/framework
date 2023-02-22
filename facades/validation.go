@@ -1,7 +1,7 @@
 package facades
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/validation"
+	"gopkg.in/go-mixed/framework.v1/contracts/validation"
 )
 
 var Validation validation.Validation

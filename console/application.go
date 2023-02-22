@@ -7,9 +7,9 @@ import (
 	"github.com/gookit/color"
 	"github.com/urfave/cli/v2"
 
-	"gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/contracts/console/command"
-	"gopkg.in/go-mixed/framework/support"
+	"gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
+	"gopkg.in/go-mixed/framework.v1/support"
 )
 
 type Application struct {

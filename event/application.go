@@ -1,8 +1,8 @@
 package event
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/event"
-	"gopkg.in/go-mixed/framework/event/support"
+	"gopkg.in/go-mixed/framework.v1/contracts/event"
+	"gopkg.in/go-mixed/framework.v1/event/support"
 )
 
 type Application struct {

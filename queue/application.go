@@ -1,9 +1,9 @@
 package queue
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/queue"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/queue/support"
+	"gopkg.in/go-mixed/framework.v1/contracts/queue"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/queue/support"
 )
 
 type Application struct {

@@ -3,13 +3,13 @@ package cache
 import (
 	"github.com/gookit/color"
 	"github.com/pkg/errors"
-	"gopkg.in/go-mixed/framework/contracts/container"
-	manager2 "gopkg.in/go-mixed/framework/contracts/manager"
-	"gopkg.in/go-mixed/framework/support"
-	"gopkg.in/go-mixed/framework/support/manager"
+	"gopkg.in/go-mixed/framework.v1/contracts/container"
+	manager2 "gopkg.in/go-mixed/framework.v1/contracts/manager"
+	"gopkg.in/go-mixed/framework.v1/support"
+	"gopkg.in/go-mixed/framework.v1/support/manager"
 
-	"gopkg.in/go-mixed/framework/contracts/cache"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/cache"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type StoreManager struct {

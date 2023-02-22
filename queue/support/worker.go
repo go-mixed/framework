@@ -1,7 +1,7 @@
 package support
 
 import (
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 const DriverSync string = "sync"

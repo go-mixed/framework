@@ -3,7 +3,7 @@ package route
 import (
 	"net/http"
 
-	httpcontract "gopkg.in/go-mixed/framework/contracts/http"
+	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
 )
 
 type GroupFunc func(routes Route)

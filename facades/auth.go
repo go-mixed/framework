@@ -1,8 +1,8 @@
 package facades
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/auth"
-	"gopkg.in/go-mixed/framework/contracts/auth/access"
+	"gopkg.in/go-mixed/framework.v1/contracts/auth"
+	"gopkg.in/go-mixed/framework.v1/contracts/auth/access"
 )
 
 var (

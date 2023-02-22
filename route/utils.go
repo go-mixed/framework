@@ -9,9 +9,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	httpcontract "gopkg.in/go-mixed/framework/contracts/http"
-	"gopkg.in/go-mixed/framework/facades"
-	frameworkhttp "gopkg.in/go-mixed/framework/http"
+	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	frameworkhttp "gopkg.in/go-mixed/framework.v1/http"
 )
 
 func pathToGinPath(relativePath string) string {

@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	contractsdatabase "gopkg.in/go-mixed/framework/contracts/database"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	contractsdatabase "gopkg.in/go-mixed/framework.v1/contracts/database"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 const (

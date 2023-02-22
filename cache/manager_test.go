@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"gopkg.in/go-mixed/framework/contracts/cache"
-	testingdocker "gopkg.in/go-mixed/framework/testing/docker"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	"gopkg.in/go-mixed/framework.v1/contracts/cache"
+	testingdocker "gopkg.in/go-mixed/framework.v1/testing/docker"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 
 	"github.com/ory/dockertest/v3"
 	"github.com/stretchr/testify/suite"

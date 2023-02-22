@@ -3,8 +3,8 @@ package log
 import (
 	"fmt"
 
-	"gopkg.in/go-mixed/framework/contracts/log"
-	"gopkg.in/go-mixed/framework/support/time"
+	"gopkg.in/go-mixed/framework.v1/contracts/log"
+	"gopkg.in/go-mixed/framework.v1/support/time"
 )
 
 type TestWriter struct {

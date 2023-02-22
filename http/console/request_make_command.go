@@ -5,10 +5,10 @@ import (
 	"os"
 	"strings"
 
-	"gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/contracts/console/command"
-	"gopkg.in/go-mixed/framework/support/file"
-	"gopkg.in/go-mixed/framework/support/str"
+	"gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
+	"gopkg.in/go-mixed/framework.v1/support/file"
+	"gopkg.in/go-mixed/framework.v1/support/str"
 
 	"github.com/gookit/color"
 )

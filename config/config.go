@@ -1,16 +1,16 @@
 package config
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/config"
+	"gopkg.in/go-mixed/framework.v1/contracts/config"
 	"os"
 
 	"github.com/gookit/color"
 	"github.com/spf13/cast"
 	"github.com/spf13/viper"
 
-	"gopkg.in/go-mixed/framework/support"
-	"gopkg.in/go-mixed/framework/support/file"
-	"gopkg.in/go-mixed/framework/testing"
+	"gopkg.in/go-mixed/framework.v1/support"
+	"gopkg.in/go-mixed/framework.v1/support/file"
+	"gopkg.in/go-mixed/framework.v1/testing"
 )
 
 type Config struct {

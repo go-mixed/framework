@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
-	"gopkg.in/go-mixed/framework/contracts/filesystem"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/support/str"
-	supporttime "gopkg.in/go-mixed/framework/support/time"
+	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/support/str"
+	supporttime "gopkg.in/go-mixed/framework.v1/support/time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/credentials"

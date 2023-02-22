@@ -2,7 +2,7 @@ package manager
 
 import (
 	"github.com/pkg/errors"
-	"gopkg.in/go-mixed/framework/contracts/manager"
+	"gopkg.in/go-mixed/framework.v1/contracts/manager"
 )
 
 type Manager[T any] struct {

@@ -4,9 +4,9 @@ import (
 	"github.com/gookit/color"
 	"github.com/robfig/cron/v3"
 
-	"gopkg.in/go-mixed/framework/contracts/schedule"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/schedule/support"
+	"gopkg.in/go-mixed/framework.v1/contracts/schedule"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/schedule/support"
 )
 
 type Application struct {

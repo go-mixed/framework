@@ -3,7 +3,7 @@ package support
 import (
 	"errors"
 
-	"gopkg.in/go-mixed/framework/contracts/queue"
+	"gopkg.in/go-mixed/framework.v1/contracts/queue"
 
 	"github.com/RichardKnop/machinery/v2"
 	"github.com/RichardKnop/machinery/v2/tasks"

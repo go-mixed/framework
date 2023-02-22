@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"gopkg.in/go-mixed/framework/support/file"
+	"gopkg.in/go-mixed/framework.v1/support/file"
 )
 
 func TestMysqlDocker(t *testing.T) {

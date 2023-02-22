@@ -9,9 +9,9 @@ import (
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
-	ormcontract "gopkg.in/go-mixed/framework/contracts/database/orm"
-	databasegorm "gopkg.in/go-mixed/framework/database/gorm"
-	"gopkg.in/go-mixed/framework/facades"
+	ormcontract "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	databasegorm "gopkg.in/go-mixed/framework.v1/database/gorm"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type Orm struct {

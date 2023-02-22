@@ -2,8 +2,8 @@ package facades
 
 import (
 	"context"
-	"gopkg.in/go-mixed/framework/cache"
-	cachecontract "gopkg.in/go-mixed/framework/contracts/cache"
+	"gopkg.in/go-mixed/framework.v1/cache"
+	cachecontract "gopkg.in/go-mixed/framework.v1/contracts/cache"
 )
 
 var Cache *cachecontract.IStore = cache.Get

@@ -1,9 +1,9 @@
 package console
 
 import (
-	"gopkg.in/go-mixed/framework/console/console"
-	console2 "gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/console/console"
+	console2 "gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ServiceProvider struct {

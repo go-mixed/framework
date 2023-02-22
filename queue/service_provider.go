@@ -1,9 +1,9 @@
 package queue
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/facades"
-	queueConsole "gopkg.in/go-mixed/framework/queue/console"
+	"gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	queueConsole "gopkg.in/go-mixed/framework.v1/queue/console"
 )
 
 type ServiceProvider struct {

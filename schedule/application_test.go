@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"gopkg.in/go-mixed/framework/contracts/schedule"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	"gopkg.in/go-mixed/framework.v1/contracts/schedule"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 func TestApplication(t *testing.T) {

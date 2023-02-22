@@ -1,20 +1,20 @@
 package mock
 
 import (
-	accessmocks "gopkg.in/go-mixed/framework/contracts/auth/access/mocks"
-	authmocks "gopkg.in/go-mixed/framework/contracts/auth/mocks"
-	cachemocks "gopkg.in/go-mixed/framework/contracts/cache/mocks"
-	configmocks "gopkg.in/go-mixed/framework/contracts/config/mocks"
-	consolemocks "gopkg.in/go-mixed/framework/contracts/console/mocks"
-	ormmocks "gopkg.in/go-mixed/framework/contracts/database/orm/mocks"
-	eventmocks "gopkg.in/go-mixed/framework/contracts/event/mocks"
-	filesystemmocks "gopkg.in/go-mixed/framework/contracts/filesystem/mocks"
-	grpcmocks "gopkg.in/go-mixed/framework/contracts/grpc/mocks"
-	mailmocks "gopkg.in/go-mixed/framework/contracts/mail/mocks"
-	queuemocks "gopkg.in/go-mixed/framework/contracts/queue/mocks"
-	validatemocks "gopkg.in/go-mixed/framework/contracts/validation/mocks"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/log"
+	accessmocks "gopkg.in/go-mixed/framework.v1/contracts/auth/access/mocks"
+	authmocks "gopkg.in/go-mixed/framework.v1/contracts/auth/mocks"
+	cachemocks "gopkg.in/go-mixed/framework.v1/contracts/cache/mocks"
+	configmocks "gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
+	consolemocks "gopkg.in/go-mixed/framework.v1/contracts/console/mocks"
+	ormmocks "gopkg.in/go-mixed/framework.v1/contracts/database/orm/mocks"
+	eventmocks "gopkg.in/go-mixed/framework.v1/contracts/event/mocks"
+	filesystemmocks "gopkg.in/go-mixed/framework.v1/contracts/filesystem/mocks"
+	grpcmocks "gopkg.in/go-mixed/framework.v1/contracts/grpc/mocks"
+	mailmocks "gopkg.in/go-mixed/framework.v1/contracts/mail/mocks"
+	queuemocks "gopkg.in/go-mixed/framework.v1/contracts/queue/mocks"
+	validatemocks "gopkg.in/go-mixed/framework.v1/contracts/validation/mocks"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/log"
 )
 
 func Cache() *cachemocks.Store {

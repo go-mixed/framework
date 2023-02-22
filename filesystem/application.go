@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"gopkg.in/go-mixed/framework/contracts/filesystem"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type Driver string

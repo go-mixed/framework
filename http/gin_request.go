@@ -8,12 +8,12 @@ import (
 	"github.com/gookit/validate"
 	"github.com/spf13/cast"
 
-	contractsfilesystem "gopkg.in/go-mixed/framework/contracts/filesystem"
-	httpcontract "gopkg.in/go-mixed/framework/contracts/http"
-	validatecontract "gopkg.in/go-mixed/framework/contracts/validation"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/filesystem"
-	"gopkg.in/go-mixed/framework/validation"
+	contractsfilesystem "gopkg.in/go-mixed/framework.v1/contracts/filesystem"
+	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
+	validatecontract "gopkg.in/go-mixed/framework.v1/contracts/validation"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/filesystem"
+	"gopkg.in/go-mixed/framework.v1/validation"
 )
 
 type GinRequest struct {

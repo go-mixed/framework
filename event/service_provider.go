@@ -1,9 +1,9 @@
 package event
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/console"
-	eventConsole "gopkg.in/go-mixed/framework/event/console"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/console"
+	eventConsole "gopkg.in/go-mixed/framework.v1/event/console"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ServiceProvider struct {

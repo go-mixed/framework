@@ -9,15 +9,15 @@ import (
 	"github.com/gookit/color"
 	"github.com/stretchr/testify/suite"
 
-	"gopkg.in/go-mixed/framework/config"
-	"gopkg.in/go-mixed/framework/contracts/event"
-	"gopkg.in/go-mixed/framework/contracts/mail"
-	queuecontract "gopkg.in/go-mixed/framework/contracts/queue"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/queue"
-	"gopkg.in/go-mixed/framework/support/file"
-	testingdocker "gopkg.in/go-mixed/framework/testing/docker"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	"gopkg.in/go-mixed/framework.v1/config"
+	"gopkg.in/go-mixed/framework.v1/contracts/event"
+	"gopkg.in/go-mixed/framework.v1/contracts/mail"
+	queuecontract "gopkg.in/go-mixed/framework.v1/contracts/queue"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/queue"
+	"gopkg.in/go-mixed/framework.v1/support/file"
+	testingdocker "gopkg.in/go-mixed/framework.v1/testing/docker"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 type ApplicationTestSuite struct {

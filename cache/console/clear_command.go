@@ -3,9 +3,9 @@ package console
 import (
 	"github.com/gookit/color"
 
-	"gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/contracts/console/command"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ClearCommand struct {

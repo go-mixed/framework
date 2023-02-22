@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/go-mixed/framework/contracts/database/orm"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/support/file"
+	"gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/support/file"
 )
 
 type MigrateCreator struct {

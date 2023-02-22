@@ -10,9 +10,9 @@ import (
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 
-	contractsdatabase "gopkg.in/go-mixed/framework/contracts/database"
-	"gopkg.in/go-mixed/framework/contracts/database/orm"
-	"gopkg.in/go-mixed/framework/facades"
+	contractsdatabase "gopkg.in/go-mixed/framework.v1/contracts/database"
+	"gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 func dialectors(connection string, configs []contractsdatabase.Config) ([]gorm.Dialector, error) {

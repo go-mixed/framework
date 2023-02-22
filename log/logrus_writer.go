@@ -6,9 +6,9 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"gopkg.in/go-mixed/framework/contracts/log"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/log/logger"
+	"gopkg.in/go-mixed/framework.v1/contracts/log"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/log/logger"
 )
 
 type Writer struct {

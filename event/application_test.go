@@ -9,12 +9,12 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	"gopkg.in/go-mixed/framework/contracts/event"
-	eventcontract "gopkg.in/go-mixed/framework/contracts/event"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/queue"
-	testingdocker "gopkg.in/go-mixed/framework/testing/docker"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	"gopkg.in/go-mixed/framework.v1/contracts/event"
+	eventcontract "gopkg.in/go-mixed/framework.v1/contracts/event"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/queue"
+	testingdocker "gopkg.in/go-mixed/framework.v1/testing/docker"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 var (

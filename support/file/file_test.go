@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"gopkg.in/go-mixed/framework/testing/file"
+	"gopkg.in/go-mixed/framework.v1/testing/file"
 
 	"github.com/stretchr/testify/assert"
 )

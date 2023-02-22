@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"gopkg.in/go-mixed/framework/contracts/log"
+	"gopkg.in/go-mixed/framework.v1/contracts/log"
 )
 
 type Entry struct {

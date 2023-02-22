@@ -5,10 +5,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	configmocks "gopkg.in/go-mixed/framework/contracts/config/mocks"
-	"gopkg.in/go-mixed/framework/contracts/event"
-	queuecontract "gopkg.in/go-mixed/framework/contracts/queue"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	configmocks "gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
+	"gopkg.in/go-mixed/framework.v1/contracts/event"
+	queuecontract "gopkg.in/go-mixed/framework.v1/contracts/queue"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 func TestGetServer_Sync(t *testing.T) {

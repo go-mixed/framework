@@ -5,11 +5,11 @@ import (
 	"strings"
 	"time"
 
-	contractauth "gopkg.in/go-mixed/framework/contracts/auth"
-	"gopkg.in/go-mixed/framework/contracts/http"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/support/database"
-	supporttime "gopkg.in/go-mixed/framework/support/time"
+	contractauth "gopkg.in/go-mixed/framework.v1/contracts/auth"
+	"gopkg.in/go-mixed/framework.v1/contracts/http"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/support/database"
+	supporttime "gopkg.in/go-mixed/framework.v1/support/time"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/spf13/cast"

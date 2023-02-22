@@ -8,10 +8,10 @@ import (
 	"path"
 	"strings"
 
-	"gopkg.in/go-mixed/framework/contracts/filesystem"
-	"gopkg.in/go-mixed/framework/facades"
-	supportfile "gopkg.in/go-mixed/framework/support/file"
-	"gopkg.in/go-mixed/framework/support/str"
+	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	supportfile "gopkg.in/go-mixed/framework.v1/support/file"
+	"gopkg.in/go-mixed/framework.v1/support/str"
 )
 
 type File struct {

@@ -3,8 +3,8 @@ package console
 import (
 	"testing"
 
-	consolemocks "gopkg.in/go-mixed/framework/contracts/console/mocks"
-	"gopkg.in/go-mixed/framework/support/file"
+	consolemocks "gopkg.in/go-mixed/framework.v1/contracts/console/mocks"
+	"gopkg.in/go-mixed/framework.v1/support/file"
 
 	"github.com/stretchr/testify/assert"
 )

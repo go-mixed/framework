@@ -6,9 +6,9 @@ import (
 	"github.com/RichardKnop/machinery/v2"
 	"github.com/RichardKnop/machinery/v2/tasks"
 
-	"gopkg.in/go-mixed/framework/contracts/event"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/queue/support"
+	"gopkg.in/go-mixed/framework.v1/contracts/event"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/queue/support"
 )
 
 type Task struct {

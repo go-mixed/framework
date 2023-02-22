@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 
-	cache "gopkg.in/go-mixed/framework/contracts/cache"
+	cache "gopkg.in/go-mixed/framework.v1/contracts/cache"
 
 	mock "github.com/stretchr/testify/mock"
 

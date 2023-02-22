@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/go-mixed/framework/contracts/filesystem"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/support"
-	"gopkg.in/go-mixed/framework/support/str"
+	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/support"
+	"gopkg.in/go-mixed/framework.v1/support/str"
 )
 
 type Local struct {

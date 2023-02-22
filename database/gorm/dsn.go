@@ -3,8 +3,8 @@ package gorm
 import (
 	"fmt"
 
-	contractsdatabase "gopkg.in/go-mixed/framework/contracts/database"
-	"gopkg.in/go-mixed/framework/facades"
+	contractsdatabase "gopkg.in/go-mixed/framework.v1/contracts/database"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 func MysqlDsn(connection string, config contractsdatabase.Config) string {

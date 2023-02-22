@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"gopkg.in/go-mixed/framework/contracts/auth/access"
+	"gopkg.in/go-mixed/framework.v1/contracts/auth/access"
 )
 
 type Gate struct {

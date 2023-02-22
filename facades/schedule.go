@@ -1,7 +1,7 @@
 package facades
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/schedule"
+	"gopkg.in/go-mixed/framework.v1/contracts/schedule"
 )
 
 var Schedule schedule.Schedule

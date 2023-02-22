@@ -6,7 +6,7 @@ import (
 
 	"github.com/patrickmn/go-cache"
 
-	cachecontract "gopkg.in/go-mixed/framework/contracts/cache"
+	cachecontract "gopkg.in/go-mixed/framework.v1/contracts/cache"
 )
 
 type Memory struct {

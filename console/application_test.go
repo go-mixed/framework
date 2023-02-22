@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/contracts/console/command"
+	"gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
 )
 
 var testCommand = 0

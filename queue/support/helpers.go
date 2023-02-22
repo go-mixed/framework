@@ -11,9 +11,9 @@ import (
 	"github.com/RichardKnop/machinery/v2/locks/eager"
 	"github.com/gookit/color"
 
-	"gopkg.in/go-mixed/framework/contracts/event"
-	"gopkg.in/go-mixed/framework/contracts/queue"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/event"
+	"gopkg.in/go-mixed/framework.v1/contracts/queue"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 func GetServer(connection string, queue string) (*machinery.Server, error) {

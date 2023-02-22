@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/stretchr/testify/assert"
 
-	httpvalidate "gopkg.in/go-mixed/framework/contracts/validation"
+	httpvalidate "gopkg.in/go-mixed/framework.v1/contracts/validation"
 )
 
 func TestMake(t *testing.T) {

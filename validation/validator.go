@@ -5,7 +5,7 @@ import (
 
 	"github.com/gookit/validate"
 
-	httpvalidate "gopkg.in/go-mixed/framework/contracts/validation"
+	httpvalidate "gopkg.in/go-mixed/framework.v1/contracts/validation"
 )
 
 func init() {

@@ -3,9 +3,9 @@ package middleware
 import (
 	"fmt"
 
-	"gopkg.in/go-mixed/framework/contracts/http"
-	"gopkg.in/go-mixed/framework/facades"
-	httplimit "gopkg.in/go-mixed/framework/http/limit"
+	"gopkg.in/go-mixed/framework.v1/contracts/http"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	httplimit "gopkg.in/go-mixed/framework.v1/http/limit"
 )
 
 func Throttle(name string) http.Middleware {

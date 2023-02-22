@@ -3,7 +3,7 @@ package validation
 import (
 	"strings"
 
-	httpvalidate "gopkg.in/go-mixed/framework/contracts/validation"
+	httpvalidate "gopkg.in/go-mixed/framework.v1/contracts/validation"
 
 	"github.com/gookit/validate"
 )

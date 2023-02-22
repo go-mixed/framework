@@ -7,7 +7,7 @@ import (
 
 	"github.com/gookit/validate"
 
-	validatecontract "gopkg.in/go-mixed/framework/contracts/validation"
+	validatecontract "gopkg.in/go-mixed/framework.v1/contracts/validation"
 )
 
 type Validation struct {

@@ -1,7 +1,7 @@
 package console
 
 import (
-	"gopkg.in/go-mixed/framework/contracts/console/command"
+	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
 )
 
 type Command interface {

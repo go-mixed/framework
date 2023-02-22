@@ -3,9 +3,9 @@ package middleware
 import (
 	nethttp "net/http"
 
-	contractshttp "gopkg.in/go-mixed/framework/contracts/http"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/http"
+	contractshttp "gopkg.in/go-mixed/framework.v1/contracts/http"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/cors"

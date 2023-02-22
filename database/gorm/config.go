@@ -3,9 +3,9 @@ package gorm
 import (
 	"fmt"
 
-	contractsdatabase "gopkg.in/go-mixed/framework/contracts/database"
-	contractsorm "gopkg.in/go-mixed/framework/contracts/database/orm"
-	"gopkg.in/go-mixed/framework/facades"
+	contractsdatabase "gopkg.in/go-mixed/framework.v1/contracts/database"
+	contractsorm "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 func Configs(connection string) (readConfigs, writeConfigs []contractsdatabase.Config, err error) {

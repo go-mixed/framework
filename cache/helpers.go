@@ -1,8 +1,8 @@
 package cache
 
 import (
-	cachecontract "gopkg.in/go-mixed/framework/contracts/cache"
-	"gopkg.in/go-mixed/framework/support"
+	cachecontract "gopkg.in/go-mixed/framework.v1/contracts/cache"
+	"gopkg.in/go-mixed/framework.v1/support"
 )
 
 func GetCacheManager() *StoreManager {

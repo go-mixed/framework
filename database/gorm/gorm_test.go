@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/suite"
 	_ "gorm.io/driver/postgres"
 
-	contractsorm "gopkg.in/go-mixed/framework/contracts/database/orm"
-	"gopkg.in/go-mixed/framework/database/orm"
-	"gopkg.in/go-mixed/framework/support/file"
+	contractsorm "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gopkg.in/go-mixed/framework.v1/database/orm"
+	"gopkg.in/go-mixed/framework.v1/support/file"
 )
 
 type User struct {

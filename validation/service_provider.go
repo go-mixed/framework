@@ -1,9 +1,9 @@
 package validation
 
 import (
-	consolecontract "gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/validation/console"
+	consolecontract "gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/validation/console"
 )
 
 type ServiceProvider struct {

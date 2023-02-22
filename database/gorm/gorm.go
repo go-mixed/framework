@@ -14,11 +14,11 @@ import (
 	gormLogger "gorm.io/gorm/logger"
 	"gorm.io/plugin/dbresolver"
 
-	contractsdatabase "gopkg.in/go-mixed/framework/contracts/database"
-	contractsorm "gopkg.in/go-mixed/framework/contracts/database/orm"
-	"gopkg.in/go-mixed/framework/database/orm"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/support/database"
+	contractsdatabase "gopkg.in/go-mixed/framework.v1/contracts/database"
+	contractsorm "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gopkg.in/go-mixed/framework.v1/database/orm"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/support/database"
 )
 
 func New(connection string) (*gorm.DB, error) {

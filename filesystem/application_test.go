@@ -9,10 +9,10 @@ import (
 	"github.com/gookit/color"
 	"github.com/stretchr/testify/assert"
 
-	"gopkg.in/go-mixed/framework/config"
-	"gopkg.in/go-mixed/framework/contracts/filesystem"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/support/file"
+	"gopkg.in/go-mixed/framework.v1/config"
+	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/support/file"
 )
 
 type TestDisk struct {

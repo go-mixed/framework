@@ -1,6 +1,6 @@
 package auth
 
-import "gopkg.in/go-mixed/framework/contracts/http"
+import "gopkg.in/go-mixed/framework.v1/contracts/http"
 
 //go:generate mockery --name=Auth
 type Auth interface {

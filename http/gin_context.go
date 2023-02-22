@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"gopkg.in/go-mixed/framework/contracts/http"
+	"gopkg.in/go-mixed/framework.v1/contracts/http"
 )
 
 func Background() http.Context {

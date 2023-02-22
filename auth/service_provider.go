@@ -3,10 +3,10 @@ package auth
 import (
 	"context"
 
-	"gopkg.in/go-mixed/framework/auth/access"
-	"gopkg.in/go-mixed/framework/auth/console"
-	contractconsole "gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/auth/access"
+	"gopkg.in/go-mixed/framework.v1/auth/console"
+	contractconsole "gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ServiceProvider struct {

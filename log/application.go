@@ -6,8 +6,8 @@ import (
 	"github.com/gookit/color"
 	"github.com/sirupsen/logrus"
 
-	"gopkg.in/go-mixed/framework/contracts/log"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/log"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type Logrus struct {

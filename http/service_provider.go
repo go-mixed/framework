@@ -1,9 +1,9 @@
 package http
 
 import (
-	consolecontract "gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/http/console"
+	consolecontract "gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/http/console"
 )
 
 type ServiceProvider struct {

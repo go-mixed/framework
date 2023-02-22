@@ -6,8 +6,8 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/gookit/color"
 
-	"gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/contracts/console/command"
+	"gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
 )
 
 type MigrateCommand struct {

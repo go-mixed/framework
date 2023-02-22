@@ -6,7 +6,7 @@ import (
 	context "context"
 
 	mock "github.com/stretchr/testify/mock"
-	http "gopkg.in/go-mixed/framework/contracts/http"
+	http "gopkg.in/go-mixed/framework.v1/contracts/http"
 
 	time "time"
 )

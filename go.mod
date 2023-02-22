@@ -1,4 +1,4 @@
-module gopkg.in/go-mixed/framework
+module gopkg.in/go-mixed/framework.v1
 
 go 1.19
 

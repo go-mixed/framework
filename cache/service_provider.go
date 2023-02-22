@@ -2,11 +2,11 @@ package cache
 
 import (
 	"context"
-	"gopkg.in/go-mixed/framework/cache/console"
-	"gopkg.in/go-mixed/framework/contracts"
-	console2 "gopkg.in/go-mixed/framework/contracts/console"
-	"gopkg.in/go-mixed/framework/contracts/container"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/cache/console"
+	"gopkg.in/go-mixed/framework.v1/contracts"
+	console2 "gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/contracts/container"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ServiceProvider struct {

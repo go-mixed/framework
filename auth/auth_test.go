@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/suite"
 	"gorm.io/gorm/clause"
 
-	"gopkg.in/go-mixed/framework/database/orm"
-	"gopkg.in/go-mixed/framework/http"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	"gopkg.in/go-mixed/framework.v1/database/orm"
+	"gopkg.in/go-mixed/framework.v1/http"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 var guard = "user"

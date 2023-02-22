@@ -12,8 +12,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	configmocks "gopkg.in/go-mixed/framework/contracts/config/mocks"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	configmocks "gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 func TestRun(t *testing.T) {

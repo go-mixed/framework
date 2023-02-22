@@ -3,8 +3,8 @@
 package mocks
 
 import (
-	auth "gopkg.in/go-mixed/framework/contracts/auth"
-	http "gopkg.in/go-mixed/framework/contracts/http"
+	auth "gopkg.in/go-mixed/framework.v1/contracts/auth"
+	http "gopkg.in/go-mixed/framework.v1/contracts/http"
 
 	mock "github.com/stretchr/testify/mock"
 )

@@ -6,7 +6,7 @@ import (
 	context "context"
 
 	mock "github.com/stretchr/testify/mock"
-	orm "gopkg.in/go-mixed/framework/contracts/database/orm"
+	orm "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
 
 	sql "database/sql"
 )

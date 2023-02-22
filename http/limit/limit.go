@@ -3,7 +3,7 @@ package limit
 import (
 	"net/http"
 
-	contractshttp "gopkg.in/go-mixed/framework/contracts/http"
+	contractshttp "gopkg.in/go-mixed/framework.v1/contracts/http"
 )
 
 func PerMinute(maxAttempts int) contractshttp.Limit {

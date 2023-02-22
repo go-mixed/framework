@@ -8,10 +8,10 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	ormcontract "gopkg.in/go-mixed/framework/contracts/database/orm"
-	"gopkg.in/go-mixed/framework/database/gorm"
-	"gopkg.in/go-mixed/framework/database/orm"
-	"gopkg.in/go-mixed/framework/support/file"
+	ormcontract "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gopkg.in/go-mixed/framework.v1/database/gorm"
+	"gopkg.in/go-mixed/framework.v1/database/orm"
+	"gopkg.in/go-mixed/framework.v1/support/file"
 )
 
 var connections = []ormcontract.Driver{

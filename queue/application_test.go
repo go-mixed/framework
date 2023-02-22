@@ -9,12 +9,12 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/stretchr/testify/suite"
 
-	configmocks "gopkg.in/go-mixed/framework/contracts/config/mocks"
-	"gopkg.in/go-mixed/framework/contracts/event"
-	"gopkg.in/go-mixed/framework/contracts/queue"
-	"gopkg.in/go-mixed/framework/queue/support"
-	testingdocker "gopkg.in/go-mixed/framework/testing/docker"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	configmocks "gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
+	"gopkg.in/go-mixed/framework.v1/contracts/event"
+	"gopkg.in/go-mixed/framework.v1/contracts/queue"
+	"gopkg.in/go-mixed/framework.v1/queue/support"
+	testingdocker "gopkg.in/go-mixed/framework.v1/testing/docker"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 var (

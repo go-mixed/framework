@@ -7,11 +7,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	mockconfig "gopkg.in/go-mixed/framework/contracts/config/mocks"
-	httpcontract "gopkg.in/go-mixed/framework/contracts/http"
-	"gopkg.in/go-mixed/framework/contracts/route"
-	"gopkg.in/go-mixed/framework/http/middleware"
-	"gopkg.in/go-mixed/framework/testing/mock"
+	mockconfig "gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
+	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
+	"gopkg.in/go-mixed/framework.v1/contracts/route"
+	"gopkg.in/go-mixed/framework.v1/http/middleware"
+	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
 func TestGinGroup(t *testing.T) {

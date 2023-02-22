@@ -10,9 +10,9 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/golang-migrate/migrate/v4/database/sqlserver"
 
-	"gopkg.in/go-mixed/framework/contracts/database/orm"
-	"gopkg.in/go-mixed/framework/database/gorm"
-	"gopkg.in/go-mixed/framework/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gopkg.in/go-mixed/framework.v1/database/gorm"
+	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 func getMigrate() (*migrate.Migrate, error) {

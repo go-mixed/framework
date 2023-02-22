@@ -10,8 +10,8 @@ import (
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
 
-	"gopkg.in/go-mixed/framework/facades"
-	"gopkg.in/go-mixed/framework/log/formatter"
+	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/log/formatter"
 )
 
 type Daily struct {
