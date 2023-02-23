@@ -2,8 +2,6 @@ package config
 
 import (
 	"flag"
-	"gopkg.in/go-mixed/framework.v1/contracts/container"
-
 	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/testing"
 )
@@ -11,7 +9,7 @@ import (
 type ServiceProvider struct {
 }
 
-func (config *ServiceProvider) Register(container container.IContainer) {
+func (config *ServiceProvider) Register() {
 	var env *string
 	if testing.RunInTest() {
 		testEnv := ".env"
@@ -23,6 +21,6 @@ func (config *ServiceProvider) Register(container container.IContainer) {
 	facades.Config = NewModule(*env)
 }
 
-func (config *ServiceProvider) Boot(container container.IContainer) {
+func (config *ServiceProvider) Boot() {
 
 }

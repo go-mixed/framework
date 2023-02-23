@@ -3,9 +3,10 @@ package cache
 import (
 	"context"
 	"gopkg.in/go-mixed/framework.v1/cache/console"
+	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/contracts"
+	"gopkg.in/go-mixed/framework.v1/contracts/cache"
 	console2 "gopkg.in/go-mixed/framework.v1/contracts/console"
-	"gopkg.in/go-mixed/framework.v1/contracts/container"
 	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
@@ -14,24 +15,23 @@ type ServiceProvider struct {
 
 var _ contracts.IServiceProvider = (*ServiceProvider)(nil)
 
-func (sp *ServiceProvider) Register(container container.IContainer) {
-	container.Instance("cache.manager", func() any {
-		manager := NewStoreManager(container)
-		sp.registerStores(manager)
-		return manager
+func (sp *ServiceProvider) Register() {
+	container.Singleton((*StoreManager)(nil), func(args ...any) (any, error) {
+		manager := NewStoreManager()
+		manager.extendStores(manager)
+		return manager, nil
 	})
+	container.Alias("cache.manager", (*StoreManager)(nil))
 
-	sp.registerCacheDrivers(container)
+	container.Singleton(cache.IStore(nil), func(args ...any) (any, error) {
+		return container.MustMake[*StoreManager]("cache.manager").DefaultDriver()
+	})
+	container.Alias("cache.store", cache.IStore(nil))
 
+	sp.registerCacheDrivers()
 }
 
-func (sp *ServiceProvider) registerStores(manager *StoreManager) {
-	for name := range facades.Config.GetMap("stores") {
-		manager.Extend(name, manager.makeDriver)
-	}
-}
-
-func (sp *ServiceProvider) registerCacheDrivers(container container.IContainer) {
+func (sp *ServiceProvider) registerCacheDrivers() {
 	container.Bind("cache.drivers.redis", func(args ...any) (any, error) {
 		return NewRedis(args[0].(string), context.Background())
 	}, false)
@@ -42,7 +42,7 @@ func (sp *ServiceProvider) registerCacheDrivers(container container.IContainer) 
 
 }
 
-func (sp *ServiceProvider) Boot(container container.IContainer) {
+func (sp *ServiceProvider) Boot() {
 	sp.registerCommands()
 }
 

@@ -11,6 +11,8 @@ type Manager[T any] struct {
 	defaultDriverName func() string
 }
 
+var _ manager.IManager[any] = (*Manager[any])(nil)
+
 func MakeManager[T any](defaultDriverName func() string) Manager[T] {
 	return Manager[T]{
 		drivers:           map[string]T{},
@@ -40,17 +42,13 @@ func (m *Manager[T]) Driver(name string) (T, error) {
 	if !ok {
 		if concrete, ok := m.customCreators[name]; ok {
 			if instance, err = concrete(name); err != nil {
-				return nil, err
+				return instance, err
 			}
 
 			m.drivers[name] = instance
 		} else {
-			return nil, errors.Errorf("driver %s is not exists", name)
+			return instance, errors.Errorf("driver %s is not exists", name)
 		}
-	}
-
-	if instance == nil {
-		return nil, errors.Errorf("driver %s cannot make a valid instance", name)
 	}
 
 	return instance, nil
@@ -72,4 +70,17 @@ func (m *Manager[T]) RemoveDriver(name string) {
 
 func (m *Manager[T]) DefaultDriver() (T, error) {
 	return m.Driver(m.defaultDriverName())
+}
+
+func (m *Manager[T]) MustDefaultDriver() T {
+	driver, err := m.DefaultDriver()
+	if err != nil {
+		panic(err)
+	}
+
+	return driver
+}
+
+func (m *Manager[T]) DefaultDriverName() string {
+	return m.defaultDriverName()
 }

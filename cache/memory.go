@@ -2,6 +2,8 @@ package cache
 
 import (
 	"context"
+	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/contracts/manager"
 	"time"
 
 	"github.com/patrickmn/go-cache"
@@ -22,6 +24,10 @@ func NewMemory() (*Memory, error) {
 		prefix:   prefix(),
 		instance: memory,
 	}, nil
+}
+
+func (r *Memory) Store(storeName string) cachecontract.IStore {
+	return container.MustMake[manager.IManager[cachecontract.IStore]]("cache.manager").MustDriver(storeName)
 }
 
 func (r *Memory) WithContext(ctx context.Context) cachecontract.IStore {

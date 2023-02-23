@@ -2,10 +2,10 @@ package console
 
 import (
 	"github.com/gookit/color"
+	"gopkg.in/go-mixed/framework.v1/facades/cache"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/console"
 	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ClearCommand struct {
@@ -30,7 +30,7 @@ func (receiver *ClearCommand) Extend() command.Extend {
 
 // Handle Execute the console command.
 func (receiver *ClearCommand) Handle(ctx console.Context) error {
-	res := facades.Cache.Flush()
+	res := cache.Flush()
 
 	if res {
 		color.Greenln("Application cache cleared")

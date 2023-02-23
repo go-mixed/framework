@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"errors"
+	"gopkg.in/go-mixed/framework.v1/facades/cache"
 	"strings"
 	"time"
 
@@ -176,11 +176,7 @@ func (app *Auth) Logout(ctx http.Context) error {
 		return nil
 	}
 
-	if facades.Cache == nil {
-		return errors.New("cache support is required")
-	}
-
-	if err := facades.Cache.Put(getDisabledCacheKey(auth[app.guard].Token),
+	if err := cache.Put(getDisabledCacheKey(auth[app.guard].Token),
 		true,
 		time.Duration(facades.Config.GetInt("jwt.ttl"))*unit,
 	); err != nil {
@@ -200,7 +196,7 @@ func (app *Auth) makeAuthContext(ctx http.Context, claims *Claims, token string)
 }
 
 func tokenIsDisabled(token string) bool {
-	return facades.Cache.GetBool(getDisabledCacheKey(token), false)
+	return cache.GetBool(getDisabledCacheKey(token), false)
 }
 
 func getDisabledCacheKey(token string) string {

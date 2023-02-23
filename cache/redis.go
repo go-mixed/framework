@@ -2,10 +2,12 @@ package cache
 
 import (
 	"context"
+	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/contracts/manager"
 	"strconv"
 	"time"
 
-	"gopkg.in/go-mixed/framework.v1/contracts/cache"
+	cachecontract "gopkg.in/go-mixed/framework.v1/contracts/cache"
 	"gopkg.in/go-mixed/framework.v1/facades"
 
 	"github.com/go-redis/redis/v8"
@@ -48,11 +50,11 @@ func NewRedis(storeName string, ctx context.Context) (*Redis, error) {
 	}, nil
 }
 
-func (r *Redis) Store(storeName string) cache.IStore {
-	return
+func (r *Redis) Store(storeName string) cachecontract.IStore {
+	return container.MustMake[manager.IManager[cachecontract.IStore]]("cache.manager").MustDriver(storeName)
 }
 
-func (r *Redis) WithContext(ctx context.Context) cache.IStore {
+func (r *Redis) WithContext(ctx context.Context) cachecontract.IStore {
 	store, _ := NewRedis(r.storeName, ctx)
 
 	return store

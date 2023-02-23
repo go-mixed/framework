@@ -1,6 +1,7 @@
 package mock
 
 import (
+	"gopkg.in/go-mixed/framework.v1/container"
 	accessmocks "gopkg.in/go-mixed/framework.v1/contracts/auth/access/mocks"
 	authmocks "gopkg.in/go-mixed/framework.v1/contracts/auth/mocks"
 	cachemocks "gopkg.in/go-mixed/framework.v1/contracts/cache/mocks"
@@ -19,7 +20,7 @@ import (
 
 func Cache() *cachemocks.Store {
 	mockCache := &cachemocks.Store{}
-	facades.Cache = mockCache
+	container.Instance("cache.store", mockCache)
 
 	return mockCache
 }

@@ -3,9 +3,7 @@ package cache
 import (
 	"github.com/gookit/color"
 	"github.com/pkg/errors"
-	"gopkg.in/go-mixed/framework.v1/contracts/container"
-	manager2 "gopkg.in/go-mixed/framework.v1/contracts/manager"
-	"gopkg.in/go-mixed/framework.v1/support"
+	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/support/manager"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/cache"
@@ -13,15 +11,11 @@ import (
 )
 
 type StoreManager struct {
-	container container.IContainer
-
 	manager.Manager[cache.IStore]
 }
 
-var _ manager2.IManager[cache.IStore] = (*StoreManager)(nil)
-
-func NewStoreManager(container container.IContainer) *StoreManager {
-	m := &StoreManager{container: container}
+func NewStoreManager() *StoreManager {
+	m := &StoreManager{}
 	m.Manager = manager.MakeManager[cache.IStore](m.DefaultDriverName)
 	return m
 }
@@ -33,8 +27,9 @@ func (m *StoreManager) DefaultDriverName() string {
 func (m *StoreManager) makeDriver(storeName string) (cache.IStore, error) {
 	driver := facades.Config.GetString("config."+storeName+".driver", "memory")
 	driverContainerName := "cache.drivers." + driver
-	if m.container.Bound(driverContainerName) {
-		instance, err := support.As(m.container.MakeT(driverContainerName, storeName), cache.IStore(nil))
+
+	if container.Bound(driverContainerName) {
+		instance, err := container.Make[cache.IStore](driverContainerName, storeName)
 		if err != nil {
 			color.Redf("[Cache] Initialize %s driver of store %s error: %v\n", driver, storeName, err)
 			return nil, errors.Errorf("[Cache] Initialize %s driver of store %s error: %v\n", driver, storeName, err)
@@ -49,4 +44,10 @@ func (m *StoreManager) makeDriver(storeName string) (cache.IStore, error) {
 
 func (m *StoreManager) Store(storeName string) (cache.IStore, error) {
 	return m.Driver(storeName)
+}
+
+func (m *StoreManager) extendStores(manager *StoreManager) {
+	for name := range facades.Config.GetMap("stores") {
+		manager.Extend(name, manager.makeDriver)
+	}
 }

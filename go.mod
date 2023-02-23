@@ -4,10 +4,10 @@ go 1.19
 
 require (
 	github.com/RichardKnop/machinery/v2 v2.0.11
-	github.com/aliyun/aliyun-oss-go-sdk v2.2.5+incompatible
 	github.com/aws/aws-sdk-go-v2 v1.17.1
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.2
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.3
+	github.com/eddieowens/axon v0.7.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/go-sql-driver/mysql v1.7.0
@@ -33,9 +33,9 @@ require (
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/viper v1.9.0
 	github.com/stretchr/testify v1.8.1
-	github.com/tencentyun/cos-go-sdk-v5 v0.7.40
 	github.com/unrolled/secure v1.13.0
 	github.com/urfave/cli/v2 v2.3.0
+	go.uber.org/dig v1.16.1
 	google.golang.org/grpc v1.50.1
 	gorm.io/driver/mysql v1.4.5
 	gorm.io/driver/postgres v1.4.6
@@ -73,7 +73,6 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/chzyer/readline v1.5.1 // indirect
-	github.com/clbanning/mxj v1.8.4 // indirect
 	github.com/containerd/continuity v0.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -97,7 +96,6 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
-	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
@@ -129,7 +127,6 @@ require (
 	github.com/moby/term v0.0.0-20221205130635-1aeaba878587 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/mozillazg/go-httpheader v0.3.1 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.0.2 // indirect
 	github.com/opencontainers/runc v1.1.4 // indirect
@@ -162,7 +159,6 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
-	golang.org/x/time v0.1.0 // indirect
 	golang.org/x/tools v0.5.0 // indirect
 	google.golang.org/api v0.103.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect

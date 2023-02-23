@@ -16,15 +16,13 @@ var app Application
 func init() {
 	setEnv()
 
-	app = Application{
-		Container: container.Initial(),
-	}
+	app = Application{}
+	container.Initialize()
 	app.registerBaseServiceProviders()
 	app.bootBaseServiceProviders()
 }
 
 type Application struct {
-	container.Container
 }
 
 // Boot Register and bootstrap configured service providers.
@@ -76,14 +74,14 @@ func (app *Application) bootConfiguredServiceProviders() {
 // registerServiceProviders Register service providers.
 func (app *Application) registerServiceProviders(serviceProviders []contracts.IServiceProvider) {
 	for _, serviceProvider := range serviceProviders {
-		serviceProvider.Register(app)
+		serviceProvider.Register()
 	}
 }
 
 // bootServiceProviders Bootstrap service providers.
 func (app *Application) bootServiceProviders(serviceProviders []contracts.IServiceProvider) {
 	for _, serviceProvider := range serviceProviders {
-		serviceProvider.Boot(app)
+		serviceProvider.Boot()
 	}
 }
 

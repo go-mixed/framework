@@ -103,6 +103,22 @@ func (_m *Config) GetString(path string, defaultValue ...interface{}) string {
 	return r0
 }
 
+// GetString provides a mock function with given fields: path, defaultValue
+func (_m *Config) GetMap(path string) map[string]any {
+	var _ca []interface{}
+	_ca = append(_ca, path)
+	ret := _m.Called(_ca...)
+
+	var r0 map[string]any = map[string]any{}
+	if rf, ok := ret.Get(0).(func(string) map[string]any); ok {
+		r0 = rf(path)
+	} else {
+		r0 = ret.Get(0).(map[string]any)
+	}
+
+	return r0
+}
+
 type mockConstructorTestingTNewConfig interface {
 	mock.TestingT
 	Cleanup(func())
