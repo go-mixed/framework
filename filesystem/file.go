@@ -2,6 +2,7 @@ package filesystem
 
 import (
 	"errors"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"io"
 	"mime/multipart"
 	"os"
@@ -25,7 +26,7 @@ func NewFile(file string) (*File, error) {
 		return nil, errors.New("file doesn't exist")
 	}
 
-	disk := facades.Config.GetString("filesystems.default")
+	disk := config.GetString("filesystems.default")
 
 	return &File{disk: disk, file: file, filename: path.Base(file)}, nil
 }
@@ -48,7 +49,7 @@ func NewFileFromRequest(fileHeader *multipart.FileHeader) (*File, error) {
 		return nil, err
 	}
 
-	disk := facades.Config.GetString("filesystems.default")
+	disk := config.GetString("filesystems.default")
 
 	return &File{disk: disk, file: tempFile.Name(), filename: fileHeader.Filename}, nil
 }

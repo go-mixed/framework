@@ -1,6 +1,7 @@
 package filesystem
 
 import (
+	"gopkg.in/go-mixed/framework.v1/container"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -11,7 +12,6 @@ import (
 
 	"gopkg.in/go-mixed/framework.v1/config"
 	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/support/file"
 )
 
@@ -365,8 +365,8 @@ func TestStorage(t *testing.T) {
 }
 
 func initConfig() {
-	application := config.NewModule("../.env")
-	application.Add("filesystems", map[string]any{
+	newConfig := config.NewConfig("../.env")
+	newConfig.Add("filesystems", map[string]any{
 		"default": "local",
 		"disks": map[string]any{
 			"local": map[string]any{
@@ -376,26 +376,26 @@ func initConfig() {
 			},
 			"s3": map[string]any{
 				"driver": "s3",
-				"key":    application.Env("AWS_ACCESS_KEY_ID"),
-				"secret": application.Env("AWS_ACCESS_KEY_SECRET"),
-				"region": application.Env("AWS_DEFAULT_REGION"),
-				"bucket": application.Env("AWS_BUCKET"),
-				"url":    application.Env("AWS_URL"),
+				"key":    newConfig.Env("AWS_ACCESS_KEY_ID"),
+				"secret": newConfig.Env("AWS_ACCESS_KEY_SECRET"),
+				"region": newConfig.Env("AWS_DEFAULT_REGION"),
+				"bucket": newConfig.Env("AWS_BUCKET"),
+				"url":    newConfig.Env("AWS_URL"),
 			},
 			"oss": map[string]any{
 				"driver":   "oss",
-				"key":      application.Env("ALIYUN_ACCESS_KEY_ID"),
-				"secret":   application.Env("ALIYUN_ACCESS_KEY_SECRET"),
-				"bucket":   application.Env("ALIYUN_BUCKET"),
-				"url":      application.Env("ALIYUN_URL"),
-				"endpoint": application.Env("ALIYUN_ENDPOINT"),
+				"key":      newConfig.Env("ALIYUN_ACCESS_KEY_ID"),
+				"secret":   newConfig.Env("ALIYUN_ACCESS_KEY_SECRET"),
+				"bucket":   newConfig.Env("ALIYUN_BUCKET"),
+				"url":      newConfig.Env("ALIYUN_URL"),
+				"endpoint": newConfig.Env("ALIYUN_ENDPOINT"),
 			},
 			"cos": map[string]any{
 				"driver": "cos",
-				"key":    application.Env("TENCENT_ACCESS_KEY_ID"),
-				"secret": application.Env("TENCENT_ACCESS_KEY_SECRET"),
-				"bucket": application.Env("TENCENT_BUCKET"),
-				"url":    application.Env("TENCENT_URL"),
+				"key":    newConfig.Env("TENCENT_ACCESS_KEY_ID"),
+				"secret": newConfig.Env("TENCENT_ACCESS_KEY_SECRET"),
+				"bucket": newConfig.Env("TENCENT_BUCKET"),
+				"url":    newConfig.Env("TENCENT_URL"),
 			},
 			"custom": map[string]any{
 				"driver": "custom",
@@ -407,5 +407,5 @@ func initConfig() {
 		},
 	})
 
-	facades.Config = application
+	container.Instance("config", newConfig)
 }

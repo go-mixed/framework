@@ -2,11 +2,11 @@ package logger
 
 import (
 	"errors"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
 
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/log/formatter"
 )
 
@@ -14,12 +14,12 @@ type Single struct {
 }
 
 func (single *Single) Handle(channel string) (logrus.Hook, error) {
-	logPath := facades.Config.GetString(channel + ".path")
+	logPath := config.GetString(channel + ".path")
 	if logPath == "" {
 		return nil, errors.New("error log path")
 	}
 
-	levels := getLevels(facades.Config.GetString(channel + ".level"))
+	levels := getLevels(config.GetString(channel + ".level"))
 	pathMap := lfshook.PathMap{}
 	for _, level := range levels {
 		pathMap[level] = logPath

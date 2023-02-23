@@ -2,10 +2,11 @@ package gorm
 
 import (
 	"fmt"
-
 	contractsdatabase "gopkg.in/go-mixed/framework.v1/contracts/database"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
+
 	contractsorm "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
-	"gopkg.in/go-mixed/framework.v1/facades"
+	configfacade "gopkg.in/go-mixed/framework.v1/facades/config"
 )
 
 func Configs(connection string) (readConfigs, writeConfigs []contractsdatabase.Config, err error) {
@@ -19,7 +20,7 @@ func Configs(connection string) (readConfigs, writeConfigs []contractsdatabase.C
 }
 
 func getReadConfigs(connection string) []contractsdatabase.Config {
-	configs := facades.Config.Get(fmt.Sprintf("database.connections.%s.read", connection))
+	configs := config.Get(fmt.Sprintf("database.connections.%s.read", connection))
 	if c, exist := configs.([]contractsdatabase.Config); exist {
 		return fillDefaultForConfigs(connection, c)
 	}
@@ -28,7 +29,7 @@ func getReadConfigs(connection string) []contractsdatabase.Config {
 }
 
 func getWriteConfigs(connection string) []contractsdatabase.Config {
-	configs := facades.Config.Get(fmt.Sprintf("database.connections.%s.write", connection))
+	configs := config.Get(fmt.Sprintf("database.connections.%s.write", connection))
 	if c, exist := configs.([]contractsdatabase.Config); exist {
 		return fillDefaultForConfigs(connection, c)
 	}
@@ -38,24 +39,24 @@ func getWriteConfigs(connection string) []contractsdatabase.Config {
 
 func fillDefaultForConfigs(connection string, configs []contractsdatabase.Config) []contractsdatabase.Config {
 	var newConfigs []contractsdatabase.Config
-	driver := facades.Config.GetString(fmt.Sprintf("database.connections.%s.driver", connection))
+	driver := config.GetString(fmt.Sprintf("database.connections.%s.driver", connection))
 	for _, config := range configs {
 		if driver != contractsorm.DriverSqlite.String() {
 			if config.Host == "" {
-				config.Host = facades.Config.GetString(fmt.Sprintf("database.connections.%s.host", connection))
+				config.Host = configfacade.GetString(fmt.Sprintf("database.connections.%s.host", connection))
 			}
 			if config.Port == 0 {
-				config.Port = facades.Config.GetInt(fmt.Sprintf("database.connections.%s.port", connection))
+				config.Port = configfacade.GetInt(fmt.Sprintf("database.connections.%s.port", connection))
 			}
 			if config.Username == "" {
-				config.Username = facades.Config.GetString(fmt.Sprintf("database.connections.%s.username", connection))
+				config.Username = configfacade.GetString(fmt.Sprintf("database.connections.%s.username", connection))
 			}
 			if config.Password == "" {
-				config.Password = facades.Config.GetString(fmt.Sprintf("database.connections.%s.password", connection))
+				config.Password = configfacade.GetString(fmt.Sprintf("database.connections.%s.password", connection))
 			}
 		}
 		if config.Database == "" {
-			config.Database = facades.Config.GetString(fmt.Sprintf("database.connections.%s.database", connection))
+			config.Database = configfacade.GetString(fmt.Sprintf("database.connections.%s.database", connection))
 		}
 		newConfigs = append(newConfigs, config)
 	}

@@ -4,14 +4,13 @@ import (
 	"context"
 	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/contracts/manager"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"strconv"
 	"time"
 
-	cachecontract "gopkg.in/go-mixed/framework.v1/contracts/cache"
-	"gopkg.in/go-mixed/framework.v1/facades"
-
 	"github.com/go-redis/redis/v8"
 	"github.com/pkg/errors"
+	cachecontract "gopkg.in/go-mixed/framework.v1/contracts/cache"
 )
 
 type Redis struct {
@@ -22,20 +21,20 @@ type Redis struct {
 }
 
 func NewRedis(storeName string, ctx context.Context) (*Redis, error) {
-	connection := facades.Config.GetString("cache.stores." + storeName + ".connection")
+	connection := config.GetString("cache.stores." + storeName + ".connection")
 	if connection == "" {
 		connection = "default"
 	}
 
-	host := facades.Config.GetString("database.redis." + connection + ".host")
+	host := config.GetString("database.redis." + connection + ".host")
 	if host == "" {
 		return nil, errors.New("redis host in invalid")
 	}
 
 	client := redis.NewClient(&redis.Options{
-		Addr:     host + ":" + facades.Config.GetString("database.redis."+connection+".port"),
-		Password: facades.Config.GetString("database.redis." + connection + ".password"),
-		DB:       facades.Config.GetInt("database.redis." + connection + ".database"),
+		Addr:     host + ":" + config.GetString("database.redis."+connection+".port"),
+		Password: config.GetString("database.redis." + connection + ".password"),
+		DB:       config.GetInt("database.redis." + connection + ".database"),
 	})
 
 	if _, err := client.Ping(context.Background()).Result(); err != nil {

@@ -2,6 +2,7 @@ package route
 
 import (
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"os"
 	"regexp"
 	"strings"
@@ -10,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	frameworkhttp "gopkg.in/go-mixed/framework.v1/http"
 )
 
@@ -63,7 +63,7 @@ func getDebugLog() gin.HandlerFunc {
 		)
 	}
 
-	if facades.Config.GetBool("app.debug") {
+	if config.GetBool("app.debug") {
 		return gin.LoggerWithFormatter(logFormatter)
 	}
 
@@ -107,7 +107,7 @@ func runningInConsole() bool {
 }
 
 func outputRoutes(routes gin.RoutesInfo) {
-	if facades.Config.GetBool("app.debug") && !runningInConsole() {
+	if config.GetBool("app.debug") && !runningInConsole() {
 		for _, item := range routes {
 			fmt.Printf("%-10s %s\n", item.Method, colonToBracket(item.Path))
 		}

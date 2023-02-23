@@ -1,9 +1,9 @@
 package cache
 
 import (
-	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 )
 
 func prefix() string {
-	return facades.Config.GetString("cache.prefix") + ":"
+	return config.GetString("cache.prefix") + ":"
 }

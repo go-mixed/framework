@@ -3,6 +3,7 @@ package log
 import (
 	"context"
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/container"
 	"os"
 	"os/exec"
 	"reflect"
@@ -12,7 +13,6 @@ import (
 	"github.com/stretchr/testify/suite"
 
 	configmocks "gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/support/file"
 	"gopkg.in/go-mixed/framework.v1/support/time"
 )
@@ -304,7 +304,7 @@ func TestLogrus_Fatalf(t *testing.T) {
 
 func initMockConfig() *configmocks.Config {
 	mockConfig := &configmocks.Config{}
-	facades.Config = mockConfig
+	container.Instance("config", mockConfig)
 
 	mockConfig.On("GetString", "logging.default").Return("stack").Once()
 	mockConfig.On("GetString", "logging.channels.stack.driver").Return("stack").Once()

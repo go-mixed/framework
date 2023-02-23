@@ -1,12 +1,12 @@
 package console
 
 import (
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"os"
 	"strings"
 	"time"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/database/orm"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/support/file"
 )
 
@@ -33,7 +33,7 @@ func (receiver MigrateCreator) getStub(table string, create bool) (string, strin
 		return "", ""
 	}
 
-	driver := facades.Config.GetString("database.connections." + facades.Config.GetString("database.default") + ".driver")
+	driver := config.GetString("database.connections." + config.GetString("database.default") + ".driver")
 	switch orm.Driver(driver) {
 	case orm.DriverPostgresql:
 		if create {
@@ -64,7 +64,7 @@ func (receiver MigrateCreator) getStub(table string, create bool) (string, strin
 
 // populateStub Populate the place-holders in the migration stub.
 func (receiver MigrateCreator) populateStub(stub string, table string) string {
-	stub = strings.ReplaceAll(stub, "DummyDatabaseCharset", facades.Config.GetString("database.connections."+facades.Config.GetString("database.default")+".charset"))
+	stub = strings.ReplaceAll(stub, "DummyDatabaseCharset", config.GetString("database.connections."+config.GetString("database.default")+".charset"))
 
 	if table != "" {
 		stub = strings.ReplaceAll(stub, "DummyTable", table)

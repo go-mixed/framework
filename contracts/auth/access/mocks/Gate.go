@@ -16,7 +16,7 @@ type Gate struct {
 }
 
 // After provides a mock function with given fields: callback
-func (_m *Gate) After(callback func(context.Context, string, map[string]interface{}, access.Response) access.Response) {
+func (_m *Gate) After(callback func(context.Context, string, map[string]interface{}, access.IResponse) access.IResponse) {
 	_m.Called(callback)
 }
 
@@ -49,12 +49,12 @@ func (_m *Gate) Any(abilities []string, arguments map[string]interface{}) bool {
 }
 
 // Before provides a mock function with given fields: callback
-func (_m *Gate) Before(callback func(context.Context, string, map[string]interface{}) access.Response) {
+func (_m *Gate) Before(callback func(context.Context, string, map[string]interface{}) access.IResponse) {
 	_m.Called(callback)
 }
 
 // Define provides a mock function with given fields: ability, callback
-func (_m *Gate) Define(ability string, callback func(context.Context, map[string]interface{}) access.Response) {
+func (_m *Gate) Define(ability string, callback func(context.Context, map[string]interface{}) access.IResponse) {
 	_m.Called(ability, callback)
 }
 
@@ -73,15 +73,15 @@ func (_m *Gate) Denies(ability string, arguments map[string]interface{}) bool {
 }
 
 // Inspect provides a mock function with given fields: ability, arguments
-func (_m *Gate) Inspect(ability string, arguments map[string]interface{}) access.Response {
+func (_m *Gate) Inspect(ability string, arguments map[string]interface{}) access.IResponse {
 	ret := _m.Called(ability, arguments)
 
-	var r0 access.Response
-	if rf, ok := ret.Get(0).(func(string, map[string]interface{}) access.Response); ok {
+	var r0 access.IResponse
+	if rf, ok := ret.Get(0).(func(string, map[string]interface{}) access.IResponse); ok {
 		r0 = rf(ability, arguments)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(access.Response)
+			r0 = ret.Get(0).(access.IResponse)
 		}
 	}
 
@@ -103,15 +103,15 @@ func (_m *Gate) None(abilities []string, arguments map[string]interface{}) bool 
 }
 
 // WithContext provides a mock function with given fields: ctx
-func (_m *Gate) WithContext(ctx context.Context) access.Gate {
+func (_m *Gate) WithContext(ctx context.Context) access.IGate {
 	ret := _m.Called(ctx)
 
-	var r0 access.Gate
-	if rf, ok := ret.Get(0).(func(context.Context) access.Gate); ok {
+	var r0 access.IGate
+	if rf, ok := ret.Get(0).(func(context.Context) access.IGate); ok {
 		r0 = rf(ctx)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(access.Gate)
+			r0 = ret.Get(0).(access.IGate)
 		}
 	}
 

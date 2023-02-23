@@ -17,7 +17,7 @@ func TestApplicationTestSuite(t *testing.T) {
 	file.Create(".env", "APP_KEY=12345678901234567890123456789012")
 
 	suite.Run(t, &ApplicationTestSuite{
-		config: NewModule(".env"),
+		config: NewConfig(".env"),
 	})
 
 	file.Remove(".env")

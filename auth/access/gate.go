@@ -9,19 +9,19 @@ import (
 
 type Gate struct {
 	ctx             context.Context
-	abilities       map[string]func(ctx context.Context, arguments map[string]any) access.Response
-	beforeCallbacks []func(ctx context.Context, ability string, arguments map[string]any) access.Response
-	afterCallbacks  []func(ctx context.Context, ability string, arguments map[string]any, result access.Response) access.Response
+	abilities       map[string]func(ctx context.Context, arguments map[string]any) access.IResponse
+	beforeCallbacks []func(ctx context.Context, ability string, arguments map[string]any) access.IResponse
+	afterCallbacks  []func(ctx context.Context, ability string, arguments map[string]any, result access.IResponse) access.IResponse
 }
 
 func NewGate(ctx context.Context) *Gate {
 	return &Gate{
 		ctx:       ctx,
-		abilities: make(map[string]func(ctx context.Context, arguments map[string]any) access.Response),
+		abilities: make(map[string]func(ctx context.Context, arguments map[string]any) access.IResponse),
 	}
 }
 
-func (r *Gate) WithContext(ctx context.Context) access.Gate {
+func (r *Gate) WithContext(ctx context.Context) access.IGate {
 	return &Gate{
 		ctx:             ctx,
 		abilities:       r.abilities,
@@ -38,7 +38,7 @@ func (r *Gate) Denies(ability string, arguments map[string]any) bool {
 	return !r.Allows(ability, arguments)
 }
 
-func (r *Gate) Inspect(ability string, arguments map[string]any) access.Response {
+func (r *Gate) Inspect(ability string, arguments map[string]any) access.IResponse {
 	result := r.callBeforeCallbacks(r.ctx, ability, arguments)
 	if result == nil {
 		if _, exist := r.abilities[ability]; exist {
@@ -51,7 +51,7 @@ func (r *Gate) Inspect(ability string, arguments map[string]any) access.Response
 	return r.callAfterCallbacks(r.ctx, ability, arguments, result)
 }
 
-func (r *Gate) Define(ability string, callback func(ctx context.Context, arguments map[string]any) access.Response) {
+func (r *Gate) Define(ability string, callback func(ctx context.Context, arguments map[string]any) access.IResponse) {
 	r.abilities[ability] = callback
 }
 
@@ -68,15 +68,15 @@ func (r *Gate) None(abilities []string, arguments map[string]any) bool {
 	return !r.Any(abilities, arguments)
 }
 
-func (r *Gate) Before(callback func(ctx context.Context, ability string, arguments map[string]any) access.Response) {
+func (r *Gate) Before(callback func(ctx context.Context, ability string, arguments map[string]any) access.IResponse) {
 	r.beforeCallbacks = append(r.beforeCallbacks, callback)
 }
 
-func (r *Gate) After(callback func(ctx context.Context, ability string, arguments map[string]any, result access.Response) access.Response) {
+func (r *Gate) After(callback func(ctx context.Context, ability string, arguments map[string]any, result access.IResponse) access.IResponse) {
 	r.afterCallbacks = append(r.afterCallbacks, callback)
 }
 
-func (r *Gate) callBeforeCallbacks(ctx context.Context, ability string, arguments map[string]any) access.Response {
+func (r *Gate) callBeforeCallbacks(ctx context.Context, ability string, arguments map[string]any) access.IResponse {
 	for _, before := range r.beforeCallbacks {
 		result := before(ctx, ability, arguments)
 		if result != nil {
@@ -87,7 +87,7 @@ func (r *Gate) callBeforeCallbacks(ctx context.Context, ability string, argument
 	return nil
 }
 
-func (r *Gate) callAfterCallbacks(ctx context.Context, ability string, arguments map[string]any, result access.Response) access.Response {
+func (r *Gate) callAfterCallbacks(ctx context.Context, ability string, arguments map[string]any, result access.IResponse) access.IResponse {
 	for _, after := range r.afterCallbacks {
 		afterResult := after(ctx, ability, arguments, result)
 		if result == nil && afterResult != nil {

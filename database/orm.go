@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	configfacade "gopkg.in/go-mixed/framework.v1/facades/config"
 
 	"github.com/gookit/color"
 	"github.com/pkg/errors"
@@ -11,7 +12,6 @@ import (
 
 	ormcontract "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
 	databasegorm "gopkg.in/go-mixed/framework.v1/database/gorm"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type Orm struct {
@@ -21,7 +21,7 @@ type Orm struct {
 }
 
 func NewOrm(ctx context.Context) *Orm {
-	defaultConnection := facades.Config.GetString("database.default")
+	defaultConnection := configfacade.GetString("database.default")
 	gormDB, err := databasegorm.NewDB(ctx, defaultConnection)
 	if err != nil {
 		color.Redln(fmt.Sprintf("[Orm] Initialize %s connection error: %v", defaultConnection, err))
@@ -48,7 +48,7 @@ func NewGormInstance(connection string) (*gorm.DB, error) {
 
 func (r *Orm) Connection(name string) ormcontract.Orm {
 	if name == "" {
-		name = facades.Config.GetString("database.default")
+		name = configfacade.GetString("database.default")
 	}
 	if instance, exist := r.instances[name]; exist {
 		return &Orm{

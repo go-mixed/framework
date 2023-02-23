@@ -3,6 +3,7 @@ package filesystem
 import (
 	"context"
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -35,11 +36,11 @@ type S3 struct {
 }
 
 func NewS3(ctx context.Context, disk string) (*S3, error) {
-	accessKeyId := facades.Config.GetString(fmt.Sprintf("filesystems.disks.%s.key", disk))
-	accessKeySecret := facades.Config.GetString(fmt.Sprintf("filesystems.disks.%s.secret", disk))
-	region := facades.Config.GetString(fmt.Sprintf("filesystems.disks.%s.region", disk))
-	bucket := facades.Config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
-	url := facades.Config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
+	accessKeyId := config.GetString(fmt.Sprintf("filesystems.disks.%s.key", disk))
+	accessKeySecret := config.GetString(fmt.Sprintf("filesystems.disks.%s.secret", disk))
+	region := config.GetString(fmt.Sprintf("filesystems.disks.%s.region", disk))
+	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
+	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
 
 	client := s3.New(s3.Options{
 		Region:      region,

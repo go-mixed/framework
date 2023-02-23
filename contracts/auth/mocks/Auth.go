@@ -15,15 +15,15 @@ type Auth struct {
 }
 
 // Guard provides a mock function with given fields: name
-func (_m *Auth) Guard(name string) auth.Auth {
+func (_m *Auth) Guard(name string) auth.IAuth {
 	ret := _m.Called(name)
 
-	var r0 auth.Auth
-	if rf, ok := ret.Get(0).(func(string) auth.Auth); ok {
+	var r0 auth.IAuth
+	if rf, ok := ret.Get(0).(func(string) auth.IAuth); ok {
 		r0 = rf(name)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(auth.Auth)
+			r0 = ret.Get(0).(auth.IAuth)
 		}
 	}
 

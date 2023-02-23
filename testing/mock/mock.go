@@ -27,7 +27,7 @@ func Cache() *cachemocks.Store {
 
 func Config() *configmocks.Config {
 	mockConfig := &configmocks.Config{}
-	facades.Config = mockConfig
+	container.Instance("config", mockConfig)
 
 	return mockConfig
 }
@@ -91,14 +91,14 @@ func Validation() (*validatemocks.Validation, *validatemocks.Validator, *validat
 
 func Auth() *authmocks.Auth {
 	mockAuth := &authmocks.Auth{}
-	facades.Auth = mockAuth
+	container.Instance("auth", mockAuth)
 
 	return mockAuth
 }
 
 func Gate() *accessmocks.Gate {
 	mockGate := &accessmocks.Gate{}
-	facades.Gate = mockGate
+	container.Instance("gate", mockGate)
 
 	return mockGate
 }

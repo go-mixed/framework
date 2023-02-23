@@ -2,6 +2,7 @@ package route
 
 import (
 	"errors"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +10,6 @@ import (
 
 	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
 	"gopkg.in/go-mixed/framework.v1/contracts/route"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	goravelhttp "gopkg.in/go-mixed/framework.v1/http"
 )
 
@@ -35,7 +35,7 @@ func NewGin() *Gin {
 
 func (r *Gin) Run(host ...string) error {
 	if len(host) == 0 {
-		defaultHost := facades.Config.GetString("route.host")
+		defaultHost := config.GetString("route.host")
 		if defaultHost == "" {
 			return errors.New("host can't be empty")
 		}
@@ -51,7 +51,7 @@ func (r *Gin) Run(host ...string) error {
 
 func (r *Gin) RunTLS(host ...string) error {
 	if len(host) == 0 {
-		defaultHost := facades.Config.GetString("route.tls.host")
+		defaultHost := config.GetString("route.tls.host")
 		if defaultHost == "" {
 			return errors.New("host can't be empty")
 		}
@@ -59,8 +59,8 @@ func (r *Gin) RunTLS(host ...string) error {
 		host = append(host, defaultHost)
 	}
 
-	certFile := facades.Config.GetString("route.tls.ssl.cert")
-	keyFile := facades.Config.GetString("route.tls.ssl.key")
+	certFile := config.GetString("route.tls.ssl.cert")
+	keyFile := config.GetString("route.tls.ssl.key")
 
 	return r.RunTLSWithCert(host[0], certFile, keyFile)
 }

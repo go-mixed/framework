@@ -8,30 +8,26 @@ import (
 
 type Concrete func(args ...any) (any, error)
 
-// The container's bindings.
-var bindings map[tKey]Concrete
-var shared map[tKey]bool
-var instances map[tKey]any
-var resolved map[tKey]bool
-var alias map[tKey]tKey
+// The container's bindingList.
+var bindingList map[tKey]Concrete
+var sharedList map[tKey]bool
+var instanceList map[tKey]any
+var resolvedList map[tKey]bool
+var aliasList map[tKey]tKey
 
 var di *dig.Container
 
-type VTConstraint interface {
-	any
-}
-
 func Initialize() {
-	bindings = map[tKey]Concrete{}
-	shared = map[tKey]bool{}
-	instances = map[tKey]any{}
-	resolved = map[tKey]bool{}
-	alias = map[tKey]tKey{}
+	bindingList = map[tKey]Concrete{}
+	sharedList = map[tKey]bool{}
+	instanceList = map[tKey]any{}
+	resolvedList = map[tKey]bool{}
+	aliasList = map[tKey]tKey{}
 	di = dig.New()
 }
 
 func getAlias(key tKey) tKey {
-	val, ok := alias[key]
+	val, ok := aliasList[key]
 	if ok {
 		return getAlias(val)
 	}
@@ -40,17 +36,17 @@ func getAlias(key tKey) tKey {
 
 // Bound Determine if the given abstract type has been bound.
 func Bound[VT VTConstraint](abstract VT) bool {
-	key := toTKey(abstract)
+	key := toTKey[VT](abstract)
 
-	if _, ok := alias[key]; ok {
+	if _, ok := aliasList[key]; ok {
 		return ok
 	}
 
-	if _, ok := bindings[key]; ok {
+	if _, ok := bindingList[key]; ok {
 		return ok
 	}
 
-	if _, ok := instances[key]; ok {
+	if _, ok := instanceList[key]; ok {
 		return ok
 	}
 
@@ -61,19 +57,19 @@ func Has[VT VTConstraint](abstract VT) bool {
 	return Bound(abstract)
 }
 
-func Alias[VT VTConstraint](abstract VT, source any) {
-	key1 := toTKey(abstract)
-	key2 := toTKey(source)
-	alias[key1] = key2
+func Alias[VT1 VTConstraint, VT2 VTConstraint](abstract VT1, source VT2) {
+	key1 := toTKey[VT1](abstract)
+	key2 := toTKey[VT2](source)
+	aliasList[key1] = key2
 }
 
 func Bind[VT VTConstraint](abstract VT, concrete Concrete, singleton bool) {
-	key := toTKey(abstract)
-	bindings[key] = concrete
-	shared[key] = singleton
+	key := toTKey[VT](abstract)
+	bindingList[key] = concrete
+	sharedList[key] = singleton
 
 	// delete the alias if you explicitly bind
-	delete(alias, key)
+	delete(aliasList, key)
 
 	// register DI provide if abstract is a non-string type
 	if singleton && key.isTypeKey {
@@ -85,7 +81,7 @@ func Bind[VT VTConstraint](abstract VT, concrete Concrete, singleton bool) {
 	// If the abstract type was already resolved in this container we'll fire the
 	// rebound listener so that any objects which have already gotten resolved
 	// can have their copy of the object updated via the listener callbacks.
-	if Resolved(key) {
+	if resolved(key) {
 		rebound(key)
 	}
 }
@@ -96,39 +92,43 @@ func Singleton[VT VTConstraint](abstract VT, concrete Concrete) {
 
 // Instance Register an existing instance as shared in the container.
 func Instance[VT VTConstraint](abstract VT, instance any) any {
-	key := toTKey(abstract)
+	key := toTKey[VT](abstract)
 	key = getAlias(key)
 
 	// We'll check to determine if this type has been bound before, and if it has
 	// we will fire the rebound callbacks registered with the container, and it
 	// can be updated with consuming classes that have gotten resolved here.
-	instances[key] = instance
-	shared[key] = true
+	instanceList[key] = instance
+	sharedList[key] = true
 
 	return instance
 }
 
-func Resolved[VT VTConstraint](abstract VT) bool {
-	key := toTKey(abstract)
-	key = getAlias(key)
-
-	if _, ok := resolved[key]; ok {
+func resolved(key tKey) bool {
+	if _, ok := resolvedList[key]; ok {
 		return true
 	}
-	_, ok := instances[key]
+	_, ok := instanceList[key]
 	return ok
 }
 
-func IsShared[VT VTConstraint](abstract VT) bool {
-	key := toTKey(abstract)
+func Resolved[VT VTConstraint](abstract VT) bool {
+	key := toTKey[VT](abstract)
 	key = getAlias(key)
 
-	if _, ok := instances[key]; ok {
+	return resolved(key)
+}
+
+func IsShared[VT VTConstraint](abstract VT) bool {
+	key := toTKey[VT](abstract)
+	key = getAlias(key)
+
+	if _, ok := instanceList[key]; ok {
 		return ok
 	}
 
-	_, ok := bindings[key]
-	singleton := shared[key]
+	_, ok := bindingList[key]
+	singleton := sharedList[key]
 	return ok && singleton
 }
 
@@ -137,12 +137,11 @@ func resolve[T any](key tKey, args ...any) (T, error) {
 	var obj any
 	var ok bool
 	var err error
-
-	instance := obj.(T)
+	var instance T
 
 	// not instanced
-	if obj, ok = instances[key]; !ok {
-		concrete, ok := bindings[key]
+	if obj, ok = instanceList[key]; !ok {
+		concrete, ok := bindingList[key]
 		if !ok {
 			return instance, errors.Errorf("abstract \"%s\" is not exists in the container", key.String())
 		}
@@ -157,13 +156,13 @@ func resolve[T any](key tKey, args ...any) (T, error) {
 		}
 
 		// If the requested type is registered as a singleton we'll want to cache off
-		// the instances in "memory" so we can return it later without creating an
+		// the instanceList in "memory" so we can return it later without creating an
 		// entirely new instance of an object on each subsequent request for it.
-		if shared[key] {
-			instances[key] = obj
+		if sharedList[key] {
+			instanceList[key] = obj
 		}
 
-		resolved[key] = true
+		resolvedList[key] = true
 	}
 
 	if instance, ok = obj.(T); ok {
@@ -175,7 +174,7 @@ func resolve[T any](key tKey, args ...any) (T, error) {
 
 // Make Resolve the given type from the container.
 func Make[T any, VT VTConstraint](abstract VT, args ...any) (T, error) {
-	key := toTKey(abstract)
+	key := toTKey[VT](abstract)
 	key = getAlias(key)
 	return resolve[T](key, args...)
 }

@@ -3,22 +3,22 @@ package support
 import (
 	"errors"
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 
 	"github.com/RichardKnop/machinery/v2"
 	redisBackend "github.com/RichardKnop/machinery/v2/backends/redis"
 	redisBroker "github.com/RichardKnop/machinery/v2/brokers/redis"
-	"github.com/RichardKnop/machinery/v2/config"
+	configinstance "github.com/RichardKnop/machinery/v2/config"
 	"github.com/RichardKnop/machinery/v2/locks/eager"
 	"github.com/gookit/color"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/event"
 	"gopkg.in/go-mixed/framework.v1/contracts/queue"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 func GetServer(connection string, queue string) (*machinery.Server, error) {
 	if connection == "" {
-		connection = facades.Config.GetString("queue.default")
+		connection = config.GetString("queue.default")
 	}
 
 	driver := getDriver(connection)
@@ -36,15 +36,15 @@ func GetServer(connection string, queue string) (*machinery.Server, error) {
 }
 
 func GetQueueName(connection, queue string) string {
-	appName := facades.Config.GetString("app.name")
+	appName := config.GetString("app.name")
 	if appName == "" {
 		appName = "goravel"
 	}
 	if connection == "" {
-		connection = facades.Config.GetString("queue.default")
+		connection = config.GetString("queue.default")
 	}
 	if queue == "" {
-		queue = facades.Config.GetString(fmt.Sprintf("queue.connections.%s.queue", connection), "default")
+		queue = config.GetString(fmt.Sprintf("queue.connections.%s.queue", connection), "default")
 	}
 
 	return fmt.Sprintf("%s_%s:%s", appName, "queues", queue)
@@ -52,10 +52,10 @@ func GetQueueName(connection, queue string) string {
 
 func getDriver(connection string) string {
 	if connection == "" {
-		connection = facades.Config.GetString("queue.default")
+		connection = config.GetString("queue.default")
 	}
 
-	return facades.Config.GetString(fmt.Sprintf("queue.connections.%s.driver", connection))
+	return config.GetString(fmt.Sprintf("queue.connections.%s.driver", connection))
 }
 
 func getRedisServer(connection string, queue string) *machinery.Server {
@@ -64,9 +64,9 @@ func getRedisServer(connection string, queue string) *machinery.Server {
 		queue = defaultQueue
 	}
 
-	cnf := &config.Config{
+	cnf := &configinstance.Config{
 		DefaultQueue: queue,
-		Redis:        &config.RedisConfig{},
+		Redis:        &configinstance.RedisConfig{},
 	}
 
 	broker := redisBroker.NewGR(cnf, []string{redisConfig}, database)
@@ -76,18 +76,18 @@ func getRedisServer(connection string, queue string) *machinery.Server {
 	return machinery.NewServer(cnf, broker, backend, lock)
 }
 
-func getRedisConfig(queueConnection string) (config string, database int, queue string) {
-	connection := facades.Config.GetString(fmt.Sprintf("queue.connections.%s.connection", queueConnection))
+func getRedisConfig(queueConnection string) (configResult string, database int, queue string) {
+	connection := config.GetString(fmt.Sprintf("queue.connections.%s.connection", queueConnection))
 	queue = GetQueueName(queueConnection, "")
-	host := facades.Config.GetString(fmt.Sprintf("database.redis.%s.host", connection))
-	password := facades.Config.GetString(fmt.Sprintf("database.redis.%s.password", connection))
-	port := facades.Config.GetString(fmt.Sprintf("database.redis.%s.port", connection))
-	database = facades.Config.GetInt(fmt.Sprintf("database.redis.%s.database", connection))
+	host := config.GetString(fmt.Sprintf("database.redis.%s.host", connection))
+	password := config.GetString(fmt.Sprintf("database.redis.%s.password", connection))
+	port := config.GetString(fmt.Sprintf("database.redis.%s.port", connection))
+	database = config.GetInt(fmt.Sprintf("database.redis.%s.database", connection))
 
 	if password == "" {
-		config = host + ":" + port
+		configResult = host + ":" + port
 	} else {
-		config = password + "@" + host + ":" + port
+		configResult = password + "@" + host + ":" + port
 	}
 
 	return

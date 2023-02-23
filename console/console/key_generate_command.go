@@ -1,6 +1,7 @@
 package console
 
 import (
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"io/ioutil"
 	"strings"
 
@@ -9,7 +10,6 @@ import (
 
 	"gopkg.in/go-mixed/framework.v1/contracts/console"
 	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/support/str"
 )
 
@@ -35,7 +35,7 @@ func (receiver *KeyGenerateCommand) Extend() command.Extend {
 
 // Handle Execute the console command.
 func (receiver *KeyGenerateCommand) Handle(ctx console.Context) error {
-	if facades.Config.GetString("app.env") == "production" {
+	if config.GetString("app.env") == "production" {
 		color.Yellowln("**************************************")
 		color.Yellowln("*     Application In Production!     *")
 		color.Yellowln("**************************************")
@@ -79,7 +79,7 @@ func (receiver *KeyGenerateCommand) writeNewEnvironmentFileWith(key string) erro
 		return err
 	}
 
-	newContent := strings.Replace(string(content), "APP_KEY="+facades.Config.GetString("app.key"), "APP_KEY="+key, 1)
+	newContent := strings.Replace(string(content), "APP_KEY="+config.GetString("app.key"), "APP_KEY="+key, 1)
 
 	err = ioutil.WriteFile(".env", []byte(newContent), 0644)
 	if err != nil {

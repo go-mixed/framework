@@ -17,7 +17,7 @@ import (
 	contractsdatabase "gopkg.in/go-mixed/framework.v1/contracts/database"
 	contractsorm "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
 	"gopkg.in/go-mixed/framework.v1/database/orm"
-	"gopkg.in/go-mixed/framework.v1/facades"
+	configfacade "gopkg.in/go-mixed/framework.v1/facades/config"
 	"gopkg.in/go-mixed/framework.v1/support/database"
 )
 
@@ -57,17 +57,17 @@ func configurePool(db *gorm.DB) error {
 		return err
 	}
 
-	sqlDB.SetMaxIdleConns(facades.Config.GetInt("database.pool.max_idle_conns", 10))
-	sqlDB.SetMaxOpenConns(facades.Config.GetInt("database.pool.max_open_conns", 100))
-	sqlDB.SetConnMaxIdleTime(time.Duration(facades.Config.GetInt("database.pool.conn_max_idletime", 3600)) * time.Second)
-	sqlDB.SetConnMaxLifetime(time.Duration(facades.Config.GetInt("database.pool.conn_max_lifetime", 3600)) * time.Second)
+	sqlDB.SetMaxIdleConns(configfacade.GetInt("database.pool.max_idle_conns", 10))
+	sqlDB.SetMaxOpenConns(configfacade.GetInt("database.pool.max_open_conns", 100))
+	sqlDB.SetConnMaxIdleTime(time.Duration(configfacade.GetInt("database.pool.conn_max_idletime", 3600)) * time.Second)
+	sqlDB.SetConnMaxLifetime(time.Duration(configfacade.GetInt("database.pool.conn_max_lifetime", 3600)) * time.Second)
 
 	return nil
 }
 
 func instance(dialector gorm.Dialector) (*gorm.DB, error) {
 	var logLevel gormLogger.LogLevel
-	if facades.Config.GetBool("app.debug") {
+	if configfacade.GetBool("app.debug") {
 		logLevel = gormLogger.Info
 	} else {
 		logLevel = gormLogger.Error

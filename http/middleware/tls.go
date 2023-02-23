@@ -1,18 +1,18 @@
 package middleware
 
 import (
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"net/http"
 
 	"github.com/unrolled/secure"
 
 	contractshttp "gopkg.in/go-mixed/framework.v1/contracts/http"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 func Tls(host ...string) contractshttp.Middleware {
 	return func(ctx contractshttp.Context) {
 		if len(host) == 0 {
-			defaultHost := facades.Config.GetString("route.tls.host")
+			defaultHost := config.GetString("route.tls.host")
 			if defaultHost == "" {
 				ctx.Request().Next()
 

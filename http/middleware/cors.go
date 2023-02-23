@@ -1,10 +1,10 @@
 package middleware
 
 import (
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	nethttp "net/http"
 
 	contractshttp "gopkg.in/go-mixed/framework.v1/contracts/http"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,18 +15,18 @@ func Cors() contractshttp.Middleware {
 	return func(ctx contractshttp.Context) {
 		switch ctx.(type) {
 		case *http.GinContext:
-			allowedMethods := facades.Config.Get("cors.allowed_methods").([]string)
+			allowedMethods := config.Get("cors.allowed_methods").([]string)
 			if len(allowedMethods) == 1 && allowedMethods[0] == "*" {
 				allowedMethods = []string{nethttp.MethodPost, nethttp.MethodGet, nethttp.MethodOptions, nethttp.MethodPut, nethttp.MethodDelete}
 			}
 
 			New(Options{
 				AllowedMethods:      allowedMethods,
-				AllowedOrigins:      facades.Config.Get("cors.allowed_origins").([]string),
-				AllowedHeaders:      facades.Config.Get("cors.allowed_headers").([]string),
-				ExposedHeaders:      facades.Config.Get("cors.exposed_headers").([]string),
-				MaxAge:              facades.Config.GetInt("cors.max_age"),
-				AllowCredentials:    facades.Config.GetBool("cors.supports_credentials"),
+				AllowedOrigins:      config.Get("cors.allowed_origins").([]string),
+				AllowedHeaders:      config.Get("cors.allowed_headers").([]string),
+				ExposedHeaders:      config.Get("cors.exposed_headers").([]string),
+				MaxAge:              config.GetInt("cors.max_age"),
+				AllowCredentials:    config.GetBool("cors.supports_credentials"),
 				AllowPrivateNetwork: true,
 			})(ctx.(*http.GinContext).Instance())
 		}

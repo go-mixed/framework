@@ -4,10 +4,10 @@ import (
 	"github.com/gookit/color"
 	"github.com/pkg/errors"
 	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"gopkg.in/go-mixed/framework.v1/support/manager"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/cache"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type StoreManager struct {
@@ -21,11 +21,11 @@ func NewStoreManager() *StoreManager {
 }
 
 func (m *StoreManager) DefaultDriverName() string {
-	return facades.Config.GetString("cache.default")
+	return config.GetString("cache.default")
 }
 
 func (m *StoreManager) makeDriver(storeName string) (cache.IStore, error) {
-	driver := facades.Config.GetString("config."+storeName+".driver", "memory")
+	driver := config.GetString("config."+storeName+".driver", "memory")
 	driverContainerName := "cache.drivers." + driver
 
 	if container.Bound(driverContainerName) {
@@ -47,7 +47,7 @@ func (m *StoreManager) Store(storeName string) (cache.IStore, error) {
 }
 
 func (m *StoreManager) extendStores(manager *StoreManager) {
-	for name := range facades.Config.GetMap("stores") {
+	for name := range config.GetMap("stores") {
 		manager.Extend(name, manager.makeDriver)
 	}
 }

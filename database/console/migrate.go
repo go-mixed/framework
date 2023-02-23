@@ -3,6 +3,7 @@ package console
 import (
 	"database/sql"
 	"errors"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
@@ -12,12 +13,11 @@ import (
 
 	"gopkg.in/go-mixed/framework.v1/contracts/database/orm"
 	"gopkg.in/go-mixed/framework.v1/database/gorm"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 func getMigrate() (*migrate.Migrate, error) {
-	connection := facades.Config.GetString("database.default")
-	driver := facades.Config.GetString("database.connections." + connection + ".driver")
+	connection := config.GetString("database.default")
+	driver := config.GetString("database.connections." + connection + ".driver")
 	dir := "file://./database/migrations"
 	_, writeConfigs, err := gorm.Configs(connection)
 	if err != nil {
@@ -37,7 +37,7 @@ func getMigrate() (*migrate.Migrate, error) {
 		}
 
 		instance, err := mysql.WithInstance(db, &mysql.Config{
-			MigrationsTable: facades.Config.GetString("database.migrations"),
+			MigrationsTable: config.GetString("database.migrations"),
 		})
 		if err != nil {
 			return nil, err
@@ -56,7 +56,7 @@ func getMigrate() (*migrate.Migrate, error) {
 		}
 
 		instance, err := postgres.WithInstance(db, &postgres.Config{
-			MigrationsTable: facades.Config.GetString("database.migrations"),
+			MigrationsTable: config.GetString("database.migrations"),
 		})
 		if err != nil {
 			return nil, err
@@ -75,7 +75,7 @@ func getMigrate() (*migrate.Migrate, error) {
 		}
 
 		instance, err := sqlite3.WithInstance(db, &sqlite3.Config{
-			MigrationsTable: facades.Config.GetString("database.migrations"),
+			MigrationsTable: config.GetString("database.migrations"),
 		})
 		if err != nil {
 			return nil, err
@@ -94,7 +94,7 @@ func getMigrate() (*migrate.Migrate, error) {
 		}
 
 		instance, err := sqlserver.WithInstance(db, &sqlserver.Config{
-			MigrationsTable: facades.Config.GetString("database.migrations"),
+			MigrationsTable: config.GetString("database.migrations"),
 		})
 
 		if err != nil {

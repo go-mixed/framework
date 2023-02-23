@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"io/ioutil"
 	"os"
 	"path"
@@ -12,7 +13,6 @@ import (
 	"time"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/support"
 	"gopkg.in/go-mixed/framework.v1/support/str"
 )
@@ -24,8 +24,8 @@ type Local struct {
 
 func NewLocal(disk string) (*Local, error) {
 	return &Local{
-		root: facades.Config.GetString(fmt.Sprintf("filesystems.disks.%s.root", disk)),
-		url:  facades.Config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk)),
+		root: config.GetString(fmt.Sprintf("filesystems.disks.%s.root", disk)),
+		url:  config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk)),
 	}, nil
 }
 

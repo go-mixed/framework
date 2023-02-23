@@ -27,7 +27,7 @@ func (s *GateTestSuite) TestWithContext() {
 	ctx := context.WithValue(context.Background(), "hello", "goravel")
 
 	gate := NewGate(ctx)
-	gate.Define("create", func(ctx context.Context, arguments map[string]any) access.Response {
+	gate.Define("create", func(ctx context.Context, arguments map[string]any) access.IResponse {
 		user := arguments["user"].(string)
 		if user == "1" {
 			return NewAllowResponse()
@@ -114,7 +114,7 @@ func (s *GateTestSuite) TestNone() {
 
 func (s *GateTestSuite) TestBefore() {
 	gate := initGate()
-	gate.Before(func(ctx context.Context, ability string, arguments map[string]any) access.Response {
+	gate.Before(func(ctx context.Context, ability string, arguments map[string]any) access.IResponse {
 		user := arguments["user"].(string)
 		if user == "3" {
 			return NewAllowResponse()
@@ -132,7 +132,7 @@ func (s *GateTestSuite) TestBefore() {
 
 func (s *GateTestSuite) TestAfter() {
 	gate := initGate()
-	gate.Define("delete", func(ctx context.Context, arguments map[string]any) access.Response {
+	gate.Define("delete", func(ctx context.Context, arguments map[string]any) access.IResponse {
 		user := arguments["user"].(string)
 		if user == "3" {
 			return nil
@@ -140,7 +140,7 @@ func (s *GateTestSuite) TestAfter() {
 			return NewAllowResponse()
 		}
 	})
-	gate.After(func(ctx context.Context, ability string, arguments map[string]any, result access.Response) access.Response {
+	gate.After(func(ctx context.Context, ability string, arguments map[string]any, result access.IResponse) access.IResponse {
 		user := arguments["user"].(string)
 		if user == "3" {
 			return NewAllowResponse()
@@ -158,7 +158,7 @@ func (s *GateTestSuite) TestAfter() {
 
 func initGate() *Gate {
 	gate := NewGate(context.Background())
-	gate.Define("create", func(ctx context.Context, arguments map[string]any) access.Response {
+	gate.Define("create", func(ctx context.Context, arguments map[string]any) access.IResponse {
 		user := arguments["user"].(string)
 		if user == "1" {
 			return NewAllowResponse()
@@ -166,7 +166,7 @@ func initGate() *Gate {
 			return NewDenyResponse("create error")
 		}
 	})
-	gate.Define("update", func(ctx context.Context, arguments map[string]any) access.Response {
+	gate.Define("update", func(ctx context.Context, arguments map[string]any) access.IResponse {
 		user := arguments["user"].(string)
 		if user == "2" {
 			return NewAllowResponse()

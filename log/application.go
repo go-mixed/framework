@@ -2,12 +2,12 @@ package log
 
 import (
 	"context"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 
 	"github.com/gookit/color"
 	"github.com/sirupsen/logrus"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/log"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type Logrus struct {
@@ -43,13 +43,11 @@ func newLogrus() *logrus.Logger {
 	instance := logrus.New()
 	instance.SetLevel(logrus.DebugLevel)
 
-	if facades.Config != nil {
-		if logging := facades.Config.GetString("logging.default"); logging != "" {
-			if err := registerHook(instance, logging); err != nil {
-				color.Redln("Initialize facades.Log error: " + err.Error())
+	if logging := config.GetString("logging.default"); logging != "" {
+		if err := registerHook(instance, logging); err != nil {
+			color.Redln("Initialize facades.Log error: " + err.Error())
 
-				return nil
-			}
+			return nil
 		}
 	}
 

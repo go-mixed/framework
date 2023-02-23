@@ -19,7 +19,7 @@ type Config struct {
 
 var _ config.IConfig = (*Config)(nil)
 
-func NewModule(envPath string) *Config {
+func NewConfig(envPath string) *Config {
 	if !file.Exists(envPath) {
 		color.Redln("Please create .env and initialize it first.")
 		color.Warnln("Run command: \ncp .env.example .env && go run . artisan key:generate")

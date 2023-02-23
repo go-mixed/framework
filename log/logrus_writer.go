@@ -2,12 +2,11 @@ package log
 
 import (
 	"errors"
-	"io/ioutil"
-
 	"github.com/sirupsen/logrus"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
+	"io"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/log"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/log/logger"
 )
 
@@ -69,13 +68,13 @@ func (r *Writer) Panicf(format string, args ...any) {
 
 func registerHook(instance *logrus.Logger, channel string) error {
 	channelPath := "logging.channels." + channel
-	driver := facades.Config.GetString(channelPath + ".driver")
+	driver := config.GetString(channelPath + ".driver")
 
 	var hook logrus.Hook
 	var err error
 	switch driver {
 	case log.StackDriver:
-		for _, stackChannel := range facades.Config.Get(channelPath + ".channels").([]string) {
+		for _, stackChannel := range config.Get(channelPath + ".channels").([]string) {
 			if stackChannel == channel {
 				return errors.New("stack drive can't include self channel")
 			}
@@ -87,8 +86,8 @@ func registerHook(instance *logrus.Logger, channel string) error {
 
 		return nil
 	case log.SingleDriver:
-		if !facades.Config.GetBool(channelPath + ".print") {
-			instance.SetOutput(ioutil.Discard)
+		if !config.GetBool(channelPath + ".print") {
+			instance.SetOutput(io.Discard)
 		}
 
 		logLogger := &logger.Single{}
@@ -97,8 +96,8 @@ func registerHook(instance *logrus.Logger, channel string) error {
 			return err
 		}
 	case log.DailyDriver:
-		if !facades.Config.GetBool(channelPath + ".print") {
-			instance.SetOutput(ioutil.Discard)
+		if !config.GetBool(channelPath + ".print") {
+			instance.SetOutput(io.Discard)
 		}
 
 		logLogger := &logger.Daily{}
@@ -107,7 +106,7 @@ func registerHook(instance *logrus.Logger, channel string) error {
 			return err
 		}
 	case log.CustomDriver:
-		logLogger := facades.Config.Get(channelPath + ".via").(log.Logger)
+		logLogger := config.Get(channelPath + ".via").(log.Logger)
 		logHook, err := logLogger.Handle(channelPath)
 		if err != nil {
 			return err

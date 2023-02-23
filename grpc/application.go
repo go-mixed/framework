@@ -4,13 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"net"
 
 	grpcmiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type Application struct {
@@ -27,12 +26,12 @@ func (app *Application) Server() *grpc.Server {
 }
 
 func (app *Application) Client(ctx context.Context, name string) (*grpc.ClientConn, error) {
-	host := facades.Config.GetString(fmt.Sprintf("grpc.clients.%s.host", name))
+	host := config.GetString(fmt.Sprintf("grpc.clients.%s.host", name))
 	if host == "" {
 		return nil, errors.New("client is not defined")
 	}
 
-	interceptors, ok := facades.Config.Get(fmt.Sprintf("grpc.clients.%s.interceptors", name)).([]string)
+	interceptors, ok := config.Get(fmt.Sprintf("grpc.clients.%s.interceptors", name)).([]string)
 	if !ok {
 		return nil, fmt.Errorf("the type of clients.%s.interceptors must be []string", name)
 	}

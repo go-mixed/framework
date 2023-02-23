@@ -2,6 +2,7 @@ package foundation
 
 import (
 	"gopkg.in/go-mixed/framework.v1/container"
+	configfacade "gopkg.in/go-mixed/framework.v1/facades/config"
 	"os"
 	"strings"
 
@@ -48,7 +49,7 @@ func (app *Application) getBaseServiceProviders() []contracts.IServiceProvider {
 
 // getConfiguredServiceProviders Get configured service providers.
 func (app *Application) getConfiguredServiceProviders() []contracts.IServiceProvider {
-	return facades.Config.Get("app.providers").([]contracts.IServiceProvider)
+	return configfacade.Get("app.providers").([]contracts.IServiceProvider)
 }
 
 // registerBaseServiceProviders Register base service providers.

@@ -3,6 +3,7 @@ package filesystem
 import (
 	"context"
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
 	"gopkg.in/go-mixed/framework.v1/facades"
@@ -22,7 +23,7 @@ type Storage struct {
 }
 
 func NewStorage() *Storage {
-	defaultDisk := facades.Config.GetString("filesystems.default")
+	defaultDisk := config.GetString("filesystems.default")
 	if defaultDisk == "" {
 		facades.Log.Errorf("[filesystem] please set default disk")
 		return nil
@@ -44,14 +45,14 @@ func NewStorage() *Storage {
 
 func NewDriver(disk string) (filesystem.Driver, error) {
 	ctx := context.Background()
-	driver := Driver(facades.Config.GetString(fmt.Sprintf("filesystems.disks.%s.driver", disk)))
+	driver := Driver(config.GetString(fmt.Sprintf("filesystems.disks.%s.driver", disk)))
 	switch driver {
 	case DriverLocal:
 		return NewLocal(disk)
 	case DriverS3:
 		return NewS3(ctx, disk)
 	case DriverCustom:
-		driver, ok := facades.Config.Get(fmt.Sprintf("filesystems.disks.%s.via", disk)).(filesystem.Driver)
+		driver, ok := config.Get(fmt.Sprintf("filesystems.disks.%s.via", disk)).(filesystem.Driver)
 		if !ok {
 			return nil, fmt.Errorf("[filesystem] init %s disk fail: via must be filesystem.Driver.", disk)
 		}

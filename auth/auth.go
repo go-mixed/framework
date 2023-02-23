@@ -2,6 +2,7 @@ package auth
 
 import (
 	"gopkg.in/go-mixed/framework.v1/facades/cache"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"strings"
 	"time"
 
@@ -44,7 +45,7 @@ func NewAuth(guard string) *Auth {
 	}
 }
 
-func (app *Auth) Guard(name string) contractauth.Auth {
+func (app *Auth) Guard(name string) contractauth.IAuth {
 	return NewAuth(name)
 }
 
@@ -76,7 +77,7 @@ func (app *Auth) Parse(ctx http.Context, token string) error {
 		return ErrorTokenDisabled
 	}
 
-	jwtSecret := facades.Config.GetString("jwt.secret")
+	jwtSecret := config.GetString("jwt.secret")
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (any, error) {
 		return []byte(jwtSecret), nil
 	})
@@ -118,13 +119,13 @@ func (app *Auth) Login(ctx http.Context, user any) (token string, err error) {
 }
 
 func (app *Auth) LoginUsingID(ctx http.Context, id any) (token string, err error) {
-	jwtSecret := facades.Config.GetString("jwt.secret")
+	jwtSecret := config.GetString("jwt.secret")
 	if jwtSecret == "" {
 		return "", ErrorEmptySecret
 	}
 
 	nowTime := supporttime.Now()
-	ttl := facades.Config.GetInt("jwt.ttl")
+	ttl := config.GetInt("jwt.ttl")
 	expireTime := nowTime.Add(time.Duration(ttl) * unit)
 	key := cast.ToString(id)
 	if key == "" {
@@ -161,7 +162,7 @@ func (app *Auth) Refresh(ctx http.Context) (token string, err error) {
 	}
 
 	nowTime := supporttime.Now()
-	refreshTtl := facades.Config.GetInt("jwt.refresh_ttl")
+	refreshTtl := config.GetInt("jwt.refresh_ttl")
 	expireTime := auth[app.guard].Claims.ExpiresAt.Add(time.Duration(refreshTtl) * unit)
 	if nowTime.Unix() > expireTime.Unix() {
 		return "", ErrorRefreshTimeExceeded
@@ -178,7 +179,7 @@ func (app *Auth) Logout(ctx http.Context) error {
 
 	if err := cache.Put(getDisabledCacheKey(auth[app.guard].Token),
 		true,
-		time.Duration(facades.Config.GetInt("jwt.ttl"))*unit,
+		time.Duration(config.GetInt("jwt.ttl"))*unit,
 	); err != nil {
 		return err
 	}

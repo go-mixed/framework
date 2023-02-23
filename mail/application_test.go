@@ -2,6 +2,9 @@ package mail
 
 import (
 	"context"
+	configinstance "gopkg.in/go-mixed/framework.v1/config"
+	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"log"
 	"testing"
 	"time"
@@ -9,7 +12,6 @@ import (
 	"github.com/gookit/color"
 	"github.com/stretchr/testify/suite"
 
-	"gopkg.in/go-mixed/framework.v1/config"
 	"gopkg.in/go-mixed/framework.v1/contracts/event"
 	"gopkg.in/go-mixed/framework.v1/contracts/mail"
 	queuecontract "gopkg.in/go-mixed/framework.v1/contracts/queue"
@@ -49,57 +51,57 @@ func (s *ApplicationTestSuite) SetupTest() {
 }
 
 func (s *ApplicationTestSuite) TestSendMailBy25Port() {
-	facades.Config.Add("mail", map[string]any{
-		"host": facades.Config.Env("MAIL_HOST", ""),
+	config.Add("mail", map[string]any{
+		"host": config.Env("MAIL_HOST", ""),
 		"port": 25,
 		"from": map[string]any{
-			"address": facades.Config.Env("MAIL_FROM_ADDRESS", "hello@example.com"),
-			"name":    facades.Config.Env("MAIL_FROM_NAME", "Example"),
+			"address": config.Env("MAIL_FROM_ADDRESS", "hello@example.com"),
+			"name":    config.Env("MAIL_FROM_NAME", "Example"),
 		},
-		"username": facades.Config.Env("MAIL_USERNAME"),
-		"password": facades.Config.Env("MAIL_PASSWORD"),
+		"username": config.Env("MAIL_USERNAME"),
+		"password": config.Env("MAIL_PASSWORD"),
 	})
-	s.Nil(facades.Mail.To([]string{facades.Config.Env("MAIL_TO").(string)}).
-		Cc([]string{facades.Config.Env("MAIL_CC").(string)}).
-		Bcc([]string{facades.Config.Env("MAIL_BCC").(string)}).
+	s.Nil(facades.Mail.To([]string{config.Env("MAIL_TO").(string)}).
+		Cc([]string{config.Env("MAIL_CC").(string)}).
+		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
 		Content(mail.Content{Subject: "Goravel Test", Html: "<h1>Hello Goravel</h1>"}).
 		Send())
 }
 
 func (s *ApplicationTestSuite) TestSendMailBy465Port() {
-	facades.Config.Add("mail", map[string]any{
-		"host": facades.Config.Env("MAIL_HOST", ""),
+	config.Add("mail", map[string]any{
+		"host": config.Env("MAIL_HOST", ""),
 		"port": 465,
 		"from": map[string]any{
-			"address": facades.Config.Env("MAIL_FROM_ADDRESS", "hello@example.com"),
-			"name":    facades.Config.Env("MAIL_FROM_NAME", "Example"),
+			"address": config.Env("MAIL_FROM_ADDRESS", "hello@example.com"),
+			"name":    config.Env("MAIL_FROM_NAME", "Example"),
 		},
-		"username": facades.Config.Env("MAIL_USERNAME"),
-		"password": facades.Config.Env("MAIL_PASSWORD"),
+		"username": config.Env("MAIL_USERNAME"),
+		"password": config.Env("MAIL_PASSWORD"),
 	})
-	s.Nil(facades.Mail.To([]string{facades.Config.Env("MAIL_TO").(string)}).
-		Cc([]string{facades.Config.Env("MAIL_CC").(string)}).
-		Bcc([]string{facades.Config.Env("MAIL_BCC").(string)}).
+	s.Nil(facades.Mail.To([]string{config.Env("MAIL_TO").(string)}).
+		Cc([]string{config.Env("MAIL_CC").(string)}).
+		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
 		Content(mail.Content{Subject: "Goravel Test", Html: "<h1>Hello Goravel</h1>"}).
 		Send())
 }
 
 func (s *ApplicationTestSuite) TestSendMailBy587Port() {
-	s.Nil(facades.Mail.To([]string{facades.Config.Env("MAIL_TO").(string)}).
-		Cc([]string{facades.Config.Env("MAIL_CC").(string)}).
-		Bcc([]string{facades.Config.Env("MAIL_BCC").(string)}).
+	s.Nil(facades.Mail.To([]string{config.Env("MAIL_TO").(string)}).
+		Cc([]string{config.Env("MAIL_CC").(string)}).
+		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
 		Content(mail.Content{Subject: "Goravel Test", Html: "<h1>Hello Goravel</h1>"}).
 		Send())
 }
 
 func (s *ApplicationTestSuite) TestSendMailWithFrom() {
-	s.Nil(facades.Mail.From(mail.From{Address: facades.Config.GetString("mail.from.address"), Name: facades.Config.GetString("mail.from.name")}).
-		To([]string{facades.Config.Env("MAIL_TO").(string)}).
-		Cc([]string{facades.Config.Env("MAIL_CC").(string)}).
-		Bcc([]string{facades.Config.Env("MAIL_BCC").(string)}).
+	s.Nil(facades.Mail.From(mail.From{Address: config.GetString("mail.from.address"), Name: config.GetString("mail.from.name")}).
+		To([]string{config.Env("MAIL_TO").(string)}).
+		Cc([]string{config.Env("MAIL_CC").(string)}).
+		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
 		Content(mail.Content{Subject: "Goravel Test With From", Html: "<h1>Hello Goravel</h1>"}).
 		Send())
@@ -127,9 +129,9 @@ func (s *ApplicationTestSuite) TestQueueMail() {
 		}
 	}(ctx)
 	time.Sleep(3 * time.Second)
-	s.Nil(facades.Mail.To([]string{facades.Config.Env("MAIL_TO").(string)}).
-		Cc([]string{facades.Config.Env("MAIL_CC").(string)}).
-		Bcc([]string{facades.Config.Env("MAIL_BCC").(string)}).
+	s.Nil(facades.Mail.To([]string{config.Env("MAIL_TO").(string)}).
+		Cc([]string{config.Env("MAIL_CC").(string)}).
+		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
 		Content(mail.Content{Subject: "Goravel Test Queue", Html: "<h1>Hello Goravel</h1>"}).
 		Queue(nil))
@@ -139,21 +141,21 @@ func (s *ApplicationTestSuite) TestQueueMail() {
 }
 
 func initConfig(redisPort string) {
-	application := config.NewModule("../.env")
-	application.Add("app", map[string]any{
+	newConfig := configinstance.NewConfig("../.env")
+	newConfig.Add("app", map[string]any{
 		"name": "goravel",
 	})
-	application.Add("mail", map[string]any{
-		"host": application.Env("MAIL_HOST", ""),
-		"port": application.Env("MAIL_PORT", 587),
+	newConfig.Add("mail", map[string]any{
+		"host": newConfig.Env("MAIL_HOST", ""),
+		"port": newConfig.Env("MAIL_PORT", 587),
 		"from": map[string]any{
-			"address": application.Env("MAIL_FROM_ADDRESS", "hello@example.com"),
-			"name":    application.Env("MAIL_FROM_NAME", "Example"),
+			"address": newConfig.Env("MAIL_FROM_ADDRESS", "hello@example.com"),
+			"name":    newConfig.Env("MAIL_FROM_NAME", "Example"),
 		},
-		"username": application.Env("MAIL_USERNAME"),
-		"password": application.Env("MAIL_PASSWORD"),
+		"username": newConfig.Env("MAIL_USERNAME"),
+		"password": newConfig.Env("MAIL_PASSWORD"),
 	})
-	application.Add("queue", map[string]any{
+	newConfig.Add("queue", map[string]any{
 		"default": "redis",
 		"connections": map[string]any{
 			"sync": map[string]any{
@@ -166,7 +168,7 @@ func initConfig(redisPort string) {
 			},
 		},
 	})
-	application.Add("database", map[string]any{
+	newConfig.Add("database", map[string]any{
 		"redis": map[string]any{
 			"default": map[string]any{
 				"host":     "localhost",
@@ -177,5 +179,5 @@ func initConfig(redisPort string) {
 		},
 	})
 
-	facades.Config = application
+	container.Instance("config", newConfig)
 }

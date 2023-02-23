@@ -2,7 +2,7 @@ package queue
 
 import (
 	"gopkg.in/go-mixed/framework.v1/contracts/queue"
-	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"gopkg.in/go-mixed/framework.v1/queue/support"
 )
 
@@ -16,7 +16,7 @@ func NewApplication() *Application {
 
 func (app *Application) Worker(args *queue.Args) queue.Worker {
 	if args == nil {
-		connection := facades.Config.GetString("queue.default")
+		connection := config.GetString("queue.default")
 
 		return &support.Worker{
 			Connection: connection,

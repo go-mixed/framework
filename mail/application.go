@@ -3,6 +3,7 @@ package mail
 import (
 	"crypto/tls"
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"net/smtp"
 
 	"github.com/jordan-wright/email"
@@ -106,7 +107,7 @@ func (r *Application) instance() *Application {
 func SendMail(subject, html string, fromAddress, fromName string, to, cc, bcc, attaches []string) error {
 	e := email.NewEmail()
 	if fromAddress == "" {
-		e.From = fmt.Sprintf("%s <%s>", facades.Config.GetString("mail.from.name"), facades.Config.GetString("mail.from.address"))
+		e.From = fmt.Sprintf("%s <%s>", config.GetString("mail.from.name"), config.GetString("mail.from.address"))
 	} else {
 		e.From = fmt.Sprintf("%s <%s>", fromName, fromAddress)
 	}
@@ -123,19 +124,19 @@ func SendMail(subject, html string, fromAddress, fromName string, to, cc, bcc, a
 		}
 	}
 
-	port := facades.Config.GetInt("mail.port")
+	port := config.GetInt("mail.port")
 	switch port {
 	case 465:
-		return e.SendWithTLS(fmt.Sprintf("%s:%s", facades.Config.GetString("mail.host"), facades.Config.GetString("mail.port")),
-			LoginAuth(facades.Config.GetString("mail.username"), facades.Config.GetString("mail.password")),
-			&tls.Config{ServerName: facades.Config.GetString("mail.host")})
+		return e.SendWithTLS(fmt.Sprintf("%s:%s", config.GetString("mail.host"), config.GetString("mail.port")),
+			LoginAuth(config.GetString("mail.username"), config.GetString("mail.password")),
+			&tls.Config{ServerName: config.GetString("mail.host")})
 	case 587:
-		return e.SendWithStartTLS(fmt.Sprintf("%s:%s", facades.Config.GetString("mail.host"), facades.Config.GetString("mail.port")),
-			LoginAuth(facades.Config.GetString("mail.username"), facades.Config.GetString("mail.password")),
-			&tls.Config{ServerName: facades.Config.GetString("mail.host")})
+		return e.SendWithStartTLS(fmt.Sprintf("%s:%s", config.GetString("mail.host"), config.GetString("mail.port")),
+			LoginAuth(config.GetString("mail.username"), config.GetString("mail.password")),
+			&tls.Config{ServerName: config.GetString("mail.host")})
 	default:
-		return e.Send(fmt.Sprintf("%s:%d", facades.Config.GetString("mail.host"), port),
-			LoginAuth(facades.Config.GetString("mail.username"), facades.Config.GetString("mail.password")))
+		return e.Send(fmt.Sprintf("%s:%d", config.GetString("mail.host"), port),
+			LoginAuth(config.GetString("mail.username"), config.GetString("mail.password")))
 	}
 }
 

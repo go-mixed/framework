@@ -2,12 +2,12 @@ package support
 
 import (
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 
 	"github.com/RichardKnop/machinery/v2"
 	"github.com/RichardKnop/machinery/v2/tasks"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/event"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/queue/support"
 )
 
@@ -91,10 +91,10 @@ func (receiver *Task) getQueueServer(listener event.Listener) (*machinery.Server
 	queue := listener.Queue(receiver.mapArgs)
 	connection := queue.Connection
 	if connection == "" {
-		connection = facades.Config.GetString("queue.default")
+		connection = config.GetString("queue.default")
 	}
 
-	driver := facades.Config.GetString(fmt.Sprintf("queue.connections.%s.driver", connection))
+	driver := config.GetString(fmt.Sprintf("queue.connections.%s.driver", connection))
 	if driver == support.DriverSync || driver == "" {
 		return nil, nil
 	}

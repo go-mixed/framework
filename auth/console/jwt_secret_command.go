@@ -2,12 +2,12 @@ package console
 
 import (
 	"errors"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"io/ioutil"
 	"strings"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/console"
 	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/support/str"
 
 	"github.com/gookit/color"
@@ -55,7 +55,7 @@ func (receiver *JwtSecretCommand) generateRandomKey() string {
 
 // setSecretInEnvironmentFile Set the application key in the environment file.
 func (receiver *JwtSecretCommand) setSecretInEnvironmentFile(key string) error {
-	currentKey := facades.Config.GetString("jwt.secret")
+	currentKey := config.GetString("jwt.secret")
 
 	if currentKey != "" {
 		return errors.New("Exist jwt secret")
@@ -77,7 +77,7 @@ func (receiver *JwtSecretCommand) writeNewEnvironmentFileWith(key string) error 
 		return err
 	}
 
-	newContent := strings.Replace(string(content), "JWT_SECRET="+facades.Config.GetString("jwt.secret"), "JWT_SECRET="+key, 1)
+	newContent := strings.Replace(string(content), "JWT_SECRET="+config.GetString("jwt.secret"), "JWT_SECRET="+key, 1)
 
 	err = ioutil.WriteFile(".env", []byte(newContent), 0644)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 
 	contractsdatabase "gopkg.in/go-mixed/framework.v1/contracts/database"
 	"gopkg.in/go-mixed/framework.v1/contracts/database/orm"
-	"gopkg.in/go-mixed/framework.v1/facades"
+	configfacade "gopkg.in/go-mixed/framework.v1/facades/config"
 )
 
 func dialectors(connection string, configs []contractsdatabase.Config) ([]gorm.Dialector, error) {
@@ -29,7 +29,7 @@ func dialectors(connection string, configs []contractsdatabase.Config) ([]gorm.D
 }
 
 func dialector(connection string, config contractsdatabase.Config) (gorm.Dialector, error) {
-	driver := facades.Config.GetString(fmt.Sprintf("database.connections.%s.driver", connection))
+	driver := configfacade.GetString(fmt.Sprintf("database.connections.%s.driver", connection))
 
 	switch orm.Driver(driver) {
 	case orm.DriverMysql:

@@ -15,5 +15,5 @@ type IConfig interface {
 	//GetBool Get bool type config from application.
 	GetBool(path string, defaultValue ...any) bool
 
-	GetMap(s string) map[string]any
+	GetMap(path string) map[string]any
 }
