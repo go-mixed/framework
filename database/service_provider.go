@@ -18,12 +18,11 @@ func (database *ServiceProvider) Register() {
 		manager.extendConnections()
 		return manager, nil
 	})
-
 	container.Alias("database.manager", (*ConnectionManager)(nil))
+
 	container.Singleton((orm.IOrm)(nil), func(args ...any) (any, error) {
-		return container.MustMake[*ConnectionManager]((*ConnectionManager)(nil)).DefaultDriver()
+		return container.MustMake[*ConnectionManager]("database.manager").DefaultDriver()
 	})
-	container.Alias((*Orm)(nil), (orm.IOrm)(nil))
 	container.Alias("database", (orm.IOrm)(nil))
 	container.Alias("db", (orm.IOrm)(nil))
 	container.Alias("orm", (orm.IOrm)(nil))

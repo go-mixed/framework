@@ -27,7 +27,7 @@ func (m *ConnectionManager) DefaultDriverName() string {
 }
 
 func (m *ConnectionManager) makeDriver(connectionName string) (ormcontract.IOrm, error) {
-	return NewOrm(context.Background(), connectionName)
+	return NewDatabase(context.Background(), connectionName)
 }
 
 func (m *ConnectionManager) extendConnections() {

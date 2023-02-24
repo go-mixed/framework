@@ -64,8 +64,8 @@ func (s *ModuleTestSuite) TestInitRedis() {
 				mockConfig.On("GetInt", "database.redis.default.database").Return(0).Once()
 				mockConfig.On("GetString", "cache.prefix").Return("goravel_cache").Once()
 
-				module := StoreManager{}
-				s.NotNil(module.Initialize(), description)
+				manager := StoreManager{}
+				s.NotNil(manager, description)
 
 				mockConfig.AssertExpectations(s.T())
 			},
@@ -79,8 +79,8 @@ func (s *ModuleTestSuite) TestInitRedis() {
 				mockConfig.On("GetString", "cache.stores.redis.connection").Return("default").Once()
 				mockConfig.On("GetString", "database.redis.default.host").Return("").Once()
 
-				app := CacheManager{}
-				s.Nil(app.Initialize(), description)
+				manager := StoreManager{}
+				s.Nil(manager, description)
 
 				mockConfig.AssertExpectations(s.T())
 			},
@@ -267,8 +267,8 @@ func (s *ModuleTestSuite) TestCustomDriver() {
 	mockConfig.On("GetString", "cache.stores.store.driver").Return("custom").Once()
 	mockConfig.On("Get", "cache.stores.store.via").Return(&Store{}).Once()
 
-	module := CacheManager{}
-	store := module.Initialize()
+	manager := StoreManager{}
+	store := manager.MustDefaultDriver()
 	s.NotNil(store)
 	s.Equal("Goravel", store.Get("name", "Goravel").(string))
 
@@ -292,7 +292,7 @@ func getRedisDocker() (*dockertest.Pool, *dockertest.Resource, cache.IStore, err
 		mockConfig.On("GetString", "database.redis.default.password").Return(resource.GetPort("")).Once()
 		mockConfig.On("GetInt", "database.redis.default.database").Return(0).Once()
 		mockConfig.On("GetString", "cache.prefix").Return("goravel_cache").Once()
-		store, err = NewRedis(context.Background())
+		store, err = NewRedis("redis", context.Background())
 
 		return err
 	}); err != nil {
@@ -315,6 +315,10 @@ func getMemoryStore() (*Memory, error) {
 }
 
 type Store struct {
+}
+
+func (r *Store) Store(storeName string) cache.IStore {
+	return r
 }
 
 func (r *Store) WithContext(ctx context.Context) cache.IStore {
