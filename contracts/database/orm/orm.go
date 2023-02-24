@@ -5,13 +5,13 @@ import (
 	"database/sql"
 )
 
-//go:generate mockery --name=Orm
-type Orm interface {
-	Connection(name string) Orm
+//go:generate mockery --name=IOrm
+type IOrm interface {
+	Connection(name string) IOrm
 	DB() (*sql.DB, error)
 	Query() DB
 	Transaction(txFunc func(tx Transaction) error) error
-	WithContext(ctx context.Context) Orm
+	WithContext(ctx context.Context) IOrm
 }
 
 //go:generate mockery --name=DB

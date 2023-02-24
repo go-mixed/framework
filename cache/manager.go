@@ -46,8 +46,8 @@ func (m *StoreManager) Store(storeName string) (cache.IStore, error) {
 	return m.Driver(storeName)
 }
 
-func (m *StoreManager) extendStores(manager *StoreManager) {
+func (m *StoreManager) extendStores() {
 	for name := range config.GetMap("cache.stores") {
-		manager.Extend(name, manager.makeDriver)
+		m.Extend(name, m.makeDriver)
 	}
 }

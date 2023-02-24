@@ -84,15 +84,15 @@ func (s *OrmSuite) SetupTest() {
 }
 
 func (s *OrmSuite) TestConnection() {
-	testOrm := newTestOrm()
+	testOrm := newTestManager()
 	for _, connection := range connections {
 		s.NotNil(testOrm.Connection(connection.String()))
 	}
 }
 
 func (s *OrmSuite) TestDB() {
-	testOrm := newTestOrm()
-	db, err := testOrm.DB()
+	testOrm := newTestManager()
+	db, err := testOrm.MustDefaultDriver().DB()
 	s.NotNil(db)
 	s.Nil(err)
 
@@ -104,14 +104,14 @@ func (s *OrmSuite) TestDB() {
 }
 
 func (s *OrmSuite) TestQuery() {
-	testOrm := newTestOrm()
-	s.NotNil(testOrm.Query())
+	testOrm := newTestManager()
+	s.NotNil(testOrm.MustDefaultDriver().Query())
 
 	s.NotPanics(func() {
 		for i := 0; i < 5; i++ {
 			go func() {
 				var user User
-				_ = testOrm.Query().Find(&user, 1)
+				_ = testOrm.MustDefaultDriver().Query().Find(&user, 1)
 			}()
 		}
 	})
@@ -122,7 +122,7 @@ func (s *OrmSuite) TestQuery() {
 }
 
 func (s *OrmSuite) TestTransactionSuccess() {
-	testOrm := newTestOrm()
+	testOrm := newTestManager()
 	for _, connection := range connections {
 		user := User{Name: "transaction_success_user", Avatar: "transaction_success_avatar"}
 		user1 := User{Name: "transaction_success_user1", Avatar: "transaction_success_avatar1"}
@@ -140,7 +140,7 @@ func (s *OrmSuite) TestTransactionSuccess() {
 }
 
 func (s *OrmSuite) TestTransactionError() {
-	testOrm := newTestOrm()
+	testOrm := newTestManager()
 	for _, connection := range connections {
 		s.NotNil(testOrm.Connection(connection.String()).Transaction(func(tx ormcontract.Transaction) error {
 			user := User{Name: "transaction_error_user", Avatar: "transaction_error_avatar"}
@@ -158,15 +158,24 @@ func (s *OrmSuite) TestTransactionError() {
 	}
 }
 
-func newTestOrm() *Orm {
-	return &Orm{
-		ctx:      context.Background(),
-		instance: testMysqlDB,
-		instances: map[string]ormcontract.DB{
-			ormcontract.DriverMysql.String():      testMysqlDB,
-			ormcontract.DriverPostgresql.String(): testPostgresqlDB,
-			ormcontract.DriverSqlite.String():     testSqliteDB,
-			ormcontract.DriverSqlserver.String():  testSqlserverDB,
-		},
-	}
+func newTestManager() *ConnectionManager {
+	m := NewConnectionManager()
+
+	m.Extend(ormcontract.DriverMysql.String(), func(name string) (ormcontract.IOrm, error) {
+		return WrapDB(context.Background(), testMysqlDB), nil
+	})
+
+	m.Extend(ormcontract.DriverPostgresql.String(), func(name string) (ormcontract.IOrm, error) {
+		return WrapDB(context.Background(), testPostgresqlDB), nil
+	})
+
+	m.Extend(ormcontract.DriverSqlite.String(), func(name string) (ormcontract.IOrm, error) {
+		return WrapDB(context.Background(), testSqliteDB), nil
+	})
+
+	m.Extend(ormcontract.DriverSqlserver.String(), func(name string) (ormcontract.IOrm, error) {
+		return WrapDB(context.Background(), testSqlserverDB), nil
+	})
+
+	return m
 }

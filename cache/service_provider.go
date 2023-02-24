@@ -18,7 +18,7 @@ var _ contracts.IServiceProvider = (*ServiceProvider)(nil)
 func (sp *ServiceProvider) Register() {
 	container.Singleton((*StoreManager)(nil), func(args ...any) (any, error) {
 		manager := NewStoreManager()
-		manager.extendStores(manager)
+		manager.extendStores()
 		return manager, nil
 	})
 	container.Alias("cache.manager", (*StoreManager)(nil))
@@ -26,6 +26,7 @@ func (sp *ServiceProvider) Register() {
 	container.Singleton(cache.IStore(nil), func(args ...any) (any, error) {
 		return container.MustMake[*StoreManager]("cache.manager").DefaultDriver()
 	})
+	container.Alias("cache", cache.IStore(nil))
 	container.Alias("cache.store", cache.IStore(nil))
 
 	sp.registerCacheDrivers()

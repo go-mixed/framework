@@ -41,7 +41,7 @@ func Artisan() *consolemocks.Artisan {
 
 func Orm() (*ormmocks.Orm, *ormmocks.DB, *ormmocks.Transaction, *ormmocks.Association) {
 	mockOrm := &ormmocks.Orm{}
-	facades.Orm = mockOrm
+	container.Instance("orm", mockOrm)
 
 	return mockOrm, &ormmocks.DB{}, &ormmocks.Transaction{}, &ormmocks.Association{}
 }

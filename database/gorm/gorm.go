@@ -140,8 +140,16 @@ func (r *DB) Begin() (contractsorm.Transaction, error) {
 	return NewTransaction(tx), tx.Error
 }
 
-func (r *DB) Instance() *gorm.DB {
+func (r *DB) Gorm() *gorm.DB {
 	return r.instance
+}
+
+func (r *DB) WithContext(ctx context.Context) *DB {
+	db := r.instance.WithContext(ctx)
+	return &DB{
+		NewQuery(db),
+		db,
+	}
 }
 
 type Transaction struct {

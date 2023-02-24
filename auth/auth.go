@@ -3,12 +3,12 @@ package auth
 import (
 	"gopkg.in/go-mixed/framework.v1/facades/cache"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
+	"gopkg.in/go-mixed/framework.v1/facades/db"
 	"strings"
 	"time"
 
 	contractauth "gopkg.in/go-mixed/framework.v1/contracts/auth"
 	"gopkg.in/go-mixed/framework.v1/contracts/http"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/support/database"
 	supporttime "gopkg.in/go-mixed/framework.v1/support/time"
 
@@ -64,7 +64,7 @@ func (app *Auth) User(ctx http.Context, user any) error {
 	if auth[app.guard].Token == "" {
 		return ErrorTokenExpired
 	}
-	if err := facades.Orm.Query().Find(user, clause.Eq{Column: clause.PrimaryColumn, Value: auth[app.guard].Claims.Key}); err != nil {
+	if err := db.Query().Find(user, clause.Eq{Column: clause.PrimaryColumn, Value: auth[app.guard].Claims.Key}); err != nil {
 		return err
 	}
 

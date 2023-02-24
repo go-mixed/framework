@@ -3,81 +3,40 @@ package database
 import (
 	"context"
 	"database/sql"
-	"fmt"
-	configfacade "gopkg.in/go-mixed/framework.v1/facades/config"
-
-	"github.com/gookit/color"
 	"github.com/pkg/errors"
-	"gorm.io/gorm"
-
+	"gopkg.in/go-mixed/framework.v1/container"
 	ormcontract "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
 	databasegorm "gopkg.in/go-mixed/framework.v1/database/gorm"
 )
 
 type Orm struct {
-	ctx       context.Context
-	instance  ormcontract.DB
-	instances map[string]ormcontract.DB
+	ctx      context.Context
+	instance ormcontract.DB
 }
 
-func NewOrm(ctx context.Context) *Orm {
-	defaultConnection := configfacade.GetString("database.default")
-	gormDB, err := databasegorm.NewDB(ctx, defaultConnection)
+var _ ormcontract.IOrm = (*Orm)(nil)
+
+func NewOrm(ctx context.Context, connectionName string) (*Orm, error) {
+	gormDB, err := databasegorm.NewDB(ctx, connectionName)
 	if err != nil {
-		color.Redln(fmt.Sprintf("[Orm] Initialize %s connection error: %v", defaultConnection, err))
-
-		return nil
-	}
-	if gormDB == nil {
-		return nil
+		return nil, err
 	}
 
-	return &Orm{
-		ctx:      ctx,
-		instance: gormDB,
-		instances: map[string]ormcontract.DB{
-			defaultConnection: gormDB,
-		},
-	}
+	return &Orm{ctx: ctx, instance: gormDB}, nil
 }
 
-// DEPRECATED: use gorm.New()
-func NewGormInstance(connection string) (*gorm.DB, error) {
-	return databasegorm.New(connection)
+func WrapDB(ctx context.Context, db ormcontract.DB) *Orm {
+	return &Orm{ctx: ctx, instance: db}
 }
 
-func (r *Orm) Connection(name string) ormcontract.Orm {
-	if name == "" {
-		name = configfacade.GetString("database.default")
-	}
-	if instance, exist := r.instances[name]; exist {
-		return &Orm{
-			ctx:       r.ctx,
-			instance:  instance,
-			instances: r.instances,
-		}
-	}
-
-	gormDB, err := databasegorm.NewDB(r.ctx, name)
-	if err != nil || gormDB == nil {
-		color.Redln(fmt.Sprintf("[Orm] Initialize %s connection error: %v", name, err))
-
-		return nil
-	}
-
-	r.instances[name] = gormDB
-
-	return &Orm{
-		ctx:       r.ctx,
-		instance:  gormDB,
-		instances: r.instances,
-	}
+func (r *Orm) Connection(connectionName string) ormcontract.IOrm {
+	return container.MustMake[*ConnectionManager]("database.manager").Connection(connectionName).WithContext(r.ctx)
 }
 
 func (r *Orm) DB() (*sql.DB, error) {
 	db := r.Query().(*databasegorm.DB)
 
-	return db.Instance().DB()
+	return db.Gorm().DB()
 }
 
 func (r *Orm) Query() ormcontract.DB {
@@ -101,6 +60,11 @@ func (r *Orm) Transaction(txFunc func(tx ormcontract.Transaction) error) error {
 	}
 }
 
-func (r *Orm) WithContext(ctx context.Context) ormcontract.Orm {
-	return NewOrm(ctx)
+func (r *Orm) WithContext(ctx context.Context) ormcontract.IOrm {
+	db := r.Query().(*databasegorm.DB)
+
+	return &Orm{
+		ctx:      ctx,
+		instance: db.WithContext(ctx),
+	}
 }
