@@ -1,7 +1,6 @@
 package container
 
 import (
-	"github.com/eddieowens/axon"
 	"github.com/pkg/errors"
 	"go.uber.org/dig"
 )
@@ -169,7 +168,7 @@ func resolve[T any](key tKey, args ...any) (T, error) {
 		return instance, nil
 	}
 
-	return instance, errors.Errorf("%s: expected %s key to be type %T but got %T", axon.ErrInvalidType.Error(), key.String(), new(T), obj)
+	return instance, errors.Errorf("[Container]: expected %s key to be type %T but got %T", key.String(), new(T), obj)
 }
 
 // Make Resolve the given type from the container.
