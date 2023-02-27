@@ -96,7 +96,7 @@ func setEnv() {
 }
 
 func setRootPath() {
-	rootPath := getCurrentAbPath()
+	rootPath := getCurrentAbsPath()
 
 	// Hack air path
 	airPath := "/storage/temp"
