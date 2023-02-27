@@ -12,18 +12,18 @@ import (
 	"gopkg.in/go-mixed/framework.v1/support"
 )
 
-var app Application
-
-func init() {
-	setEnv()
-
-	app = Application{}
-	container.Initialize()
-	app.registerBaseServiceProviders()
-	app.bootBaseServiceProviders()
+type Application struct {
 }
 
-type Application struct {
+func NewApplication() *Application {
+	setEnv()
+
+	container.Initialize()
+	app := &Application{}
+	app.registerBaseServiceProviders()
+	app.bootBaseServiceProviders()
+
+	return app
 }
 
 // Boot Register and bootstrap configured service providers.
