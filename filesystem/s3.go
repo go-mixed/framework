@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
+	"gopkg.in/go-mixed/framework.v1/facades/log"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -11,7 +12,6 @@ import (
 	"time"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/support/str"
 	supporttime "gopkg.in/go-mixed/framework.v1/support/time"
 
@@ -333,7 +333,7 @@ func (r *S3) TemporaryUrl(file string, time time.Time) (string, error) {
 func (r *S3) WithContext(ctx context.Context) filesystem.Driver {
 	driver, err := NewS3(ctx, r.disk)
 	if err != nil {
-		facades.Log.Errorf("init %s disk fail: %+v", r.disk, err)
+		log.Errorf("init %s disk fail: %+v", r.disk, err)
 	}
 
 	return driver

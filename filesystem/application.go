@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
+	"gopkg.in/go-mixed/framework.v1/facades/log"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type Driver string
@@ -25,13 +25,13 @@ type Storage struct {
 func NewStorage() *Storage {
 	defaultDisk := config.GetString("filesystems.default")
 	if defaultDisk == "" {
-		facades.Log.Errorf("[filesystem] please set default disk")
+		log.Errorf("[filesystem] please set default disk")
 		return nil
 	}
 
 	driver, err := NewDriver(defaultDisk)
 	if err != nil {
-		facades.Log.Errorf("[filesystem] init %s disk error: %+v", defaultDisk, err)
+		log.Errorf("[filesystem] init %s disk error: %+v", defaultDisk, err)
 		return nil
 	}
 
@@ -70,7 +70,7 @@ func (r *Storage) Disk(disk string) filesystem.Driver {
 
 	driver, err := NewDriver(disk)
 	if err != nil {
-		facades.Log.Error(err.Error())
+		log.Error(err.Error())
 
 		return nil
 	}

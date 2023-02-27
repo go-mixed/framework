@@ -22,7 +22,7 @@ const (
 )
 
 //go:generate mockery --name=Log
-type Log interface {
+type ILog interface {
 	WithContext(ctx context.Context) Writer
 	Writer
 }
@@ -44,7 +44,7 @@ type Writer interface {
 }
 
 //go:generate mockery --name=Logger
-type Logger interface {
+type ILogger interface {
 	// Handle pass channel config path here
 	Handle(channel string) (Hook, error)
 }

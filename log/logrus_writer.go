@@ -106,7 +106,7 @@ func registerHook(instance *logrus.Logger, channel string) error {
 			return err
 		}
 	case log.CustomDriver:
-		logLogger := config.Get(channelPath + ".via").(log.Logger)
+		logLogger := config.Get(channelPath + ".via").(log.ILogger)
 		logHook, err := logLogger.Handle(channelPath)
 		if err != nil {
 			return err

@@ -3,6 +3,7 @@ package schedule
 import (
 	"github.com/gookit/color"
 	"github.com/robfig/cron/v3"
+	"gopkg.in/go-mixed/framework.v1/facades/log"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/schedule"
 	"gopkg.in/go-mixed/framework.v1/facades"
@@ -48,7 +49,7 @@ func (app *Application) addEvents(events []schedule.Event) {
 		_, err := app.cron.AddJob(event.GetCron(), chain.Then(app.getJob(event)))
 
 		if err != nil {
-			facades.Log.Errorf("add schedule error: %v", err)
+			log.Errorf("add schedule error: %v", err)
 		}
 	}
 }
@@ -65,10 +66,10 @@ func (app *Application) getJob(event schedule.Event) cron.Job {
 
 type Logger struct{}
 
-func (log *Logger) Info(msg string, keysAndValues ...any) {
+func (l *Logger) Info(msg string, keysAndValues ...any) {
 	color.Green.Printf("%s %v\n", msg, keysAndValues)
 }
 
-func (log *Logger) Error(err error, msg string, keysAndValues ...any) {
-	facades.Log.Error(msg, keysAndValues)
+func (l *Logger) Error(err error, msg string, keysAndValues ...any) {
+	log.Error(msg, keysAndValues)
 }

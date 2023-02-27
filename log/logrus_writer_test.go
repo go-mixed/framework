@@ -35,7 +35,7 @@ func (s *LogrusTestSuite) SetupTest() {
 func (s *LogrusTestSuite) TestLogrus() {
 	var (
 		mockConfig *configmocks.Config
-		log        *Logrus
+		log        *Logger
 	)
 
 	beforeEach := func() {
@@ -53,7 +53,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockConfig.On("GetString", "logging.channels.daily.level").Return("debug").Once()
 				mockConfig.On("GetString", "logging.channels.single.level").Return("debug").Once()
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 			},
 			assert: func() {
 				writer := log.WithContext(context.Background())
@@ -65,7 +65,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 				log.Debug("Goravel")
 			},
 			assert: func() {
@@ -81,7 +81,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockConfig.On("GetString", "logging.channels.daily.level").Return("info").Once()
 				mockConfig.On("GetString", "logging.channels.single.level").Return("info").Once()
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 				log.Debug("Goravel")
 			},
 			assert: func() {
@@ -94,7 +94,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 				log.Debugf("Goravel: %s", "World")
 			},
 			assert: func() {
@@ -109,7 +109,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 				log.Info("Goravel")
 			},
 			assert: func() {
@@ -124,7 +124,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 				log.Infof("Goravel: %s", "World")
 			},
 			assert: func() {
@@ -139,7 +139,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 				log.Warning("Goravel")
 			},
 			assert: func() {
@@ -154,7 +154,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 				log.Warningf("Goravel: %s", "World")
 			},
 			assert: func() {
@@ -169,7 +169,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 				log.Error("Goravel")
 			},
 			assert: func() {
@@ -184,7 +184,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 				log.Errorf("Goravel: %s", "World")
 			},
 			assert: func() {
@@ -199,7 +199,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 			},
 			assert: func() {
 				assert.Panics(s.T(), func() {
@@ -216,7 +216,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 			setup: func() {
 				mockDriverConfig(mockConfig)
 
-				log = NewLogrusApplication()
+				log, _ = NewLogger(context.Background(), "stack")
 			},
 			assert: func() {
 				assert.Panics(s.T(), func() {
@@ -242,7 +242,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 }
 
 func (s *LogrusTestSuite) TestTestWriter() {
-	log := NewApplication(NewTestWriter())
+	log := WrapLogger(NewTestWriter())
 	assert.Equal(s.T(), log.WithContext(context.Background()), &TestWriter{})
 	assert.NotPanics(s.T(), func() {
 		log.Debug("Goravel")
@@ -263,7 +263,7 @@ func (s *LogrusTestSuite) TestTestWriter() {
 func TestLogrus_Fatal(t *testing.T) {
 	mockConfig := initMockConfig()
 	mockDriverConfig(mockConfig)
-	log := NewLogrusApplication()
+	log, _ := NewLogger(context.Background(), "stack")
 
 	if os.Getenv("FATAL") == "1" {
 		log.Fatal("Goravel")
@@ -284,7 +284,7 @@ func TestLogrus_Fatal(t *testing.T) {
 func TestLogrus_Fatalf(t *testing.T) {
 	mockConfig := initMockConfig()
 	mockDriverConfig(mockConfig)
-	log := NewLogrusApplication()
+	log, _ := NewLogger(context.Background(), "stack")
 
 	if os.Getenv("FATAL") == "1" {
 		log.Fatalf("Goravel")

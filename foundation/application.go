@@ -3,6 +3,8 @@ package foundation
 import (
 	"gopkg.in/go-mixed/framework.v1/container"
 	configfacade "gopkg.in/go-mixed/framework.v1/facades/config"
+	logfacade "gopkg.in/go-mixed/framework.v1/facades/log"
+	"gopkg.in/go-mixed/framework.v1/log"
 	"os"
 	"strings"
 
@@ -30,6 +32,7 @@ func NewApplication() *Application {
 func (app *Application) Boot() {
 	app.registerConfiguredServiceProviders()
 	app.bootConfiguredServiceProviders()
+	logfacade.Debugf("Application start.")
 
 	app.bootArtisan()
 	setRootPath()
@@ -44,6 +47,7 @@ func (app *Application) bootArtisan() {
 func (app *Application) getBaseServiceProviders() []contracts.IServiceProvider {
 	return []contracts.IServiceProvider{
 		&config.ServiceProvider{},
+		&log.ServiceProvider{},
 	}
 }
 

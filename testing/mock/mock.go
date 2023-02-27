@@ -54,7 +54,7 @@ func Event() (*eventmocks.Instance, *eventmocks.Task) {
 }
 
 func Log() {
-	facades.Log = log.NewApplication(log.NewTestWriter())
+	container.Instance("log", log.WrapLogger(log.NewTestWriter()))
 }
 
 func Mail() *mailmocks.Mail {
