@@ -27,42 +27,42 @@ func NewApplication() *Application {
 	return &Application{}
 }
 
-func (r *Application) Content(content mail.Content) mail.Mail {
+func (r *Application) Content(content mail.Content) mail.IMail {
 	instance := r.instance()
 	instance.content = content
 
 	return instance
 }
 
-func (r *Application) From(from mail.From) mail.Mail {
+func (r *Application) From(from mail.From) mail.IMail {
 	instance := r.instance()
 	instance.from = from
 
 	return instance
 }
 
-func (r *Application) To(to []string) mail.Mail {
+func (r *Application) To(to []string) mail.IMail {
 	instance := r.instance()
 	instance.to = to
 
 	return instance
 }
 
-func (r *Application) Cc(cc []string) mail.Mail {
+func (r *Application) Cc(cc []string) mail.IMail {
 	instance := r.instance()
 	instance.cc = cc
 
 	return instance
 }
 
-func (r *Application) Bcc(bcc []string) mail.Mail {
+func (r *Application) Bcc(bcc []string) mail.IMail {
 	instance := r.instance()
 	instance.bcc = bcc
 
 	return instance
 }
 
-func (r *Application) Attach(files []string) mail.Mail {
+func (r *Application) Attach(files []string) mail.IMail {
 	instance := r.instance()
 	instance.attaches = files
 
