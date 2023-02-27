@@ -30,9 +30,10 @@ func NewApplication() *Application {
 
 // Boot Register and bootstrap configured service providers.
 func (app *Application) Boot() {
+	logfacade.Debugf("Application start.")
+
 	app.registerConfiguredServiceProviders()
 	app.bootConfiguredServiceProviders()
-	logfacade.Debugf("Application start.")
 
 	app.bootArtisan()
 	setRootPath()

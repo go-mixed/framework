@@ -64,7 +64,7 @@ func (s *ModuleTestSuite) TestInitRedis() {
 				mockConfig.On("GetInt", "database.redis.default.database").Return(0).Once()
 				mockConfig.On("GetString", "cache.prefix").Return("goravel_cache").Once()
 
-				manager := StoreManager{}
+				manager := CacheManager{}
 				s.NotNil(manager, description)
 
 				mockConfig.AssertExpectations(s.T())
@@ -79,7 +79,7 @@ func (s *ModuleTestSuite) TestInitRedis() {
 				mockConfig.On("GetString", "cache.stores.redis.connection").Return("default").Once()
 				mockConfig.On("GetString", "database.redis.default.host").Return("").Once()
 
-				manager := StoreManager{}
+				manager := CacheManager{}
 				s.Nil(manager, description)
 
 				mockConfig.AssertExpectations(s.T())
@@ -267,7 +267,7 @@ func (s *ModuleTestSuite) TestCustomDriver() {
 	mockConfig.On("GetString", "cache.stores.store.driver").Return("custom").Once()
 	mockConfig.On("Get", "cache.stores.store.via").Return(&Store{}).Once()
 
-	manager := StoreManager{}
+	manager := CacheManager{}
 	store := manager.MustDefaultDriver()
 	s.NotNil(store)
 	s.Equal("Goravel", store.Get("name", "Goravel").(string))

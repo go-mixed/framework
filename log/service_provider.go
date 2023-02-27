@@ -9,15 +9,14 @@ type ServiceProvider struct {
 }
 
 func (log *ServiceProvider) Register() {
-	container.Singleton((*ChannelManager)(nil), func(args ...any) (any, error) {
+	container.Singleton((*LogManager)(nil), func(args ...any) (any, error) {
 		manager := NewChannelManager()
-		manager.extendChannels()
 		return manager, nil
 	})
-	container.Alias("log.manager", (*ChannelManager)(nil))
+	container.Alias("log.manager", (*LogManager)(nil))
 
 	container.Singleton((*contractslog.ILog)(nil), func(args ...any) (any, error) {
-		return container.MustMake[*ChannelManager]("log.manager").MustDefaultDriver(), nil
+		return container.MustMake[*LogManager]("log.manager").MustDefaultDriver(), nil
 	})
 	container.Alias(contractslog.ILog(nil), (*contractslog.ILog)(nil))
 	container.Alias("log", (*contractslog.ILog)(nil))

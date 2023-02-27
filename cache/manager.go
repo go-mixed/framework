@@ -3,33 +3,31 @@ package cache
 import (
 	"github.com/gookit/color"
 	"github.com/pkg/errors"
-	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"gopkg.in/go-mixed/framework.v1/support/manager"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/cache"
 )
 
-type StoreManager struct {
+type CacheManager struct {
 	manager.Manager[cache.IStore]
 }
 
-func NewStoreManager() *StoreManager {
-	m := &StoreManager{}
-	m.Manager = manager.MakeManager[cache.IStore](m.DefaultDriverName)
+func NewCacheManager() *CacheManager {
+	m := &CacheManager{}
+	m.Manager = manager.MakeManager[cache.IStore](m.DefaultDriverName, m.makeStore)
 	return m
 }
 
-func (m *StoreManager) DefaultDriverName() string {
+func (m *CacheManager) DefaultDriverName() string {
 	return config.GetString("cache.default")
 }
 
-func (m *StoreManager) makeDriver(storeName string) (cache.IStore, error) {
-	driver := config.GetString("config."+storeName+".driver", "memory")
-	driverContainerName := "cache.drivers." + driver
+func (m *CacheManager) makeStore(storeName string) (cache.IStore, error) {
+	driver := config.GetString("config.stores."+storeName+".driver", "memory")
 
-	if container.Bound(driverContainerName) {
-		instance, err := container.Make[cache.IStore](driverContainerName, storeName)
+	if m.HasCustomCreator(driver) {
+		instance, err := m.CallCustomCreator(driver, storeName)
 		if err != nil {
 			color.Redf("[Cache] Initialize %s driver of store %s error: %v\n", driver, storeName, err)
 			return nil, errors.Errorf("[Cache] Initialize %s driver of store %s error: %v\n", driver, storeName, err)
@@ -42,12 +40,6 @@ func (m *StoreManager) makeDriver(storeName string) (cache.IStore, error) {
 	return nil, errors.Errorf("[Cache] %s driver of cache is not defined.\n", driver)
 }
 
-func (m *StoreManager) Store(storeName string) (cache.IStore, error) {
+func (m *CacheManager) Store(storeName string) (cache.IStore, error) {
 	return m.Driver(storeName)
-}
-
-func (m *StoreManager) extendStores() {
-	for name := range config.GetMap("cache.stores") {
-		m.Extend(name, m.makeDriver)
-	}
 }

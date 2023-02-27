@@ -16,31 +16,23 @@ type ServiceProvider struct {
 var _ contracts.IServiceProvider = (*ServiceProvider)(nil)
 
 func (sp *ServiceProvider) Register() {
-	container.Singleton((*StoreManager)(nil), func(args ...any) (any, error) {
-		manager := NewStoreManager()
-		manager.extendStores()
-		return manager, nil
+	container.Singleton((*CacheManager)(nil), func(args ...any) (any, error) {
+		m := NewCacheManager()
+		m.Extend("redis", func(driverName string, args ...any) (cache.IStore, error) {
+			return NewRedis(driverName, context.Background())
+		}).Extend("memory", func(driverName string, args ...any) (cache.IStore, error) {
+			return NewMemory()
+		})
+
+		return m, nil
 	})
-	container.Alias("cache.manager", (*StoreManager)(nil))
+	container.Alias("cache.manager", (*CacheManager)(nil))
 
 	container.Singleton(cache.IStore(nil), func(args ...any) (any, error) {
-		return container.MustMake[*StoreManager]("cache.manager").DefaultDriver()
+		return container.MustMake[*CacheManager]("cache.manager").DefaultDriver()
 	})
 	container.Alias("cache", cache.IStore(nil))
 	container.Alias("cache.store", cache.IStore(nil))
-
-	sp.registerCacheDrivers()
-}
-
-func (sp *ServiceProvider) registerCacheDrivers() {
-	container.Bind("cache.drivers.redis", func(args ...any) (any, error) {
-		return NewRedis(args[0].(string), context.Background())
-	}, false)
-
-	container.Bind("cache.drivers.memory", func(args ...any) (any, error) {
-		return NewMemory()
-	}, false)
-
 }
 
 func (sp *ServiceProvider) Boot() {

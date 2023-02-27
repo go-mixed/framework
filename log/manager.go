@@ -6,30 +6,24 @@ import (
 	"gopkg.in/go-mixed/framework.v1/support/manager"
 )
 
-type ChannelManager struct {
+type LogManager struct {
 	manager.Manager[*Logger]
 }
 
-func NewChannelManager() *ChannelManager {
-	m := &ChannelManager{}
-	m.Manager = manager.MakeManager[*Logger](m.DefaultDriverName)
+func NewChannelManager() *LogManager {
+	m := &LogManager{}
+	m.Manager = manager.MakeManager[*Logger](m.DefaultDriverName, m.makeChannel)
 	return m
 }
 
-func (m *ChannelManager) DefaultDriverName() string {
+func (m *LogManager) DefaultDriverName() string {
 	return config.GetString("logging.default")
 }
 
-func (m *ChannelManager) Channel(channelName string) *Logger {
+func (m *LogManager) Channel(channelName string) *Logger {
 	return m.MustDriver(channelName)
 }
 
-func (m *ChannelManager) extendChannels() {
-	for name := range config.GetMap("logging.channels") {
-		m.Extend(name, m.makeDriver)
-	}
-}
-
-func (m *ChannelManager) makeDriver(chanelName string) (*Logger, error) {
-	return NewLogger(context.Background(), chanelName)
+func (m *LogManager) makeChannel(channelName string) (*Logger, error) {
+	return NewLogger(context.Background(), channelName)
 }

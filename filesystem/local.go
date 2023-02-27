@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"io/ioutil"
 	"os"
@@ -22,11 +23,17 @@ type Local struct {
 	url  string
 }
 
+var _ filesystem.IStorage = (*Local)(nil)
+
 func NewLocal(disk string) (*Local, error) {
 	return &Local{
 		root: config.GetString(fmt.Sprintf("filesystems.disks.%s.root", disk)),
 		url:  config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk)),
 	}, nil
+}
+
+func (r *Local) Disk(disk string) filesystem.IStorage {
+	return container.MustMake[*FilesystemManager]("filesystem.manager").Disk(disk)
 }
 
 func (r *Local) AllDirectories(path string) ([]string, error) {
@@ -227,7 +234,7 @@ func (r *Local) TemporaryUrl(file string, time time.Time) (string, error) {
 	return r.Url(file), nil
 }
 
-func (r *Local) WithContext(ctx context.Context) filesystem.Driver {
+func (r *Local) WithContext(ctx context.Context) filesystem.IStorage {
 	return r
 }
 

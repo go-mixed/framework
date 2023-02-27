@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gookit/color"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/go-mixed/framework.v1/container"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/log"
 )
@@ -12,6 +13,8 @@ type Logger struct {
 	instance *logrus.Logger
 	log.Writer
 }
+
+var _ log.ILog = (*Logger)(nil)
 
 func WrapLogger(writer log.Writer) *Logger {
 	return &Logger{
@@ -30,6 +33,10 @@ func NewLogger(ctx context.Context, channelName string) (*Logger, error) {
 		instance: instance,
 		Writer:   NewWriter(instance.WithContext(ctx)),
 	}, nil
+}
+
+func (r *Logger) Channel(name string) log.ILog {
+	return container.MustMake[*LogManager]("log.manager").Channel(name)
 }
 
 func (r *Logger) WithContext(ctx context.Context) log.Writer {

@@ -24,6 +24,7 @@ const (
 //go:generate mockery --name=Log
 type ILog interface {
 	WithContext(ctx context.Context) Writer
+	Channel(name string) ILog
 	Writer
 }
 

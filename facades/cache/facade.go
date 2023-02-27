@@ -8,7 +8,7 @@ import (
 )
 
 func getDefaultStore() cache.IStore {
-	return container.MustMake[cache.IStore]("cache.store")
+	return container.MustMake[cache.IStore]("cache")
 }
 
 func Store(storeName string) cache.IStore {

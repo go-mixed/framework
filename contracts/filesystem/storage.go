@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-//go:generate mockery --name=Storage
-type Storage interface {
+//go:generate mockery --name=IStorage
+type IStorage interface {
 	Driver
-	Disk(disk string) Driver
+	Disk(disk string) IStorage
 }
 
 //go:generate mockery --name=Driver
@@ -32,7 +32,7 @@ type Driver interface {
 	PutFileAs(path string, source File, name string) (string, error)
 	Size(file string) (int64, error)
 	TemporaryUrl(file string, time time.Time) (string, error)
-	WithContext(ctx context.Context) Driver
+	WithContext(ctx context.Context) IStorage
 	Url(file string) string
 }
 

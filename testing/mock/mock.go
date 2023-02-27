@@ -75,7 +75,8 @@ func Storage() (*filesystemmocks.Storage, *filesystemmocks.Driver, *filesystemmo
 	mockStorage := &filesystemmocks.Storage{}
 	mockDriver := &filesystemmocks.Driver{}
 	mockFile := &filesystemmocks.File{}
-	facades.Storage = mockStorage
+
+	container.Instance("filesystem", mockStorage)
 
 	return mockStorage, mockDriver, mockFile
 }

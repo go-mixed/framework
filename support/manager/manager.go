@@ -6,31 +6,35 @@ import (
 )
 
 type Manager[T any] struct {
-	drivers           map[string]T
+	instances         map[string]T
 	customCreators    map[string]manager.Concrete[T]
 	defaultDriverName func() string
+	resolve           func(string) (T, error)
 }
 
 var _ manager.IManager[any] = (*Manager[any])(nil)
 
-func MakeManager[T any](defaultDriverName func() string) Manager[T] {
+func MakeManager[T any](defaultDriverName func() string, resolve func(string) (T, error)) Manager[T] {
 	return Manager[T]{
-		drivers:           map[string]T{},
+		instances:         map[string]T{},
 		customCreators:    map[string]manager.Concrete[T]{},
 		defaultDriverName: defaultDriverName,
+		resolve:           resolve,
 	}
 }
 
 // Extend Register a custom driver creator Closure.
-func (m *Manager[T]) Extend(name string, concrete manager.Concrete[T]) *Manager[T] {
-	m.customCreators[name] = concrete
+func (m *Manager[T]) Extend(driverName string, concrete manager.Concrete[T]) *Manager[T] {
+	m.customCreators[driverName] = concrete
 	return m
 }
 
-func (m *Manager[T]) HasDriver(name string) bool {
-	if _, ok := m.drivers[name]; ok {
-		return ok
-	}
+func (m *Manager[T]) Resolved(name string) bool {
+	_, ok := m.instances[name]
+	return ok
+}
+
+func (m *Manager[T]) HasCustomCreator(name string) bool {
 	_, ok := m.customCreators[name]
 	return ok
 }
@@ -38,20 +42,29 @@ func (m *Manager[T]) HasDriver(name string) bool {
 // Driver Get a driver instance.
 func (m *Manager[T]) Driver(name string) (T, error) {
 	var err error
-	instance, ok := m.drivers[name]
+	instance, ok := m.instances[name]
 	if !ok {
-		if concrete, ok := m.customCreators[name]; ok {
-			if instance, err = concrete(name); err != nil {
-				return instance, err
-			}
-
-			m.drivers[name] = instance
-		} else {
-			return instance, errors.Errorf("driver %s is not exists", name)
+		instance, err = m.resolve(name)
+		if err != nil {
+			return instance, err
 		}
+
+		m.instances[name] = instance
 	}
 
 	return instance, nil
+}
+
+func (m *Manager[T]) CallCustomCreator(creatorName, driverName string, args ...any) (T, error) {
+	var instance T
+	var err error
+	if concrete, ok := m.customCreators[creatorName]; ok {
+		instance, err = concrete(driverName, args...)
+	} else {
+		err = errors.Errorf("driver \"%s.%s\" is not exists", driverName, creatorName)
+	}
+
+	return instance, err
 }
 
 func (m *Manager[T]) MustDriver(name string) T {
@@ -63,8 +76,11 @@ func (m *Manager[T]) MustDriver(name string) T {
 	return instance
 }
 
-func (m *Manager[T]) RemoveDriver(name string) {
-	delete(m.drivers, name)
+func (m *Manager[T]) Remove(name string) {
+	delete(m.instances, name)
+}
+
+func (m *Manager[T]) RemoveCustomCreator(name string) {
 	delete(m.customCreators, name)
 }
 

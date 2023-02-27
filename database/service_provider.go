@@ -13,15 +13,14 @@ type ServiceProvider struct {
 }
 
 func (database *ServiceProvider) Register() {
-	container.Singleton((*ConnectionManager)(nil), func(args ...any) (any, error) {
-		manager := NewConnectionManager()
-		manager.extendConnections()
+	container.Singleton((*DatabaseManager)(nil), func(args ...any) (any, error) {
+		manager := NewDatabaseManager()
 		return manager, nil
 	})
-	container.Alias("database.manager", (*ConnectionManager)(nil))
+	container.Alias("database.manager", (*DatabaseManager)(nil))
 
 	container.Singleton((orm.IOrm)(nil), func(args ...any) (any, error) {
-		return container.MustMake[*ConnectionManager]("database.manager").DefaultDriver()
+		return container.MustMake[*DatabaseManager]("database.manager").DefaultDriver()
 	})
 	container.Alias("database", (orm.IOrm)(nil))
 	container.Alias("db", (orm.IOrm)(nil))

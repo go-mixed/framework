@@ -30,7 +30,7 @@ func WrapDB(ctx context.Context, db ormcontract.DB) *Database {
 }
 
 func (d *Database) Connection(connectionName string) ormcontract.IOrm {
-	return container.MustMake[*ConnectionManager]("database.manager").Connection(connectionName).WithContext(d.ctx)
+	return container.MustMake[*DatabaseManager]("database.manager").Connection(connectionName).WithContext(d.ctx)
 }
 
 func (d *Database) DB() (*sql.DB, error) {

@@ -8,30 +8,24 @@ import (
 	ormcontract "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
 )
 
-type ConnectionManager struct {
+type DatabaseManager struct {
 	manager.Manager[ormcontract.IOrm]
 }
 
-func NewConnectionManager() *ConnectionManager {
-	orm := &ConnectionManager{}
-	orm.Manager = manager.MakeManager[ormcontract.IOrm](orm.DefaultDriverName)
-	return orm
+func NewDatabaseManager() *DatabaseManager {
+	m := &DatabaseManager{}
+	m.Manager = manager.MakeManager[ormcontract.IOrm](m.DefaultDriverName, m.makeConnection)
+	return m
 }
 
-func (m *ConnectionManager) Connection(name string) ormcontract.IOrm {
+func (m *DatabaseManager) Connection(name string) ormcontract.IOrm {
 	return m.MustDriver(name)
 }
 
-func (m *ConnectionManager) DefaultDriverName() string {
+func (m *DatabaseManager) DefaultDriverName() string {
 	return configfacade.GetString("database.default")
 }
 
-func (m *ConnectionManager) makeDriver(connectionName string) (ormcontract.IOrm, error) {
+func (m *DatabaseManager) makeConnection(connectionName string) (ormcontract.IOrm, error) {
 	return NewDatabase(context.Background(), connectionName)
-}
-
-func (m *ConnectionManager) extendConnections() {
-	for name := range configfacade.GetMap("database.connections") {
-		m.Extend(name, m.makeDriver)
-	}
 }

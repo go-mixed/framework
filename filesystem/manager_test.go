@@ -328,7 +328,7 @@ func TestStorage(t *testing.T) {
 
 	for _, disk := range disks {
 		var err error
-		driver, err = NewDriver(disk.disk)
+		driver, err = NewFilesystemManager().Driver(disk.disk)
 		assert.NotNil(t, driver)
 		assert.Nil(t, err)
 
@@ -357,7 +357,7 @@ func TestStorage(t *testing.T) {
 		assert.Nil(t, driver.DeleteDirectory("Directories"), disk.disk)
 		assert.Nil(t, driver.DeleteDirectory("AllDirectories"), disk.disk)
 
-		if disk.disk == "local" || disk.disk == "custom" {
+		if disk.disk == "local" {
 			assert.True(t, file.Remove("./storage"))
 		}
 	}
@@ -381,28 +381,6 @@ func initConfig() {
 				"region": newConfig.Env("AWS_DEFAULT_REGION"),
 				"bucket": newConfig.Env("AWS_BUCKET"),
 				"url":    newConfig.Env("AWS_URL"),
-			},
-			"oss": map[string]any{
-				"driver":   "oss",
-				"key":      newConfig.Env("ALIYUN_ACCESS_KEY_ID"),
-				"secret":   newConfig.Env("ALIYUN_ACCESS_KEY_SECRET"),
-				"bucket":   newConfig.Env("ALIYUN_BUCKET"),
-				"url":      newConfig.Env("ALIYUN_URL"),
-				"endpoint": newConfig.Env("ALIYUN_ENDPOINT"),
-			},
-			"cos": map[string]any{
-				"driver": "cos",
-				"key":    newConfig.Env("TENCENT_ACCESS_KEY_ID"),
-				"secret": newConfig.Env("TENCENT_ACCESS_KEY_SECRET"),
-				"bucket": newConfig.Env("TENCENT_BUCKET"),
-				"url":    newConfig.Env("TENCENT_URL"),
-			},
-			"custom": map[string]any{
-				"driver": "custom",
-				"via": &Local{
-					root: "storage/app/public",
-					url:  "http://localhost/storage",
-				},
 			},
 		},
 	})

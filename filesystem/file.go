@@ -3,6 +3,7 @@ package filesystem
 import (
 	"errors"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
+	filesystemfacade "gopkg.in/go-mixed/framework.v1/facades/filesystem"
 	"io"
 	"mime/multipart"
 	"os"
@@ -10,7 +11,6 @@ import (
 	"strings"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/filesystem"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	supportfile "gopkg.in/go-mixed/framework.v1/support/file"
 	"gopkg.in/go-mixed/framework.v1/support/str"
 )
@@ -65,11 +65,11 @@ func (f *File) File() string {
 }
 
 func (f *File) Store(path string) (string, error) {
-	return facades.Storage.Disk(f.disk).PutFile(path, f)
+	return filesystemfacade.Disk(f.disk).PutFile(path, f)
 }
 
 func (f *File) StoreAs(path string, name string) (string, error) {
-	return facades.Storage.Disk(f.disk).PutFileAs(path, f, name)
+	return filesystemfacade.Disk(f.disk).PutFileAs(path, f, name)
 }
 
 func (f *File) GetClientOriginalName() string {

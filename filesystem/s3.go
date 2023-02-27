@@ -3,6 +3,7 @@ package filesystem
 import (
 	"context"
 	"fmt"
+	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"gopkg.in/go-mixed/framework.v1/facades/log"
 	"io/ioutil"
@@ -35,6 +36,8 @@ type S3 struct {
 	url      string
 }
 
+var _ filesystem.IStorage = (*S3)(nil)
+
 func NewS3(ctx context.Context, disk string) (*S3, error) {
 	accessKeyId := config.GetString(fmt.Sprintf("filesystems.disks.%s.key", disk))
 	accessKeySecret := config.GetString(fmt.Sprintf("filesystems.disks.%s.secret", disk))
@@ -54,6 +57,10 @@ func NewS3(ctx context.Context, disk string) (*S3, error) {
 		disk:     disk,
 		url:      url,
 	}, nil
+}
+
+func (r *S3) Disk(disk string) filesystem.IStorage {
+	return container.MustMake[*FilesystemManager]("filesystem.manager").Disk(disk)
 }
 
 func (r *S3) AllDirectories(path string) ([]string, error) {
@@ -330,7 +337,7 @@ func (r *S3) TemporaryUrl(file string, time time.Time) (string, error) {
 	return presignResult.URL, nil
 }
 
-func (r *S3) WithContext(ctx context.Context) filesystem.Driver {
+func (r *S3) WithContext(ctx context.Context) filesystem.IStorage {
 	driver, err := NewS3(ctx, r.disk)
 	if err != nil {
 		log.Errorf("init %s disk fail: %+v", r.disk, err)

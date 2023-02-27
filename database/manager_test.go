@@ -158,8 +158,8 @@ func (s *OrmSuite) TestTransactionError() {
 	}
 }
 
-func newTestManager() *ConnectionManager {
-	m := NewConnectionManager()
+func newTestManager() *DatabaseManager {
+	m := NewDatabaseManager()
 
 	m.Extend(ormcontract.DriverMysql.String(), func(name string) (ormcontract.IOrm, error) {
 		return WrapDB(context.Background(), testMysqlDB), nil

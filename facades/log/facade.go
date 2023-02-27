@@ -14,6 +14,10 @@ func WithContext(ctx context.Context) log.Writer {
 	return getLogger().WithContext(ctx)
 }
 
+func Channel(name string) log.ILog {
+	return getLogger().Channel(name)
+}
+
 func Debug(args ...any) {
 	getLogger().Debug(args...)
 }
