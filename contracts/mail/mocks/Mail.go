@@ -13,15 +13,15 @@ type Mail struct {
 }
 
 // Attach provides a mock function with given fields: files
-func (_m *Mail) Attach(files []string) mail.Mail {
+func (_m *Mail) Attach(files []string) mail.IMail {
 	ret := _m.Called(files)
 
-	var r0 mail.Mail
-	if rf, ok := ret.Get(0).(func([]string) mail.Mail); ok {
+	var r0 mail.IMail
+	if rf, ok := ret.Get(0).(func([]string)mail.IMail); ok {
 		r0 = rf(files)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(mail.Mail)
+			r0 = ret.Get(0).(mail.IMail)
 		}
 	}
 
@@ -29,15 +29,15 @@ func (_m *Mail) Attach(files []string) mail.Mail {
 }
 
 // Bcc provides a mock function with given fields: addresses
-func (_m *Mail) Bcc(addresses []string) mail.Mail {
+func (_m *Mail) Bcc(addresses []string) mail.IMail {
 	ret := _m.Called(addresses)
 
-	var r0 mail.Mail
-	if rf, ok := ret.Get(0).(func([]string) mail.Mail); ok {
+	var r0 mail.IMail
+	if rf, ok := ret.Get(0).(func([]string) mail.IMail); ok {
 		r0 = rf(addresses)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(mail.Mail)
+			r0 = ret.Get(0).(mail.IMail)
 		}
 	}
 
@@ -45,15 +45,15 @@ func (_m *Mail) Bcc(addresses []string) mail.Mail {
 }
 
 // Cc provides a mock function with given fields: addresses
-func (_m *Mail) Cc(addresses []string) mail.Mail {
+func (_m *Mail) Cc(addresses []string) mail.IMail {
 	ret := _m.Called(addresses)
 
-	var r0 mail.Mail
-	if rf, ok := ret.Get(0).(func([]string) mail.Mail); ok {
+	var r0 mail.IMail
+	if rf, ok := ret.Get(0).(func([]string) mail.IMail); ok {
 		r0 = rf(addresses)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(mail.Mail)
+			r0 = ret.Get(0).(mail.IMail)
 		}
 	}
 
@@ -61,15 +61,15 @@ func (_m *Mail) Cc(addresses []string) mail.Mail {
 }
 
 // Content provides a mock function with given fields: content
-func (_m *Mail) Content(content mail.Content) mail.Mail {
+func (_m *Mail) Content(content mail.Content) mail.IMail {
 	ret := _m.Called(content)
 
-	var r0 mail.Mail
-	if rf, ok := ret.Get(0).(func(mail.Content) mail.Mail); ok {
+	var r0 mail.IMail
+	if rf, ok := ret.Get(0).(func(mail.Content) mail.IMail); ok {
 		r0 = rf(content)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(mail.Mail)
+			r0 = ret.Get(0).(mail.IMail)
 		}
 	}
 
@@ -77,15 +77,15 @@ func (_m *Mail) Content(content mail.Content) mail.Mail {
 }
 
 // From provides a mock function with given fields: address
-func (_m *Mail) From(address mail.From) mail.Mail {
+func (_m *Mail) From(address mail.From) mail.IMail {
 	ret := _m.Called(address)
 
-	var r0 mail.Mail
-	if rf, ok := ret.Get(0).(func(mail.From) mail.Mail); ok {
+	var r0 mail.IMail
+	if rf, ok := ret.Get(0).(func(mail.From) mail.IMail); ok {
 		r0 = rf(address)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(mail.Mail)
+			r0 = ret.Get(0).(mail.IMail)
 		}
 	}
 
@@ -121,15 +121,15 @@ func (_m *Mail) Send() error {
 }
 
 // To provides a mock function with given fields: addresses
-func (_m *Mail) To(addresses []string) mail.Mail {
+func (_m *Mail) To(addresses []string) mail.IMail {
 	ret := _m.Called(addresses)
 
-	var r0 mail.Mail
-	if rf, ok := ret.Get(0).(func([]string) mail.Mail); ok {
+	var r0 mail.IMail
+	if rf, ok := ret.Get(0).(func([]string) mail.IMail); ok {
 		r0 = rf(addresses)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(mail.Mail)
+			r0 = ret.Get(0).(mail.IMail)
 		}
 	}
 

@@ -14,6 +14,8 @@ import (
 
 	"gopkg.in/go-mixed/framework.v1/contracts/event"
 	"gopkg.in/go-mixed/framework.v1/contracts/mail"
+	imail "gopkg.in/go-mixed/framework.v1/facades/mail"
+
 	queuecontract "gopkg.in/go-mixed/framework.v1/contracts/queue"
 	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/queue"
@@ -38,7 +40,7 @@ func TestApplicationTestSuite(t *testing.T) {
 	}
 
 	initConfig(redisResource.GetPort("6379/tcp"))
-	facades.Mail = NewApplication()
+	//facades.Mail = NewApplication()
 	suite.Run(t, new(ApplicationTestSuite))
 
 	if err := redisPool.Purge(redisResource); err != nil {
@@ -61,7 +63,8 @@ func (s *ApplicationTestSuite) TestSendMailBy25Port() {
 		"username": config.Env("MAIL_USERNAME"),
 		"password": config.Env("MAIL_PASSWORD"),
 	})
-	s.Nil(facades.Mail.To([]string{config.Env("MAIL_TO").(string)}).
+
+	s.Nil(imail.To([]string{config.Env("MAIL_TO").(string)}).
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
@@ -80,7 +83,7 @@ func (s *ApplicationTestSuite) TestSendMailBy465Port() {
 		"username": config.Env("MAIL_USERNAME"),
 		"password": config.Env("MAIL_PASSWORD"),
 	})
-	s.Nil(facades.Mail.To([]string{config.Env("MAIL_TO").(string)}).
+	s.Nil(imail.To([]string{config.Env("MAIL_TO").(string)}).
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
@@ -89,7 +92,7 @@ func (s *ApplicationTestSuite) TestSendMailBy465Port() {
 }
 
 func (s *ApplicationTestSuite) TestSendMailBy587Port() {
-	s.Nil(facades.Mail.To([]string{config.Env("MAIL_TO").(string)}).
+	s.Nil(imail.To([]string{config.Env("MAIL_TO").(string)}).
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
@@ -98,7 +101,7 @@ func (s *ApplicationTestSuite) TestSendMailBy587Port() {
 }
 
 func (s *ApplicationTestSuite) TestSendMailWithFrom() {
-	s.Nil(facades.Mail.From(mail.From{Address: config.GetString("mail.from.address"), Name: config.GetString("mail.from.name")}).
+	s.Nil(imail.From(mail.From{Address: config.GetString("mail.from.address"), Name: config.GetString("mail.from.name")}).
 		To([]string{config.Env("MAIL_TO").(string)}).
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
@@ -129,7 +132,7 @@ func (s *ApplicationTestSuite) TestQueueMail() {
 		}
 	}(ctx)
 	time.Sleep(3 * time.Second)
-	s.Nil(facades.Mail.To([]string{config.Env("MAIL_TO").(string)}).
+	s.Nil(imail.To([]string{config.Env("MAIL_TO").(string)}).
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).

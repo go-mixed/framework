@@ -1,13 +1,13 @@
 package mail
 
 //go:generate mockery --name=Mail
-type Mail interface {
-	Content(content Content) Mail
-	From(address From) Mail
-	To(addresses []string) Mail
-	Cc(addresses []string) Mail
-	Bcc(addresses []string) Mail
-	Attach(files []string) Mail
+type IMail interface {
+	Content(content Content) IMail
+	From(address From) IMail
+	To(addresses []string) IMail
+	Cc(addresses []string) IMail
+	Bcc(addresses []string) IMail
+	Attach(files []string) IMail
 	Send() error
 	Queue(queue *Queue) error
 }
