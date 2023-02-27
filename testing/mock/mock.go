@@ -59,7 +59,8 @@ func Log() {
 
 func Mail() *mailmocks.Mail {
 	mockMail := &mailmocks.Mail{}
-	facades.Mail = mockMail
+	container.Instance("mail", mockMail)
+	//facades.Mail = mockMail
 
 	return mockMail
 }
