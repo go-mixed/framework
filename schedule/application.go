@@ -3,10 +3,10 @@ package schedule
 import (
 	"github.com/gookit/color"
 	"github.com/robfig/cron/v3"
+	"gopkg.in/go-mixed/framework.v1/facades/artisan"
 	"gopkg.in/go-mixed/framework.v1/facades/log"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/schedule"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/schedule/support"
 )
 
@@ -57,7 +57,7 @@ func (app *Application) addEvents(events []schedule.Event) {
 func (app *Application) getJob(event schedule.Event) cron.Job {
 	return cron.FuncJob(func() {
 		if event.GetCommand() != "" {
-			facades.Artisan.Call(event.GetCommand())
+			artisan.Call(event.GetCommand())
 		} else {
 			event.GetCallback()()
 		}

@@ -34,7 +34,7 @@ func Config() *configmocks.Config {
 
 func Artisan() *consolemocks.Artisan {
 	mockArtisan := &consolemocks.Artisan{}
-	facades.Artisan = mockArtisan
+	container.Instance("artisan", mockArtisan)
 
 	return mockArtisan
 }

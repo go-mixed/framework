@@ -2,6 +2,7 @@ package foundation
 
 import (
 	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/facades/artisan"
 	configfacade "gopkg.in/go-mixed/framework.v1/facades/config"
 	logfacade "gopkg.in/go-mixed/framework.v1/facades/log"
 	"gopkg.in/go-mixed/framework.v1/log"
@@ -10,7 +11,6 @@ import (
 
 	"gopkg.in/go-mixed/framework.v1/config"
 	"gopkg.in/go-mixed/framework.v1/contracts"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/support"
 )
 
@@ -41,7 +41,7 @@ func (app *Application) Boot() {
 
 // bootArtisan Boot artisan command.
 func (app *Application) bootArtisan() {
-	facades.Artisan.Run(os.Args, true)
+	artisan.Run(os.Args, true)
 }
 
 // getBaseServiceProviders Get base service providers.

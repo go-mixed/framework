@@ -3,10 +3,10 @@ package database
 import (
 	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gopkg.in/go-mixed/framework.v1/facades/artisan"
 
 	consolecontract "gopkg.in/go-mixed/framework.v1/contracts/console"
 	"gopkg.in/go-mixed/framework.v1/database/console"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ServiceProvider struct {
@@ -33,7 +33,7 @@ func (database *ServiceProvider) Boot() {
 }
 
 func (database *ServiceProvider) registerCommands() {
-	facades.Artisan.Register([]consolecontract.Command{
+	artisan.Register([]consolecontract.Command{
 		&console.MigrateMakeCommand{},
 		&console.MigrateCommand{},
 		&console.MigrateRollbackCommand{},

@@ -3,7 +3,7 @@ package console
 import (
 	"gopkg.in/go-mixed/framework.v1/contracts/console"
 	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
-	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/facades/artisan"
 )
 
 type ListCommand struct {
@@ -26,7 +26,7 @@ func (receiver *ListCommand) Extend() command.Extend {
 
 // Handle Execute the console command.
 func (receiver *ListCommand) Handle(ctx console.Context) error {
-	facades.Artisan.Call("--help")
+	artisan.Call("--help")
 
 	return nil
 }

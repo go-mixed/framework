@@ -3,6 +3,7 @@ package validation
 import (
 	consolecontract "gopkg.in/go-mixed/framework.v1/contracts/console"
 	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/facades/artisan"
 	"gopkg.in/go-mixed/framework.v1/validation/console"
 )
 
@@ -18,7 +19,7 @@ func (database *ServiceProvider) Boot() {
 }
 
 func (database *ServiceProvider) registerCommands() {
-	facades.Artisan.Register([]consolecontract.Command{
+	artisan.Register([]consolecontract.Command{
 		&console.RuleMakeCommand{},
 	})
 }

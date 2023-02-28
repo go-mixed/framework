@@ -5,12 +5,12 @@ import (
 	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/contracts/auth"
 	accesscontract "gopkg.in/go-mixed/framework.v1/contracts/auth/access"
+	"gopkg.in/go-mixed/framework.v1/facades/artisan"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
 
 	"gopkg.in/go-mixed/framework.v1/auth/access"
 	"gopkg.in/go-mixed/framework.v1/auth/console"
 	contractconsole "gopkg.in/go-mixed/framework.v1/contracts/console"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
 type ServiceProvider struct {
@@ -35,7 +35,7 @@ func (database *ServiceProvider) Boot() {
 }
 
 func (database *ServiceProvider) registerCommands() {
-	facades.Artisan.Register([]contractconsole.Command{
+	artisan.Register([]contractconsole.Command{
 		&console.JwtSecretCommand{},
 		&console.PolicyMakeCommand{},
 	})
