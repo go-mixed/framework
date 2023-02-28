@@ -48,7 +48,7 @@ func Orm() (*ormmocks.Orm, *ormmocks.DB, *ormmocks.Transaction, *ormmocks.Associ
 
 func Event() (*eventmocks.Instance, *eventmocks.Task) {
 	mockEvent := &eventmocks.Instance{}
-	facades.Event = mockEvent
+	container.Instance("event", mockEvent)
 
 	return mockEvent, &eventmocks.Task{}
 }

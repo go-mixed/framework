@@ -2,6 +2,7 @@ package support
 
 import (
 	"gopkg.in/go-mixed/framework.v1/facades"
+	ievent "gopkg.in/go-mixed/framework.v1/facades/event"
 )
 
 const DriverSync string = "sync"
@@ -31,7 +32,7 @@ func (receiver *Worker) Run() error {
 		return err
 	}
 
-	eventTasks, err := eventsToTasks(facades.Event.GetEvents())
+	eventTasks, err := eventsToTasks(ievent.GetEvents())
 	if err != nil {
 		return err
 	}
