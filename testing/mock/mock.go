@@ -107,7 +107,7 @@ func Gate() *accessmocks.Gate {
 
 func Grpc() *grpcmocks.Grpc {
 	mockGrpc := &grpcmocks.Grpc{}
-	facades.Grpc = mockGrpc
+	container.Instance("grpc", mockGrpc)
 
 	return mockGrpc
 }

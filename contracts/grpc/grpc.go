@@ -7,7 +7,7 @@ import (
 )
 
 //go:generate mockery --name=Grpc
-type Grpc interface {
+type IGrpc interface {
 	Run(host string) error
 	Server() *grpc.Server
 	Client(ctx context.Context, name string) (*grpc.ClientConn, error)
