@@ -42,12 +42,12 @@ func (c *Application) Register(commands []console.Command) {
 	}
 }
 
-// Call Run an IArtisan console command by name.
+// Call Run an Artisan console command by name.
 func (c *Application) Call(command string) {
 	c.Run(append([]string{os.Args[0], "artisan"}, strings.Split(command, " ")...), false)
 }
 
-// CallAndExit Run an IArtisan console command by name and exit.
+// CallAndExit Run an Artisan console command by name and exit.
 func (c *Application) CallAndExit(command string) {
 	c.Run(append([]string{os.Args[0], "artisan"}, strings.Split(command, " ")...), true)
 }

@@ -13,12 +13,12 @@ func Register(commands []console.Command) {
 	getArtisan().Register(commands)
 }
 
-// Call Run an IArtisan console command by name.
+// Call Run an Artisan console command by name.
 func Call(command string) {
 	getArtisan().Call(command)
 }
 
-// CallAndExit Run an IArtisan console command by name and exit.
+// CallAndExit Run an Artisan console command by name and exit.
 func CallAndExit(command string) {
 	getArtisan().CallAndExit(command)
 }
