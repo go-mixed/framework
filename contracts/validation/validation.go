@@ -3,7 +3,7 @@ package validation
 type Option func(map[string]any)
 
 //go:generate mockery --name=Validation
-type Validation interface {
+type IValidation interface {
 	Make(data any, rules map[string]string, options ...Option) (Validator, error)
 	AddRules([]Rule) error
 	Rules() []Rule

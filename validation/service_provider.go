@@ -1,8 +1,9 @@
 package validation
 
 import (
+	"gopkg.in/go-mixed/framework.v1/container"
 	consolecontract "gopkg.in/go-mixed/framework.v1/contracts/console"
-	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/contracts/validation"
 	"gopkg.in/go-mixed/framework.v1/facades/artisan"
 	"gopkg.in/go-mixed/framework.v1/validation/console"
 )
@@ -10,15 +11,18 @@ import (
 type ServiceProvider struct {
 }
 
-func (database *ServiceProvider) Register() {
-	facades.Validation = NewValidation()
+func (sp *ServiceProvider) Register() {
+	container.Singleton((validation.IValidation)(nil), func(args ...any) (any, error) {
+		return NewValidation(), nil
+	})
+	container.Alias("validation", (validation.IValidation)(nil))
 }
 
-func (database *ServiceProvider) Boot() {
-	database.registerCommands()
+func (sp *ServiceProvider) Boot() {
+	sp.registerCommands()
 }
 
-func (database *ServiceProvider) registerCommands() {
+func (sp *ServiceProvider) registerCommands() {
 	artisan.Register([]consolecontract.Command{
 		&console.RuleMakeCommand{},
 	})

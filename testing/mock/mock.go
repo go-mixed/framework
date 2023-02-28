@@ -86,7 +86,7 @@ func Validation() (*validatemocks.Validation, *validatemocks.Validator, *validat
 	mockValidation := &validatemocks.Validation{}
 	mockValidator := &validatemocks.Validator{}
 	mockErrors := &validatemocks.Errors{}
-	facades.Validation = mockValidation
+	container.Instance("validation", mockValidation)
 
 	return mockValidation, mockValidator, mockErrors
 }
