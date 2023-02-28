@@ -2,6 +2,7 @@ package http
 
 import (
 	"errors"
+	"gopkg.in/go-mixed/framework.v1/validation"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,9 +12,8 @@ import (
 	contractsfilesystem "gopkg.in/go-mixed/framework.v1/contracts/filesystem"
 	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
 	validatecontract "gopkg.in/go-mixed/framework.v1/contracts/validation"
-	"gopkg.in/go-mixed/framework.v1/facades"
+	iValidation "gopkg.in/go-mixed/framework.v1/facades/validation"
 	"gopkg.in/go-mixed/framework.v1/filesystem"
-	"gopkg.in/go-mixed/framework.v1/validation"
 )
 
 type GinRequest struct {
@@ -298,7 +298,7 @@ func (r *GinRequest) Validate(rules map[string]string, options ...validatecontra
 		return nil, errors.New("rules can't be empty")
 	}
 
-	options = append(options, validation.Rules(rules), validation.CustomRules(facades.Validation.Rules()))
+	options = append(options, validation.Rules(rules), validation.CustomRules(iValidation.Rules()))
 	generateOptions := validation.GenerateOptions(options)
 
 	var v *validate.Validation

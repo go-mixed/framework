@@ -1,7 +1,7 @@
 package event
 
 //go:generate mockery --name=Instance
-type Instance interface {
+type IInstance interface {
 	Register(map[Event][]Listener)
 	Job(event Event, args []Arg) Task
 	GetEvents() map[Event][]Listener

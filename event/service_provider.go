@@ -1,9 +1,10 @@
 package event
 
 import (
+	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/contracts/console"
+	"gopkg.in/go-mixed/framework.v1/contracts/event"
 	eventConsole "gopkg.in/go-mixed/framework.v1/event/console"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/facades/artisan"
 )
 
@@ -11,7 +12,10 @@ type ServiceProvider struct {
 }
 
 func (receiver *ServiceProvider) Register() {
-	facades.Event = NewApplication()
+	container.Singleton((event.IInstance)(nil), func(args ...any) (any, error) {
+		return NewApplication(), nil
+	})
+	container.Alias("event", (event.IInstance)(nil))
 }
 
 func (receiver *ServiceProvider) Boot() {

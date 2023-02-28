@@ -21,7 +21,7 @@ func (receiver *MakeCommand) Signature() string {
 
 // Description The console command description.
 func (receiver *MakeCommand) Description() string {
-	return "Create a new IArtisan command"
+	return "Create a new Artisan command"
 }
 
 // Extend The console command extend.

@@ -48,7 +48,7 @@ func Orm() (*ormmocks.Orm, *ormmocks.DB, *ormmocks.Transaction, *ormmocks.Associ
 
 func Event() (*eventmocks.Instance, *eventmocks.Task) {
 	mockEvent := &eventmocks.Instance{}
-	facades.Event = mockEvent
+	container.Instance("event", mockEvent)
 
 	return mockEvent, &eventmocks.Task{}
 }
@@ -86,7 +86,7 @@ func Validation() (*validatemocks.Validation, *validatemocks.Validator, *validat
 	mockValidation := &validatemocks.Validation{}
 	mockValidator := &validatemocks.Validator{}
 	mockErrors := &validatemocks.Errors{}
-	facades.Validation = mockValidation
+	container.Instance("validation", mockValidation)
 
 	return mockValidation, mockValidator, mockErrors
 }

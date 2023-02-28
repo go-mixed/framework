@@ -1,16 +1,20 @@
 package schedule
 
 import (
-	"gopkg.in/go-mixed/framework.v1/facades"
+	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/contracts/schedule"
 )
 
 type ServiceProvider struct {
 }
 
-func (receiver *ServiceProvider) Register() {
-	facades.Schedule = NewApplication()
+func (sp *ServiceProvider) Register() {
+	container.Singleton((schedule.ISchedule)(nil), func(args ...any) (any, error) {
+		return NewApplication(), nil
+	})
+	container.Alias("schedule", (schedule.ISchedule)(nil))
 }
 
-func (receiver *ServiceProvider) Boot() {
+func (sp *ServiceProvider) Boot() {
 
 }

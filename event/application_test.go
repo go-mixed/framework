@@ -15,6 +15,8 @@ import (
 	"gopkg.in/go-mixed/framework.v1/queue"
 	testingdocker "gopkg.in/go-mixed/framework.v1/testing/docker"
 	"gopkg.in/go-mixed/framework.v1/testing/mock"
+
+	ievent "gopkg.in/go-mixed/framework.v1/facades/event"
 )
 
 var (
@@ -36,7 +38,7 @@ func TestEventTestSuite(t *testing.T) {
 	}
 
 	facades.Queue = queue.NewApplication()
-	facades.Event = NewApplication()
+	// facades.Event = NewApplication()
 
 	suite.Run(t, &EventTestSuite{
 		redisPort: redisResource.GetPort("6379/tcp"),
@@ -63,7 +65,7 @@ func (s *EventTestSuite) TestEvent() {
 	mockConfig.On("GetString", "database.redis.default.port").Return(s.redisPort).Twice()
 	mockConfig.On("GetInt", "database.redis.default.database").Return(0).Twice()
 
-	facades.Event.Register(map[event.Event][]event.Listener{
+	ievent.Register(map[event.Event][]event.Listener{
 		&TestEvent{}: {
 			&TestSyncListener{},
 			&TestAsyncListener{},
@@ -84,7 +86,7 @@ func (s *EventTestSuite) TestEvent() {
 	}(ctx)
 
 	time.Sleep(3 * time.Second)
-	s.Nil(facades.Event.Job(&TestEvent{}, []eventcontract.Arg{
+	s.Nil(ievent.Job(&TestEvent{}, []eventcontract.Arg{
 		{Type: "string", Value: "Goravel"},
 		{Type: "int", Value: 1},
 	}).Dispatch())
@@ -107,7 +109,7 @@ func (s *EventTestSuite) TestCancelEvent() {
 	mockConfig.On("GetString", "database.redis.default.port").Return(s.redisPort).Once()
 	mockConfig.On("GetInt", "database.redis.default.database").Return(0).Once()
 
-	facades.Event.Register(map[event.Event][]event.Listener{
+	ievent.Register(map[event.Event][]event.Listener{
 		&TestCancelEvent{}: {
 			&TestCancelListener{},
 			&TestCancelAfterListener{},
@@ -128,7 +130,7 @@ func (s *EventTestSuite) TestCancelEvent() {
 	}(ctx)
 
 	time.Sleep(3 * time.Second)
-	s.EqualError(facades.Event.Job(&TestCancelEvent{}, []eventcontract.Arg{
+	s.EqualError(ievent.Job(&TestCancelEvent{}, []eventcontract.Arg{
 		{Type: "string", Value: "Goravel"},
 		{Type: "int", Value: 1},
 	}).Dispatch(), "cancel")
