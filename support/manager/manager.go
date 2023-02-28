@@ -3,34 +3,39 @@ package manager
 import (
 	"github.com/pkg/errors"
 	"gopkg.in/go-mixed/framework.v1/contracts/manager"
+	"sync"
 )
 
 type Manager[T any] struct {
-	instances         map[string]T
+	instances         sync.Map
 	customCreators    map[string]manager.Concrete[T]
 	defaultDriverName func() string
 	resolve           func(string) (T, error)
+	mu                sync.Mutex
 }
 
 var _ manager.IManager[any] = (*Manager[any])(nil)
 
 func MakeManager[T any](defaultDriverName func() string, resolve func(string) (T, error)) Manager[T] {
 	return Manager[T]{
-		instances:         map[string]T{},
+		instances:         sync.Map{},
 		customCreators:    map[string]manager.Concrete[T]{},
 		defaultDriverName: defaultDriverName,
 		resolve:           resolve,
+		mu:                sync.Mutex{},
 	}
 }
 
 // Extend Register a custom driver creator Closure.
 func (m *Manager[T]) Extend(driverName string, concrete manager.Concrete[T]) *Manager[T] {
+	m.mu.Lock()
+	defer m.mu.Unlock()
 	m.customCreators[driverName] = concrete
 	return m
 }
 
 func (m *Manager[T]) Resolved(name string) bool {
-	_, ok := m.instances[name]
+	_, ok := m.instances.Load(name)
 	return ok
 }
 
@@ -42,17 +47,22 @@ func (m *Manager[T]) HasCustomCreator(name string) bool {
 // Driver Get a driver instance.
 func (m *Manager[T]) Driver(name string) (T, error) {
 	var err error
-	instance, ok := m.instances[name]
+	var instance T
+	obj, ok := m.instances.Load(name)
 	if !ok {
 		instance, err = m.resolve(name)
 		if err != nil {
 			return instance, err
 		}
 
-		m.instances[name] = instance
+		m.instances.Store(name, instance)
+
+		return instance, nil
+	} else if instance, ok = obj.(T); ok {
+		return instance, nil
 	}
 
-	return instance, nil
+	return instance, errors.Errorf("the instance of driver %s cannot cast %T to type %T", name, instance, new(T))
 }
 
 func (m *Manager[T]) CallCustomCreator(creatorName, driverName string, args ...any) (T, error) {
@@ -77,7 +87,7 @@ func (m *Manager[T]) MustDriver(name string) T {
 }
 
 func (m *Manager[T]) Remove(name string) {
-	delete(m.instances, name)
+	m.instances.Delete(name)
 }
 
 func (m *Manager[T]) RemoveCustomCreator(name string) {

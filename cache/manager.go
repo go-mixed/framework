@@ -24,20 +24,20 @@ func (m *CacheManager) DefaultCacheName() string {
 }
 
 func (m *CacheManager) makeStore(storeName string) (cache.IStore, error) {
-	driver := config.GetString("cache.stores."+storeName+".driver", "memory")
+	driver := config.GetString("cache.stores."+storeName+".driver", "")
 
 	if m.HasCustomCreator(driver) {
 		instance, err := m.CallCustomCreator(driver, storeName)
 		if err != nil {
-			color.Redf("[Cache] Initialize %s driver of store %s error: %v\n", driver, storeName, err)
-			return nil, errors.Errorf("[Cache] Initialize %s driver of store %s error: %v\n", driver, storeName, err)
+			color.Redf("[Cache] Initialize cache driver \"%s.%s\" error: %v\n", storeName, driver, err)
+			return nil, errors.Errorf("[Cache] Initialize cache \"%s.%s\" error: %v\n", storeName, driver, err)
 		}
 
 		return instance.(cache.IStore), nil
 	}
 
-	color.Redf("[Cache] %s driver of cache is not defined.\n", driver)
-	return nil, errors.Errorf("[Cache] %s driver of cache is not defined.\n", driver)
+	color.Redf("[Cache] cache driver \"%s.%s\" is not defined.\n", storeName, driver)
+	return nil, errors.Errorf("[Cache] \"%s.%s\" is not defined.\n", storeName, driver)
 }
 
 func (m *CacheManager) Store(storeName string) (cache.IStore, error) {

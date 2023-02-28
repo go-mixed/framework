@@ -32,13 +32,13 @@ func (m *FilesystemManager) makeDisk(diskName string) (filesystem.IStorage, erro
 	if m.HasCustomCreator(driver) {
 		instance, err := m.CallCustomCreator(diskName, driver)
 		if err != nil {
-			color.Redf("[Cache] Initialize %s driver of filesystem %s error: %v\n", driver, diskName, err)
-			return nil, errors.Errorf("[Cache] Initialize %s driver of filesystem %s error: %v\n", driver, diskName, err)
+			color.Redf("[Cache] Initialize filesystem driver \"%s.%s\" error: %v\n", diskName, driver, err)
+			return nil, errors.Errorf("[Cache] Initialize filesystem driver \"%s.%s\" error: %v\n", diskName, driver, err)
 		}
 
 		return instance.(filesystem.IStorage), nil
 	}
 
-	color.Redf("[Cache] %s driver of filesystem is not defined.\n", driver)
-	return nil, errors.Errorf("[Cache] %s driver of filesystem is not defined.\n", driver)
+	color.Redf("[Cache] filesystem driver \"%s.%s\" is not defined.\n", diskName, driver)
+	return nil, errors.Errorf("[Cache] filesystem driver \"%s.%s\" is not defined.\n", diskName, driver)
 }

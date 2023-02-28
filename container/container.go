@@ -3,25 +3,30 @@ package container
 import (
 	"github.com/pkg/errors"
 	"go.uber.org/dig"
+	"sync"
 )
 
 type Concrete func(args ...any) (any, error)
 
-// The container's bindingList.
-var bindingList map[tKey]Concrete
-var sharedList map[tKey]bool
-var instanceList map[tKey]any
-var resolvedList map[tKey]bool
-var aliasList map[tKey]tKey
+type concreteContainer struct {
+	concrete Concrete
+	shared   bool
+	instance any
+	resolved bool
+}
 
+// The container's bindingList. a concurrent map, supported high-performance concurrent reading
+var bindingList sync.Map
+
+// The alias list, a normal map, use the global mutex to write, because it writes with few times
+var aliasList map[tKey]tKey
+var mu sync.Mutex
 var di *dig.Container
 
 func Initialize() {
-	bindingList = map[tKey]Concrete{}
-	sharedList = map[tKey]bool{}
-	instanceList = map[tKey]any{}
-	resolvedList = map[tKey]bool{}
+	bindingList = sync.Map{}
 	aliasList = map[tKey]tKey{}
+	mu = sync.Mutex{}
 	di = dig.New()
 }
 
@@ -41,15 +46,8 @@ func Bound[VT VTConstraint](abstract VT) bool {
 		return ok
 	}
 
-	if _, ok := bindingList[key]; ok {
-		return ok
-	}
-
-	if _, ok := instanceList[key]; ok {
-		return ok
-	}
-
-	return false
+	_, ok := bindingList.Load(key)
+	return ok
 }
 
 func Has[VT VTConstraint](abstract VT) bool {
@@ -59,22 +57,37 @@ func Has[VT VTConstraint](abstract VT) bool {
 func Alias[VT1 VTConstraint, VT2 VTConstraint](abstract VT1, source VT2) {
 	key1 := toTKey[VT1](abstract)
 	key2 := toTKey[VT2](source)
+	mu.Lock()
+	defer mu.Unlock()
+
+	// register DI provide if abstract is non-string type, and the source is singleton
+	if key1.isTypeKey && IsShared(source) {
+		_ = registerProvider[VT1](key1)
+	}
 	aliasList[key1] = key2
+}
+
+func registerProvider[VT VTConstraint](key tKey) error {
+	return di.Provide(func() (VT, error) {
+		return resolve[VT](key)
+	})
 }
 
 func Bind[VT VTConstraint](abstract VT, concrete Concrete, singleton bool) {
 	key := toTKey[VT](abstract)
-	bindingList[key] = concrete
-	sharedList[key] = singleton
+	bindingList.Store(key, concreteContainer{
+		concrete: concrete,
+		shared:   singleton,
+		instance: nil,
+		resolved: false,
+	})
 
 	// delete the alias if you explicitly bind
 	delete(aliasList, key)
 
-	// register DI provide if abstract is a non-string type
+	// register DI provide if abstract is a non-string type, and it's singleton
 	if singleton && key.isTypeKey {
-		di.Provide(func() (VT, error) {
-			return resolve[VT](key)
-		})
+		_ = registerProvider[VT](key)
 	}
 
 	// If the abstract type was already resolved in this container we'll fire the
@@ -94,21 +107,32 @@ func Instance[VT VTConstraint](abstract VT, instance any) any {
 	key := toTKey[VT](abstract)
 	key = getAlias(key)
 
-	// We'll check to determine if this type has been bound before, and if it has
-	// we will fire the rebound callbacks registered with the container, and it
-	// can be updated with consuming classes that have gotten resolved here.
-	instanceList[key] = instance
-	sharedList[key] = true
+	concrete, loaded := bindingList.LoadOrStore(key, concreteContainer{
+		concrete: nil,
+		shared:   true,
+		instance: instance,
+		resolved: true,
+	})
+
+	// key exists, update map
+	if loaded {
+		c := concrete.(concreteContainer) // assert will create a new struct
+		c.instance = instance
+		c.resolved = true
+		c.shared = true
+
+		// it cannot use the CompareAndSwap because concreteContainer.concrete is uncomparable type
+		bindingList.Store(key, c)
+	}
 
 	return instance
 }
 
 func resolved(key tKey) bool {
-	if _, ok := resolvedList[key]; ok {
-		return true
+	if concrete, ok := bindingList.Load(key); ok {
+		return concrete.(concreteContainer).resolved
 	}
-	_, ok := instanceList[key]
-	return ok
+	return false
 }
 
 func Resolved[VT VTConstraint](abstract VT) bool {
@@ -122,13 +146,11 @@ func IsShared[VT VTConstraint](abstract VT) bool {
 	key := toTKey[VT](abstract)
 	key = getAlias(key)
 
-	if _, ok := instanceList[key]; ok {
-		return ok
+	if concrete, ok := bindingList.Load(key); ok {
+		return concrete.(concreteContainer).shared
 	}
 
-	_, ok := bindingList[key]
-	singleton := sharedList[key]
-	return ok && singleton
+	return false
 }
 
 // resolve the given type from the container.
@@ -138,30 +160,34 @@ func resolve[T any](key tKey, args ...any) (T, error) {
 	var err error
 	var instance T
 
-	// not instanced
-	if obj, ok = instanceList[key]; !ok {
-		concrete, ok := bindingList[key]
-		if !ok {
-			return instance, errors.Errorf("abstract \"%s\" is not exists in the container", key.String())
-		}
+	concrete, loaded := bindingList.Load(key)
 
-		if concrete == nil {
-			return instance, errors.Errorf("the concrete \"%s\" is invalid in the container", key.String())
-		}
+	if loaded {
+		c := concrete.(concreteContainer)
+		// singleton && resolved
+		if c.shared && c.resolved {
+			obj = c.instance
+		} else { // first or non-singleton
+			if c.concrete == nil {
+				return instance, errors.Errorf("the concrete \"%s\" is invalid in the container", key.String())
+			}
 
-		obj, err = concrete(args...)
-		if err != nil {
-			return instance, err
-		}
+			obj, err = c.concrete(args...)
+			if err != nil {
+				return instance, err
+			}
 
-		// If the requested type is registered as a singleton we'll want to cache off
-		// the instanceList in "memory" so we can return it later without creating an
-		// entirely new instance of an object on each subsequent request for it.
-		if sharedList[key] {
-			instanceList[key] = obj
-		}
+			// If the requested type is registered as a singleton we'll want to cache off
+			// the instanceList in "memory" so we can return it later without creating an
+			// entirely new instance of an object on each subsequent request for it.
+			if c.shared {
+				c.instance = obj
+			}
+			c.resolved = true
 
-		resolvedList[key] = true
+			// it cannot use the CompareAndSwap because concreteContainer.concrete is uncomparable type
+			bindingList.Store(key, c)
+		}
 	}
 
 	if instance, ok = obj.(T); ok {
