@@ -14,7 +14,7 @@ type DatabaseManager struct {
 
 func NewDatabaseManager() *DatabaseManager {
 	m := &DatabaseManager{}
-	m.Manager = manager.MakeManager[ormcontract.IOrm](m.DefaultDriverName, m.makeConnection)
+	m.Manager = manager.MakeManager[ormcontract.IOrm](m.DefaultDatabaseName, m.makeConnection)
 	return m
 }
 
@@ -22,7 +22,7 @@ func (m *DatabaseManager) Connection(name string) ormcontract.IOrm {
 	return m.MustDriver(name)
 }
 
-func (m *DatabaseManager) DefaultDriverName() string {
+func (m *DatabaseManager) DefaultDatabaseName() string {
 	return configfacade.GetString("database.default")
 }
 

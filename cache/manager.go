@@ -15,16 +15,16 @@ type CacheManager struct {
 
 func NewCacheManager() *CacheManager {
 	m := &CacheManager{}
-	m.Manager = manager.MakeManager[cache.IStore](m.DefaultDriverName, m.makeStore)
+	m.Manager = manager.MakeManager[cache.IStore](m.DefaultCacheName, m.makeStore)
 	return m
 }
 
-func (m *CacheManager) DefaultDriverName() string {
+func (m *CacheManager) DefaultCacheName() string {
 	return config.GetString("cache.default")
 }
 
 func (m *CacheManager) makeStore(storeName string) (cache.IStore, error) {
-	driver := config.GetString("config.stores."+storeName+".driver", "memory")
+	driver := config.GetString("cache.stores."+storeName+".driver", "memory")
 
 	if m.HasCustomCreator(driver) {
 		instance, err := m.CallCustomCreator(driver, storeName)
