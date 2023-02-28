@@ -35,9 +35,7 @@ func (d *Database) Connection(connectionName string) ormcontract.IOrm {
 }
 
 func (d *Database) DB() (*sql.DB, error) {
-	db := d.Query().(*databasegorm.DB)
-
-	return db.Gorm().DB()
+	return d.Gorm().DB()
 }
 
 func (d *Database) Gorm() *gorm.DB {
@@ -56,12 +54,12 @@ func (d *Database) Transaction(txFunc func(tx ormcontract.Transaction) error) er
 		return err
 	}
 
-	if err := txFunc(tx); err != nil {
-		if err := tx.Rollback(); err != nil {
-			return errors.Wrapf(err, "rollback error: %v", err)
+	if err1 := txFunc(tx); err1 != nil {
+		if err = tx.Rollback(); err != nil {
+			return errors.Wrapf(err, "rollback error: %v", err1)
 		}
 
-		return err
+		return err1
 	} else {
 		return tx.Commit()
 	}
