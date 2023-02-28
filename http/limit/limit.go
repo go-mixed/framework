@@ -6,27 +6,27 @@ import (
 	contractshttp "gopkg.in/go-mixed/framework.v1/contracts/http"
 )
 
-func PerMinute(maxAttempts int) contractshttp.Limit {
+func PerMinute(maxAttempts int) contractshttp.ILimit {
 	return NewLimit(maxAttempts, 1)
 }
 
-func PerMinutes(decayMinutes, maxAttempts int) contractshttp.Limit {
+func PerMinutes(decayMinutes, maxAttempts int) contractshttp.ILimit {
 	return NewLimit(maxAttempts, decayMinutes)
 }
 
-func PerHour(maxAttempts int) contractshttp.Limit {
+func PerHour(maxAttempts int) contractshttp.ILimit {
 	return NewLimit(maxAttempts, 60)
 }
 
-func PerHours(decayHours, maxAttempts int) contractshttp.Limit {
+func PerHours(decayHours, maxAttempts int) contractshttp.ILimit {
 	return NewLimit(maxAttempts, 60*decayHours)
 }
 
-func PerDay(maxAttempts int) contractshttp.Limit {
+func PerDay(maxAttempts int) contractshttp.ILimit {
 	return NewLimit(maxAttempts, 60*24)
 }
 
-func PerDays(decayDays, maxAttempts int) contractshttp.Limit {
+func PerDays(decayDays, maxAttempts int) contractshttp.ILimit {
 	return NewLimit(maxAttempts, 60*24*decayDays)
 }
 
@@ -51,13 +51,13 @@ func NewLimit(maxAttempts, decayMinutes int) *Limit {
 	}
 }
 
-func (r *Limit) By(key string) contractshttp.Limit {
+func (r *Limit) By(key string) contractshttp.ILimit {
 	r.Key = key
 
 	return r
 }
 
-func (r *Limit) Response(callable func(ctx contractshttp.Context)) contractshttp.Limit {
+func (r *Limit) Response(callable func(ctx contractshttp.Context)) contractshttp.ILimit {
 	r.ResponseCallback = callable
 
 	return r

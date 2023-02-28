@@ -4,13 +4,13 @@ import (
 	"fmt"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/http"
-	"gopkg.in/go-mixed/framework.v1/facades"
+	ihttp "gopkg.in/go-mixed/framework.v1/facades/http"
 	httplimit "gopkg.in/go-mixed/framework.v1/http/limit"
 )
 
 func Throttle(name string) http.Middleware {
 	return func(ctx http.Context) {
-		if limiter := facades.RateLimiter.Limiter(name); limiter != nil {
+		if limiter := ihttp.Limiter(name); limiter != nil {
 			if limits := limiter(ctx); len(limits) > 0 {
 				for _, limit := range limits {
 					if instance, ok := limit.(*httplimit.Limit); ok {
@@ -18,7 +18,7 @@ func Throttle(name string) http.Middleware {
 						if instance.ResponseCallback != nil {
 							instance.ResponseCallback(ctx)
 						}
-						// TODO Determine whether to pass the Limit check
+						// TODO Determine whether to pass the ILimit check
 					}
 				}
 			}
