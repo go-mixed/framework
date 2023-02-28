@@ -3,12 +3,14 @@ package orm
 import (
 	"context"
 	"database/sql"
+	"gorm.io/gorm"
 )
 
 //go:generate mockery --name=IOrm
 type IOrm interface {
 	Connection(name string) IOrm
 	DB() (*sql.DB, error)
+	Gorm() *gorm.DB
 	Query() DB
 	Transaction(txFunc func(tx Transaction) error) error
 	WithContext(ctx context.Context) IOrm

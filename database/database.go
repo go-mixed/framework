@@ -7,6 +7,7 @@ import (
 	"gopkg.in/go-mixed/framework.v1/container"
 	ormcontract "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
 	databasegorm "gopkg.in/go-mixed/framework.v1/database/gorm"
+	"gorm.io/gorm"
 )
 
 type Database struct {
@@ -37,6 +38,12 @@ func (d *Database) DB() (*sql.DB, error) {
 	db := d.Query().(*databasegorm.DB)
 
 	return db.Gorm().DB()
+}
+
+func (d *Database) Gorm() *gorm.DB {
+	db := d.Query().(*databasegorm.DB)
+
+	return db.Gorm()
 }
 
 func (d *Database) Query() ormcontract.DB {
