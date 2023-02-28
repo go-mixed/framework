@@ -18,7 +18,7 @@ type GinGroup struct {
 	lastMiddlewares   []httpcontract.Middleware
 }
 
-func NewGinGroup(instance gin.IRouter, prefix string, originMiddlewares []httpcontract.Middleware, lastMiddlewares []httpcontract.Middleware) route.Route {
+func NewGinGroup(instance gin.IRouter, prefix string, originMiddlewares []httpcontract.Middleware, lastMiddlewares []httpcontract.Middleware) route.IRoute {
 	return &GinGroup{
 		instance:          instance,
 		originPrefix:      prefix,
@@ -38,13 +38,13 @@ func (r *GinGroup) Group(handler route.GroupFunc) {
 	handler(NewGinGroup(r.instance, prefix, middlewares, r.lastMiddlewares))
 }
 
-func (r *GinGroup) Prefix(addr string) route.Route {
+func (r *GinGroup) Prefix(addr string) route.IRoute {
 	r.prefix += "/" + addr
 
 	return r
 }
 
-func (r *GinGroup) Middleware(middlewares ...httpcontract.Middleware) route.Route {
+func (r *GinGroup) Middleware(middlewares ...httpcontract.Middleware) route.IRoute {
 	r.middlewares = append(r.middlewares, middlewares...)
 
 	return r

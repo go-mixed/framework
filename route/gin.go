@@ -14,7 +14,7 @@ import (
 )
 
 type Gin struct {
-	route.Route
+	route.IRoute
 	instance *gin.Engine
 }
 
@@ -25,7 +25,7 @@ func NewGin() *Gin {
 		engine.Use(debugLog)
 	}
 
-	return &Gin{instance: engine, Route: NewGinGroup(
+	return &Gin{instance: engine, IRoute: NewGinGroup(
 		engine.Group("/"),
 		"",
 		[]httpcontract.Middleware{},
@@ -87,7 +87,7 @@ func (r *Gin) GlobalMiddleware(middlewares ...httpcontract.Middleware) {
 	if len(middlewares) > 0 {
 		r.instance.Use(middlewaresToGinHandlers(middlewares)...)
 	}
-	r.Route = NewGinGroup(
+	r.IRoute = NewGinGroup(
 		r.instance.Group("/"),
 		"",
 		[]httpcontract.Middleware{},

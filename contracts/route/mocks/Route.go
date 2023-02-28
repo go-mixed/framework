@@ -37,7 +37,7 @@ func (_m *Route) Group(_a0 route.GroupFunc) {
 }
 
 // Middleware provides a mock function with given fields: _a0
-func (_m *Route) Middleware(_a0 ...http.Middleware) route.Route {
+func (_m *Route) Middleware(_a0 ...http.Middleware) route.IRoute {
 	_va := make([]interface{}, len(_a0))
 	for _i := range _a0 {
 		_va[_i] = _a0[_i]
@@ -46,12 +46,12 @@ func (_m *Route) Middleware(_a0 ...http.Middleware) route.Route {
 	_ca = append(_ca, _va...)
 	ret := _m.Called(_ca...)
 
-	var r0 route.Route
-	if rf, ok := ret.Get(0).(func(...http.Middleware) route.Route); ok {
+	var r0 route.IRoute
+	if rf, ok := ret.Get(0).(func(...http.Middleware) route.IRoute); ok {
 		r0 = rf(_a0...)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(route.Route)
+			r0 = ret.Get(0).(route.IRoute)
 		}
 	}
 
@@ -74,15 +74,15 @@ func (_m *Route) Post(_a0 string, _a1 http.HandlerFunc) {
 }
 
 // Prefix provides a mock function with given fields: addr
-func (_m *Route) Prefix(addr string) route.Route {
+func (_m *Route) Prefix(addr string) route.IRoute {
 	ret := _m.Called(addr)
 
-	var r0 route.Route
-	if rf, ok := ret.Get(0).(func(string) route.Route); ok {
+	var r0 route.IRoute
+	if rf, ok := ret.Get(0).(func(string) route.IRoute); ok {
 		r0 = rf(addr)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(route.Route)
+			r0 = ret.Get(0).(route.IRoute)
 		}
 	}
 

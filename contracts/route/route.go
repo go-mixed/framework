@@ -6,11 +6,11 @@ import (
 	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
 )
 
-type GroupFunc func(routes Route)
+type GroupFunc func(routes IRoute)
 
 //go:generate mockery --name=Engine
-type Engine interface {
-	Route
+type IRouteEngine interface {
+	IRoute
 	Run(host ...string) error
 	RunTLS(host ...string) error
 	RunTLSWithCert(host, certFile, keyFile string) error
@@ -19,10 +19,10 @@ type Engine interface {
 }
 
 //go:generate mockery --name=Route
-type Route interface {
+type IRoute interface {
 	Group(handler GroupFunc)
-	Prefix(addr string) Route
-	Middleware(middlewares ...httpcontract.Middleware) Route
+	Prefix(addr string) IRoute
+	Middleware(middlewares ...httpcontract.Middleware) IRoute
 
 	Any(relativePath string, handler httpcontract.HandlerFunc)
 	Get(relativePath string, handler httpcontract.HandlerFunc)
