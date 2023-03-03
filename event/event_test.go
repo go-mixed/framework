@@ -3,6 +3,7 @@ package event
 import (
 	"context"
 	"errors"
+	queue2 "gopkg.in/go-mixed/framework.v1/facades/queue"
 	"log"
 	"testing"
 	"time"
@@ -11,8 +12,6 @@ import (
 
 	"gopkg.in/go-mixed/framework.v1/contracts/event"
 	eventcontract "gopkg.in/go-mixed/framework.v1/contracts/event"
-	"gopkg.in/go-mixed/framework.v1/facades"
-	"gopkg.in/go-mixed/framework.v1/queue"
 	testingdocker "gopkg.in/go-mixed/framework.v1/testing/docker"
 	"gopkg.in/go-mixed/framework.v1/testing/mock"
 
@@ -36,9 +35,6 @@ func TestEventTestSuite(t *testing.T) {
 	if err != nil {
 		log.Fatalf("Get redis error: %s", err)
 	}
-
-	facades.Queue = queue.NewApplication()
-	// facades.Event = NewApplication()
 
 	suite.Run(t, &EventTestSuite{
 		redisPort: redisResource.GetPort("6379/tcp"),
@@ -75,7 +71,7 @@ func (s *EventTestSuite) TestEvent() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	go func(ctx context.Context) {
-		s.Nil(facades.Queue.Worker(nil).Run())
+		s.Nil(queue2.RunServe("", "", 0))
 
 		for {
 			select {
@@ -119,7 +115,7 @@ func (s *EventTestSuite) TestCancelEvent() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	go func(ctx context.Context) {
-		s.Nil(facades.Queue.Worker(nil).Run())
+		s.Nil(queue2.RunServe("", "", 0))
 
 		for {
 			select {

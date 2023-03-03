@@ -48,6 +48,10 @@ func (m *Manager[T]) HasCustomCreator(name string) bool {
 func (m *Manager[T]) Driver(name string) (T, error) {
 	var err error
 	var instance T
+	if name == "" {
+		name = m.DefaultDriverName()
+	}
+
 	obj, ok := m.instances.Load(name)
 	if !ok {
 		instance, err = m.resolve(name)

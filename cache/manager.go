@@ -37,7 +37,7 @@ func (m *CacheManager) makeStore(storeName string) (cache.IStore, error) {
 	}
 
 	color.Redf("[Cache] cache driver \"%s.%s\" is not defined.\n", storeName, driver)
-	return nil, errors.Errorf("[Cache] \"%s.%s\" is not defined.\n", storeName, driver)
+	return nil, errors.Errorf("[Cache] cache driver \"%s.%s\" is not defined.\n", storeName, driver)
 }
 
 func (m *CacheManager) Store(storeName string) (cache.IStore, error) {

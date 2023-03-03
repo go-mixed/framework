@@ -1,4 +1,4 @@
-package support
+package broker
 
 import (
 	"testing"
@@ -7,22 +7,20 @@ import (
 
 	configmocks "gopkg.in/go-mixed/framework.v1/contracts/config/mocks"
 	"gopkg.in/go-mixed/framework.v1/contracts/event"
-	queuecontract "gopkg.in/go-mixed/framework.v1/contracts/queue"
 	"gopkg.in/go-mixed/framework.v1/testing/mock"
 )
 
-func TestGetServer_Sync(t *testing.T) {
+func TestSync(t *testing.T) {
 	mockConfig := mock.Config()
 	mockConfig.On("GetString", "queue.connections.sync.driver").Return("sync").Once()
 
-	server, err := GetServer("sync", "")
+	server := NewSyncBroker("sync")
 	assert.Nil(t, server)
-	assert.Nil(t, err)
 
 	mockConfig.AssertExpectations(t)
 }
 
-func TestGetServer_Redis(t *testing.T) {
+func TestRedis(t *testing.T) {
 	mockConfig := mock.Config()
 	mockConfig.On("GetString", "queue.connections.redis.driver").Return("redis").Once()
 	mockConfig.On("GetString", "queue.connections.redis.connection").Return("default").Once()
@@ -33,20 +31,8 @@ func TestGetServer_Redis(t *testing.T) {
 	mockConfig.On("GetString", "queue.connections.redis.queue", "default").Return("default").Once()
 	mockConfig.On("GetString", "app.name").Return("goravel").Once()
 
-	server, err := GetServer("redis", "")
-	assert.Nil(t, err)
+	server, _ := NewRedisBroker("redis")
 	assert.NotNil(t, server)
-
-	mockConfig.AssertExpectations(t)
-}
-
-func TestGetServer_Error(t *testing.T) {
-	mockConfig := mock.Config()
-	mockConfig.On("GetString", "queue.connections.custom.driver").Return("custom").Once()
-
-	server, err := GetServer("custom", "")
-	assert.Nil(t, server)
-	assert.EqualError(t, err, "unknown queue driver: custom")
 
 	mockConfig.AssertExpectations(t)
 }
@@ -74,7 +60,7 @@ func TestGetQueueName(t *testing.T) {
 				mockConfig.On("GetString", "queue.default").Return("redis").Once()
 				mockConfig.On("GetString", "queue.connections.redis.queue", "default").Return("queue").Once()
 			},
-			expectQueueName: "goravel_queues:queue",
+			expectQueueName: "laravel_queues:queue",
 		},
 		{
 			description: "success when connection and queue aren't empty",
@@ -109,7 +95,7 @@ func TestGetRedisConfig(t *testing.T) {
 	redisConfig, database, queue := getRedisConfig("redis")
 	assert.Equal(t, "127.0.0.1:6379", redisConfig)
 	assert.Equal(t, 0, database)
-	assert.Equal(t, "goravel_queues:default", queue)
+	assert.Equal(t, "laravel_queues:default", queue)
 }
 
 type TestJob struct {
@@ -143,27 +129,6 @@ func (receiver *TestJobEmpty) Signature() string {
 
 func (receiver *TestJobEmpty) Handle(args ...any) error {
 	return nil
-}
-
-func TestJobs2Tasks(t *testing.T) {
-	_, err := jobs2Tasks([]queuecontract.Job{
-		&TestJob{},
-	})
-
-	assert.Nil(t, err, "success")
-
-	_, err = jobs2Tasks([]queuecontract.Job{
-		&TestJob{},
-		&TestJobDuplicate{},
-	})
-
-	assert.NotNil(t, err, "Signature duplicate")
-
-	_, err = jobs2Tasks([]queuecontract.Job{
-		&TestJobEmpty{},
-	})
-
-	assert.NotNil(t, err, "Signature empty")
 }
 
 type TestEvent struct {
@@ -235,14 +200,14 @@ func (receiver *TestListenerEmpty) Handle(args ...any) error {
 }
 
 func TestEvents2Tasks(t *testing.T) {
-	_, err := eventsToTasks(map[event.Event][]event.Listener{
+	_, err := eventsToJobMap(map[event.Event][]event.Listener{
 		&TestEvent{}: {
 			&TestListener{},
 		},
 	})
 	assert.Nil(t, err)
 
-	_, err = eventsToTasks(map[event.Event][]event.Listener{
+	_, err = eventsToJobMap(map[event.Event][]event.Listener{
 		&TestEvent{}: {
 			&TestListener{},
 			&TestListenerDuplicate{},
@@ -250,7 +215,7 @@ func TestEvents2Tasks(t *testing.T) {
 	})
 	assert.Nil(t, err)
 
-	_, err = eventsToTasks(map[event.Event][]event.Listener{
+	_, err = eventsToJobMap(map[event.Event][]event.Listener{
 		&TestEvent{}: {
 			&TestListenerEmpty{},
 		},

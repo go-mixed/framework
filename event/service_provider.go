@@ -13,7 +13,7 @@ type ServiceProvider struct {
 
 func (receiver *ServiceProvider) Register() {
 	container.Singleton((event.IInstance)(nil), func(args ...any) (any, error) {
-		return NewApplication(), nil
+		return NewEvent(), nil
 	})
 	container.Alias("event", (event.IInstance)(nil))
 }

@@ -2,13 +2,9 @@ package support
 
 import (
 	"fmt"
-	"gopkg.in/go-mixed/framework.v1/facades/config"
-
-	"github.com/RichardKnop/machinery/v2"
-	"github.com/RichardKnop/machinery/v2/tasks"
-
+	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/contracts/event"
-	"gopkg.in/go-mixed/framework.v1/queue/support"
+	"gopkg.in/go-mixed/framework.v1/contracts/queue"
 )
 
 type Task struct {
@@ -19,32 +15,32 @@ type Task struct {
 	mapArgs     []any
 }
 
-func (receiver *Task) Dispatch() error {
-	listeners, ok := receiver.Events[receiver.Event]
+func (t *Task) Dispatch() error {
+	listeners, ok := t.Events[t.Event]
 	if !ok {
-		return fmt.Errorf("event not found: %v", receiver.Event)
+		return fmt.Errorf("event not found: %v", t.Event)
 	}
 
-	handledArgs, err := receiver.Event.Handle(receiver.Args)
+	handledArgs, err := t.Event.Handle(t.Args)
 	if err != nil {
 		return err
 	}
 
-	receiver.handledArgs = handledArgs
+	t.handledArgs = handledArgs
 
 	var mapArgs []any
-	for _, arg := range receiver.handledArgs {
+	for _, arg := range t.handledArgs {
 		mapArgs = append(mapArgs, arg.Value)
 	}
-	receiver.mapArgs = mapArgs
+	t.mapArgs = mapArgs
 
 	for _, listener := range listeners {
 		var err error
-		queue := listener.Queue(receiver.mapArgs...)
+		queue := listener.Queue(t.mapArgs...)
 		if queue.Enable {
-			err = receiver.dispatchAsync(listener)
+			err = t.dispatchAsync(listener)
 		} else {
-			err = receiver.dispatchSync(listener)
+			err = t.dispatchSync(listener)
 		}
 
 		if err != nil {
@@ -55,54 +51,24 @@ func (receiver *Task) Dispatch() error {
 	return nil
 }
 
-func (receiver *Task) dispatchAsync(listener event.Listener) error {
-	queueServer, err := receiver.getQueueServer(listener)
-	if err != nil {
-		return err
-	}
-	if queueServer == nil {
-		return receiver.dispatchSync(listener)
-	}
+func (t *Task) dispatchAsync(listener event.Listener) error {
+	b := container.MustMake[queue.IBroker]("queue.connection")
 
-	var args []tasks.Arg
-	for _, arg := range receiver.handledArgs {
-		args = append(args, tasks.Arg{
+	var args []queue.Argument
+	for _, arg := range t.handledArgs {
+		args = append(args, queue.Argument{
 			Type:  arg.Type,
 			Value: arg.Value,
 		})
 	}
 
-	_, err = queueServer.SendTask(&tasks.Signature{
-		Name: listener.Signature(),
-		Args: args,
-	})
-	if err != nil {
+	if err := b.AddJob(queue.MakeJobWithName(listener.Signature(), args...)); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (receiver *Task) dispatchSync(listen event.Listener) error {
-	return listen.Handle(receiver.mapArgs...)
-}
-
-func (receiver *Task) getQueueServer(listener event.Listener) (*machinery.Server, error) {
-	queue := listener.Queue(receiver.mapArgs)
-	connection := queue.Connection
-	if connection == "" {
-		connection = config.GetString("queue.default")
-	}
-
-	driver := config.GetString(fmt.Sprintf("queue.connections.%s.driver", connection))
-	if driver == support.DriverSync || driver == "" {
-		return nil, nil
-	}
-
-	server, err := support.GetServer(connection, queue.Queue)
-	if err != nil {
-		return nil, err
-	}
-
-	return server, nil
+func (t *Task) dispatchSync(listen event.Listener) error {
+	return listen.Handle(t.mapArgs...)
 }

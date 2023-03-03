@@ -4,16 +4,16 @@ import (
 	"crypto/tls"
 	"fmt"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
+	"gopkg.in/go-mixed/framework.v1/facades/queue"
 	"net/smtp"
 
 	"github.com/jordan-wright/email"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/mail"
 	queuecontract "gopkg.in/go-mixed/framework.v1/contracts/queue"
-	"gopkg.in/go-mixed/framework.v1/facades"
 )
 
-type Application struct {
+type Mail struct {
 	clone    int
 	content  mail.Content
 	from     mail.From
@@ -23,58 +23,58 @@ type Application struct {
 	attaches []string
 }
 
-func NewApplication() *Application {
-	return &Application{}
+func NewMail() *Mail {
+	return &Mail{}
 }
 
-func (r *Application) Content(content mail.Content) mail.IMail {
+func (r *Mail) Content(content mail.Content) mail.IMail {
 	instance := r.instance()
 	instance.content = content
 
 	return instance
 }
 
-func (r *Application) From(from mail.From) mail.IMail {
+func (r *Mail) From(from mail.From) mail.IMail {
 	instance := r.instance()
 	instance.from = from
 
 	return instance
 }
 
-func (r *Application) To(to []string) mail.IMail {
+func (r *Mail) To(to []string) mail.IMail {
 	instance := r.instance()
 	instance.to = to
 
 	return instance
 }
 
-func (r *Application) Cc(cc []string) mail.IMail {
+func (r *Mail) Cc(cc []string) mail.IMail {
 	instance := r.instance()
 	instance.cc = cc
 
 	return instance
 }
 
-func (r *Application) Bcc(bcc []string) mail.IMail {
+func (r *Mail) Bcc(bcc []string) mail.IMail {
 	instance := r.instance()
 	instance.bcc = bcc
 
 	return instance
 }
 
-func (r *Application) Attach(files []string) mail.IMail {
+func (r *Mail) Attach(files []string) mail.IMail {
 	instance := r.instance()
 	instance.attaches = files
 
 	return instance
 }
 
-func (r *Application) Send() error {
+func (r *Mail) Send() error {
 	return SendMail(r.content.Subject, r.content.Html, r.from.Address, r.from.Name, r.to, r.cc, r.bcc, r.attaches)
 }
 
-func (r *Application) Queue(queue *mail.Queue) error {
-	job := facades.Queue.Job(&SendMailJob{}, []queuecontract.Arg{
+func (r *Mail) Queue(mainQueue *mail.Queue) error {
+	job := queue.Job(&SendMailJob{}, []queuecontract.Argument{
 		{Value: r.content.Subject, Type: "string"},
 		{Value: r.content.Html, Type: "string"},
 		{Value: r.from.Address, Type: "string"},
@@ -83,22 +83,22 @@ func (r *Application) Queue(queue *mail.Queue) error {
 		{Value: r.cc, Type: "[]string"},
 		{Value: r.bcc, Type: "[]string"},
 		{Value: r.attaches, Type: "[]string"},
-	})
-	if queue != nil {
-		if queue.Connection != "" {
-			job.OnConnection(queue.Connection)
+	}...)
+	if mainQueue != nil {
+		if mainQueue.Connection != "" {
+			job.OnConnection(mainQueue.Connection)
 		}
-		if queue.Queue != "" {
-			job.OnQueue(queue.Queue)
+		if mainQueue.Queue != "" {
+			job.OnQueue(mainQueue.Queue)
 		}
 	}
 
 	return job.Dispatch()
 }
 
-func (r *Application) instance() *Application {
+func (r *Mail) instance() *Mail {
 	if r.clone == 0 {
-		return &Application{clone: 1}
+		return &Mail{clone: 1}
 	}
 
 	return r

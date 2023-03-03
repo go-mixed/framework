@@ -14,7 +14,6 @@ import (
 	mailmocks "gopkg.in/go-mixed/framework.v1/contracts/mail/mocks"
 	queuemocks "gopkg.in/go-mixed/framework.v1/contracts/queue/mocks"
 	validatemocks "gopkg.in/go-mixed/framework.v1/contracts/validation/mocks"
-	"gopkg.in/go-mixed/framework.v1/facades"
 	"gopkg.in/go-mixed/framework.v1/log"
 )
 
@@ -65,11 +64,10 @@ func Mail() *mailmocks.Mail {
 	return mockMail
 }
 
-func Queue() (*queuemocks.Queue, *queuemocks.Task) {
+func Queue() *queuemocks.Queue {
 	mockQueue := &queuemocks.Queue{}
-	facades.Queue = mockQueue
 
-	return mockQueue, &queuemocks.Task{}
+	return mockQueue
 }
 
 func Storage() (*filesystemmocks.Storage, *filesystemmocks.Driver, *filesystemmocks.File) {

@@ -1,4 +1,4 @@
-package support
+package queue
 
 import (
 	"testing"
@@ -26,10 +26,11 @@ func (receiver *Test) Handle(args ...any) error {
 }
 
 func TestDispatchSync(t *testing.T) {
-	task := &Task{
-		Job: &Test{},
-		Args: []queue.Arg{
-			{Type: "uint64", Value: "test"},
+	task := &Producer{
+		Jobs: []queue.IBrokerJob{
+			queue.MakeJob(&Test{}, []queue.Argument{
+				{Type: "uint64", Value: "test"},
+			}...),
 		},
 	}
 

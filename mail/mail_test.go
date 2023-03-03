@@ -4,8 +4,11 @@ import (
 	"context"
 	configinstance "gopkg.in/go-mixed/framework.v1/config"
 	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/contracts/queue"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
+	queue2 "gopkg.in/go-mixed/framework.v1/facades/queue"
 	"log"
+	"runtime"
 	"testing"
 	"time"
 
@@ -16,9 +19,6 @@ import (
 	"gopkg.in/go-mixed/framework.v1/contracts/mail"
 	imail "gopkg.in/go-mixed/framework.v1/facades/mail"
 
-	queuecontract "gopkg.in/go-mixed/framework.v1/contracts/queue"
-	"gopkg.in/go-mixed/framework.v1/facades"
-	"gopkg.in/go-mixed/framework.v1/queue"
 	"gopkg.in/go-mixed/framework.v1/support/file"
 	testingdocker "gopkg.in/go-mixed/framework.v1/testing/docker"
 	"gopkg.in/go-mixed/framework.v1/testing/mock"
@@ -40,7 +40,7 @@ func TestApplicationTestSuite(t *testing.T) {
 	}
 
 	initConfig(redisResource.GetPort("6379/tcp"))
-	//facades.Mail = NewApplication()
+	//facades.Mail = NewEvent()
 	suite.Run(t, new(ApplicationTestSuite))
 
 	if err := redisPool.Purge(redisResource); err != nil {
@@ -111,10 +111,9 @@ func (s *ApplicationTestSuite) TestSendMailWithFrom() {
 }
 
 func (s *ApplicationTestSuite) TestQueueMail() {
-	facades.Queue = queue.NewApplication()
-	facades.Queue.Register([]queuecontract.Job{
+	queue2.Register([]queue.IJob{
 		&SendMailJob{},
-	})
+	}...)
 
 	mockEvent, _ := mock.Event()
 	mockEvent.On("GetEvents").Return(map[event.Event][]event.Listener{}).Once()
@@ -122,7 +121,7 @@ func (s *ApplicationTestSuite) TestQueueMail() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	go func(ctx context.Context) {
-		s.Nil(facades.Queue.Worker(nil).Run())
+		s.Nil(queue2.RunServe("async", "", runtime.NumCPU()))
 
 		for {
 			select {
