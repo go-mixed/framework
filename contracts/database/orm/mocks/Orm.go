@@ -4,6 +4,7 @@ package mocks
 
 import (
 	context "context"
+	"gorm.io/gorm"
 
 	mock "github.com/stretchr/testify/mock"
 	ormcontracts "gopkg.in/go-mixed/framework.v1/contracts/database/orm"
@@ -55,6 +56,21 @@ func (_m *Orm) DB() (*sql.DB, error) {
 	}
 
 	return r0, r1
+}
+
+// DB provides a mock function with given fields:
+func (_m *Orm) Gorm() *gorm.DB {
+	ret := _m.Called()
+
+	var r0 *gorm.DB
+	if rf, ok := ret.Get(0).(func() *gorm.DB); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*gorm.DB)
+		}
+	}
+	return r0
 }
 
 // Query provides a mock function with given fields:
