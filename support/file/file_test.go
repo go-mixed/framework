@@ -11,12 +11,12 @@ import (
 
 func TestCreate(t *testing.T) {
 	pwd, _ := os.Getwd()
-	path := pwd + "/goravel/goravel.txt"
-	Create(path, `goravel`)
+	path := pwd + "/laravel/laravel.txt"
+	Create(path, `laravel`)
 	assert.Equal(t, 1, file.GetLineNum(path))
 	assert.True(t, Exists(path))
 	assert.True(t, Remove(path))
-	assert.True(t, Remove(pwd+"/goravel"))
+	assert.True(t, Remove(pwd+"/laravel"))
 }
 
 func TestExtension(t *testing.T) {

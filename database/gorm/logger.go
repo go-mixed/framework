@@ -139,12 +139,12 @@ func (l Logger) Trace(ctx context.Context, begin time.Time, fc func() (string, i
 func FileWithLineNum() string {
 	_, file, _, _ := runtime.Caller(0)
 	gormSourceDir := regexp.MustCompile(`utils.utils\.go`).ReplaceAllString(file, "")
-	goravelSourceDir := "database/gorm.go"
+	laravelSourceDir := "database/gorm.go"
 
 	// the second caller usually from gorm internal, so set i start from 5
 	for i := 5; i < 15; i++ {
 		_, file, line, ok := runtime.Caller(i)
-		if ok && ((!strings.HasPrefix(file, gormSourceDir) && !strings.Contains(file, goravelSourceDir)) || strings.HasSuffix(file, "_test.go")) {
+		if ok && ((!strings.HasPrefix(file, gormSourceDir) && !strings.Contains(file, laravelSourceDir)) || strings.HasSuffix(file, "_test.go")) {
 			return file + ":" + strconv.FormatInt(int64(line), 10)
 		}
 	}

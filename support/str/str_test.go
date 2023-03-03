@@ -11,11 +11,11 @@ func TestRandom(t *testing.T) {
 }
 
 func TestCase2Camel(t *testing.T) {
-	assert.Equal(t, "GoravelFramework", Case2Camel("goravel_framework"))
-	assert.Equal(t, "GoravelFramework1", Case2Camel("goravel_framework1"))
+	assert.Equal(t, "LaravelFramework", Case2Camel("laravel_framework"))
+	assert.Equal(t, "LaravelFramework1", Case2Camel("laravel_framework1"))
 }
 
 func TestCamel2Case(t *testing.T) {
-	assert.Equal(t, "goravel_framework", Camel2Case("GoravelFramework"))
-	assert.Equal(t, "goravel_framework1", Camel2Case("GoravelFramework1"))
+	assert.Equal(t, "laravel_framework", Camel2Case("LaravelFramework"))
+	assert.Equal(t, "laravel_framework1", Camel2Case("LaravelFramework1"))
 }

@@ -351,7 +351,7 @@ func (r *S3) Url(file string) string {
 }
 
 func (r *S3) tempFile(content string) (*os.File, error) {
-	tempFile, err := ioutil.TempFile(os.TempDir(), "goravel-")
+	tempFile, err := ioutil.TempFile(os.TempDir(), "laravel-")
 	if err != nil {
 		return nil, err
 	}

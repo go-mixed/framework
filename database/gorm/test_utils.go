@@ -14,9 +14,9 @@ import (
 )
 
 const (
-	dbDatabase     = "goravel"
-	dbDatabase1    = "goravel1"
-	dbPassword     = "Goravel(!)"
+	dbDatabase     = "laravel"
+	dbDatabase1    = "laravel1"
+	dbPassword     = "Laravel(!)"
 	dbUser         = "root"
 	dbUser1        = "sa"
 	resourceExpire = 600

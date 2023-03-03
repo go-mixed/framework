@@ -10,7 +10,7 @@ import (
 
 	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
 	"gopkg.in/go-mixed/framework.v1/contracts/route"
-	goravelhttp "gopkg.in/go-mixed/framework.v1/http"
+	laravelhttp "gopkg.in/go-mixed/framework.v1/http"
 )
 
 type Gin struct {
@@ -29,7 +29,7 @@ func NewGin() *Gin {
 		engine.Group("/"),
 		"",
 		[]httpcontract.Middleware{},
-		[]httpcontract.Middleware{goravelhttp.GinResponseMiddleware()},
+		[]httpcontract.Middleware{laravelhttp.GinResponseMiddleware()},
 	)}
 }
 
@@ -91,6 +91,6 @@ func (r *Gin) GlobalMiddleware(middlewares ...httpcontract.Middleware) {
 		r.instance.Group("/"),
 		"",
 		[]httpcontract.Middleware{},
-		[]httpcontract.Middleware{goravelhttp.GinResponseMiddleware()},
+		[]httpcontract.Middleware{laravelhttp.GinResponseMiddleware()},
 	)
 }

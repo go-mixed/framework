@@ -50,7 +50,7 @@ func (s *AuthTestSuite) TestLoginUsingID_EmptySecret() {
 
 func (s *AuthTestSuite) TestLoginUsingID_InvalidKey() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel").Once()
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel").Once()
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	token, err := s.auth.LoginUsingID(http.Background(), "")
@@ -62,7 +62,7 @@ func (s *AuthTestSuite) TestLoginUsingID_InvalidKey() {
 
 func (s *AuthTestSuite) TestLoginUsingID() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel").Once()
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel").Once()
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	token, err := s.auth.LoginUsingID(http.Background(), 1)
@@ -74,12 +74,12 @@ func (s *AuthTestSuite) TestLoginUsingID() {
 
 func (s *AuthTestSuite) TestLogin_Model() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel").Once()
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel").Once()
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	var user User
 	user.ID = 1
-	user.Name = "Goravel"
+	user.Name = "Laravel"
 	token, err := s.auth.Login(http.Background(), &user)
 	s.NotEmpty(token)
 	s.Nil(err)
@@ -94,12 +94,12 @@ func (s *AuthTestSuite) TestLogin_CustomModel() {
 	}
 
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel").Once()
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel").Once()
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	var user CustomUser
 	user.ID = 1
-	user.Name = "Goravel"
+	user.Name = "Laravel"
 	token, err := s.auth.Login(http.Background(), &user)
 	s.NotEmpty(token)
 	s.Nil(err)
@@ -115,7 +115,7 @@ func (s *AuthTestSuite) TestLogin_ErrorModel() {
 
 	var errorUser ErrorUser
 	errorUser.ID = 1
-	errorUser.Name = "Goravel"
+	errorUser.Name = "Laravel"
 	token, err := s.auth.Login(http.Background(), &errorUser)
 	s.Empty(token)
 	s.EqualError(err, "the primaryKey field was not found in the model, set primaryKey like orm.Model")
@@ -130,7 +130,7 @@ func (s *AuthTestSuite) TestLogin_NoPrimaryKey() {
 	ctx := http.Background()
 	var user User
 	user.ID = 1
-	user.Name = "Goravel"
+	user.Name = "Laravel"
 	token, err := s.auth.Login(ctx, &user)
 	s.Empty(token)
 	s.ErrorIs(err, ErrorNoPrimaryKeyField)
@@ -147,7 +147,7 @@ func (s *AuthTestSuite) TestParse_TokenDisabled() {
 
 func (s *AuthTestSuite) TestParse_TokenInvalid() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel").Once()
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel").Once()
 
 	token := "1"
 	mockCache := mock.Cache()
@@ -161,7 +161,7 @@ func (s *AuthTestSuite) TestParse_TokenInvalid() {
 
 func (s *AuthTestSuite) TestParse_TokenExpired() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	ctx := http.Background()
@@ -181,7 +181,7 @@ func (s *AuthTestSuite) TestParse_TokenExpired() {
 
 func (s *AuthTestSuite) TestParse_Success() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	ctx := http.Background()
@@ -199,7 +199,7 @@ func (s *AuthTestSuite) TestParse_Success() {
 
 func (s *AuthTestSuite) TestParse_SuccessWithPrefix() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	ctx := http.Background()
@@ -228,7 +228,7 @@ func (s *AuthTestSuite) TestUser_NoParse() {
 
 func (s *AuthTestSuite) TestUser_DBError() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	ctx := http.Background()
@@ -255,7 +255,7 @@ func (s *AuthTestSuite) TestUser_DBError() {
 
 func (s *AuthTestSuite) TestUser_Expired() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2)
 
 	ctx := http.Background()
@@ -293,7 +293,7 @@ func (s *AuthTestSuite) TestUser_Expired() {
 
 func (s *AuthTestSuite) TestUser_RefreshExpired() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	ctx := http.Background()
@@ -326,7 +326,7 @@ func (s *AuthTestSuite) TestUser_RefreshExpired() {
 
 func (s *AuthTestSuite) TestUser_Success() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	ctx := http.Background()
@@ -363,7 +363,7 @@ func (s *AuthTestSuite) TestRefresh_NotParse() {
 
 func (s *AuthTestSuite) TestRefresh_RefreshTimeExceeded() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2).Once()
 
 	ctx := http.Background()
@@ -388,7 +388,7 @@ func (s *AuthTestSuite) TestRefresh_RefreshTimeExceeded() {
 
 func (s *AuthTestSuite) TestRefresh_Success() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2)
 
 	ctx := http.Background()
@@ -413,7 +413,7 @@ func (s *AuthTestSuite) TestRefresh_Success() {
 
 func (s *AuthTestSuite) TestLogout_CacheUnsupported() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2)
 
 	ctx := http.Background()
@@ -431,7 +431,7 @@ func (s *AuthTestSuite) TestLogout_NotParse() {
 
 func (s *AuthTestSuite) TestLogout_SetDisabledCacheError() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2)
 
 	ctx := http.Background()
@@ -453,7 +453,7 @@ func (s *AuthTestSuite) TestLogout_SetDisabledCacheError() {
 
 func (s *AuthTestSuite) TestLogout_Success() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "jwt.secret").Return("Goravel")
+	mockConfig.On("GetString", "jwt.secret").Return("Laravel")
 	mockConfig.On("GetInt", "jwt.ttl").Return(2)
 
 	ctx := http.Background()

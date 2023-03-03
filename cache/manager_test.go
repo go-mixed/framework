@@ -62,7 +62,7 @@ func (s *ModuleTestSuite) TestInitRedis() {
 				mockConfig.On("GetString", "database.redis.default.port").Return(s.redisDocker.GetPort("6379/tcp")).Once()
 				mockConfig.On("GetString", "database.redis.default.password").Return("").Once()
 				mockConfig.On("GetInt", "database.redis.default.database").Return(0).Once()
-				mockConfig.On("GetString", "cache.prefix").Return("goravel_cache").Once()
+				mockConfig.On("GetString", "cache.prefix").Return("laravel_cache").Once()
 
 				manager := CacheManager{}
 				s.NotNil(manager, description)
@@ -95,7 +95,7 @@ func (s *ModuleTestSuite) TestInitRedis() {
 func (s *ModuleTestSuite) TestAdd() {
 	for name, store := range s.stores {
 		s.Run(name, func() {
-			s.Nil(store.Put("name", "Goravel", 1*time.Second))
+			s.Nil(store.Put("name", "Laravel", 1*time.Second))
 			s.False(store.Add("name", "World", 1*time.Second))
 			s.True(store.Add("name1", "World", 1*time.Second))
 			s.True(store.Has("name1"))
@@ -109,8 +109,8 @@ func (s *ModuleTestSuite) TestAdd() {
 func (s *ModuleTestSuite) TestForever() {
 	for name, store := range s.stores {
 		s.Run(name, func() {
-			s.True(store.Forever("name", "Goravel"))
-			s.Equal("Goravel", store.Get("name", "").(string))
+			s.True(store.Forever("name", "Laravel"))
+			s.Equal("Laravel", store.Get("name", "").(string))
 			s.True(store.Flush())
 		})
 	}
@@ -122,7 +122,7 @@ func (s *ModuleTestSuite) TestForget() {
 			val := store.Forget("test-forget")
 			s.True(val)
 
-			err := store.Put("test-forget", "goravel", 5*time.Second)
+			err := store.Put("test-forget", "laravel", 5*time.Second)
 			s.Nil(err)
 			s.True(store.Forget("test-forget"))
 		})
@@ -132,8 +132,8 @@ func (s *ModuleTestSuite) TestForget() {
 func (s *ModuleTestSuite) TestFlush() {
 	for name, store := range s.stores {
 		s.Run(name, func() {
-			s.Nil(store.Put("test-flush", "goravel", 5*time.Second))
-			s.Equal("goravel", store.Get("test-flush", nil).(string))
+			s.Nil(store.Put("test-flush", "laravel", 5*time.Second))
+			s.Equal("laravel", store.Get("test-flush", nil).(string))
 
 			s.True(store.Flush())
 			s.False(store.Has("test-flush"))
@@ -144,8 +144,8 @@ func (s *ModuleTestSuite) TestFlush() {
 func (s *ModuleTestSuite) TestGet() {
 	for name, store := range s.stores {
 		s.Run(name, func() {
-			s.Nil(store.Put("name", "Goravel", 1*time.Second))
-			s.Equal("Goravel", store.Get("name", "").(string))
+			s.Nil(store.Put("name", "Laravel", 1*time.Second))
+			s.Equal("Laravel", store.Get("name", "").(string))
 			s.Equal("World", store.Get("name1", "World").(string))
 			s.Equal("World1", store.Get("name2", func() any {
 				return "World1"
@@ -190,7 +190,7 @@ func (s *ModuleTestSuite) TestHas() {
 	for name, store := range s.stores {
 		s.Run(name, func() {
 			s.False(store.Has("test-has"))
-			s.Nil(store.Put("test-has", "goravel", 5*time.Second))
+			s.Nil(store.Put("test-has", "laravel", 5*time.Second))
 			s.True(store.Has("test-has"))
 		})
 	}
@@ -199,9 +199,9 @@ func (s *ModuleTestSuite) TestHas() {
 func (s *ModuleTestSuite) TestPull() {
 	for name, store := range s.stores {
 		s.Run(name, func() {
-			s.Nil(store.Put("name", "Goravel", 1*time.Second))
+			s.Nil(store.Put("name", "Laravel", 1*time.Second))
 			s.True(store.Has("name"))
-			s.Equal("Goravel", store.Pull("name", "").(string))
+			s.Equal("Laravel", store.Pull("name", "").(string))
 			s.False(store.Has("name"))
 		})
 	}
@@ -210,9 +210,9 @@ func (s *ModuleTestSuite) TestPull() {
 func (s *ModuleTestSuite) TestPut() {
 	for name, store := range s.stores {
 		s.Run(name, func() {
-			s.Nil(store.Put("name", "Goravel", 1*time.Second))
+			s.Nil(store.Put("name", "Laravel", 1*time.Second))
 			s.True(store.Has("name"))
-			s.Equal("Goravel", store.Get("name", "").(string))
+			s.Equal("Laravel", store.Get("name", "").(string))
 			time.Sleep(2 * time.Second)
 			s.False(store.Has("name"))
 		})
@@ -222,12 +222,12 @@ func (s *ModuleTestSuite) TestPut() {
 func (s *ModuleTestSuite) TestRemember() {
 	for name, store := range s.stores {
 		s.Run(name, func() {
-			s.Nil(store.Put("name", "Goravel", 1*time.Second))
+			s.Nil(store.Put("name", "Laravel", 1*time.Second))
 			value, err := store.Remember("name", 1*time.Second, func() any {
 				return "World"
 			})
 			s.Nil(err)
-			s.Equal("Goravel", value)
+			s.Equal("Laravel", value)
 
 			value, err = store.Remember("name1", 1*time.Second, func() any {
 				return "World1"
@@ -244,12 +244,12 @@ func (s *ModuleTestSuite) TestRemember() {
 func (s *ModuleTestSuite) TestRememberForever() {
 	for name, store := range s.stores {
 		s.Run(name, func() {
-			s.Nil(store.Put("name", "Goravel", 1*time.Second))
+			s.Nil(store.Put("name", "Laravel", 1*time.Second))
 			value, err := store.RememberForever("name", func() any {
 				return "World"
 			})
 			s.Nil(err)
-			s.Equal("Goravel", value)
+			s.Equal("Laravel", value)
 
 			value, err = store.RememberForever("name1", func() any {
 				return "World1"
@@ -270,7 +270,7 @@ func (s *ModuleTestSuite) TestCustomDriver() {
 	manager := CacheManager{}
 	store := manager.MustDefaultDriver()
 	s.NotNil(store)
-	s.Equal("Goravel", store.Get("name", "Goravel").(string))
+	s.Equal("Laravel", store.Get("name", "Laravel").(string))
 
 	mockConfig.AssertExpectations(s.T())
 }
@@ -291,7 +291,7 @@ func getRedisDocker() (*dockertest.Pool, *dockertest.Resource, cache.IStore, err
 		mockConfig.On("GetString", "database.redis.default.port").Return(resource.GetPort("6379/tcp")).Once()
 		mockConfig.On("GetString", "database.redis.default.password").Return(resource.GetPort("")).Once()
 		mockConfig.On("GetInt", "database.redis.default.database").Return(0).Once()
-		mockConfig.On("GetString", "cache.prefix").Return("goravel_cache").Once()
+		mockConfig.On("GetString", "cache.prefix").Return("laravel_cache").Once()
 		store, err = NewRedis("redis", context.Background())
 
 		return err
@@ -304,7 +304,7 @@ func getRedisDocker() (*dockertest.Pool, *dockertest.Resource, cache.IStore, err
 
 func getMemoryStore() (*Memory, error) {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "cache.prefix").Return("goravel_cache").Once()
+	mockConfig.On("GetString", "cache.prefix").Return("laravel_cache").Once()
 
 	memory, err := NewMemory()
 	if err != nil {

@@ -16,9 +16,9 @@ func TestJobMakeCommand(t *testing.T) {
 	err := jobMakeCommand.Handle(mockContext)
 	assert.EqualError(t, err, "Not enough arguments (missing: name) ")
 
-	mockContext.On("Argument", 0).Return("GoravelJob").Once()
+	mockContext.On("Argument", 0).Return("LaravelJob").Once()
 	err = jobMakeCommand.Handle(mockContext)
 	assert.Nil(t, err)
-	assert.True(t, file.Exists("app/jobs/goravel_job.go"))
+	assert.True(t, file.Exists("app/jobs/laravel_job.go"))
 	assert.True(t, file.Remove("app"))
 }

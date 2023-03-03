@@ -17,7 +17,7 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-const ctxKey = "GoravelAuth"
+const ctxKey = "LaravelAuth"
 
 var (
 	unit = time.Minute

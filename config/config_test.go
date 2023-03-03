@@ -28,7 +28,7 @@ func (s *ApplicationTestSuite) SetupTest() {
 }
 
 func (s *ApplicationTestSuite) TestEnv() {
-	s.Equal("goravel", s.config.Env("APP_NAME", "goravel").(string))
+	s.Equal("laravel", s.config.Env("APP_NAME", "laravel").(string))
 	s.Equal("127.0.0.1", s.config.Env("DB_HOST", "127.0.0.1").(string))
 }
 
@@ -41,7 +41,7 @@ func (s *ApplicationTestSuite) TestAdd() {
 }
 
 func (s *ApplicationTestSuite) TestGet() {
-	s.Equal("goravel", s.config.Get("APP_NAME", "goravel").(string))
+	s.Equal("laravel", s.config.Get("APP_NAME", "laravel").(string))
 }
 
 func (s *ApplicationTestSuite) TestGetString() {
@@ -54,7 +54,7 @@ func (s *ApplicationTestSuite) TestGetString() {
 		},
 	})
 
-	s.Equal("goravel", s.config.GetString("APP_NAME", "goravel"))
+	s.Equal("laravel", s.config.GetString("APP_NAME", "laravel"))
 	s.Equal("127.0.0.1", s.config.GetString("database.connections.mysql.host"))
 	s.Equal("mysql", s.config.GetString("database.default"))
 }

@@ -183,7 +183,7 @@ func TestRule_Required(t *testing.T) {
 			description: "success",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name": "goravel",
+					"name": "laravel",
 				}, map[string]string{
 					"name": "required",
 				})
@@ -197,7 +197,7 @@ func TestRule_Required(t *testing.T) {
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
 					"name": map[string]string{
-						"first": "Goravel",
+						"first": "Laravel",
 					},
 				}, map[string]string{
 					"name.first": "required",
@@ -226,7 +226,7 @@ func TestRule_Required(t *testing.T) {
 			description: "error when key isn't exist",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name": "Goravel",
+					"name": "Laravel",
 				}, map[string]string{
 					"name":  "required",
 					"name1": "required",
@@ -269,11 +269,11 @@ func TestRule_RequiredIf(t *testing.T) {
 			description: "success when required_if is true",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
-					"name1": "goravel1",
+					"name":  "laravel",
+					"name1": "laravel1",
 				}, map[string]string{
 					"name":  "required",
-					"name1": "required_if:name,goravel,goravel1",
+					"name1": "required_if:name,laravel,laravel1",
 				})
 				assert.Nil(t, err, c.description)
 				assert.NotNil(t, validator, c.description)
@@ -284,10 +284,10 @@ func TestRule_RequiredIf(t *testing.T) {
 			description: "success when required_if is false",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name": "goravel2",
+					"name": "laravel2",
 				}, map[string]string{
 					"name":  "required",
-					"name1": "required_if:name,goravel,goravel1",
+					"name1": "required_if:name,laravel,laravel1",
 				})
 				assert.Nil(t, err, c.description)
 				assert.NotNil(t, validator, c.description)
@@ -298,16 +298,16 @@ func TestRule_RequiredIf(t *testing.T) {
 			description: "error when required_if is true and key is empty",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
+					"name":  "laravel",
 					"name1": "",
 				}, map[string]string{
 					"name":  "required",
-					"name1": "required_if:name,goravel,goravel1",
+					"name1": "required_if:name,laravel,laravel1",
 				})
 				assert.Nil(t, err, c.description)
 				assert.NotNil(t, validator, c.description)
 				assert.Equal(t, map[string]string{
-					"required_if": "name1 is required when name is [goravel,goravel1]",
+					"required_if": "name1 is required when name is [laravel,laravel1]",
 				}, validator.Errors().Get("name1"))
 			},
 		},
@@ -315,15 +315,15 @@ func TestRule_RequiredIf(t *testing.T) {
 			description: "error when required_if is true and key isn't exist",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name": "goravel",
+					"name": "laravel",
 				}, map[string]string{
 					"name":  "required",
-					"name1": "required_if:name,goravel,goravel1",
+					"name1": "required_if:name,laravel,laravel1",
 				})
 				assert.Nil(t, err, c.description)
 				assert.NotNil(t, validator, c.description)
 				assert.Equal(t, map[string]string{
-					"required_if": "name1 is required when name is [goravel,goravel1]",
+					"required_if": "name1 is required when name is [laravel,laravel1]",
 				}, validator.Errors().Get("name1"))
 			},
 		},
@@ -341,8 +341,8 @@ func TestRule_RequiredUnless(t *testing.T) {
 			description: "success when required_unless is true",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
-					"name1": "goravel1",
+					"name":  "laravel",
+					"name1": "laravel1",
 				}, map[string]string{
 					"name":  "required",
 					"name1": "required_unless:name,hello,hello1",
@@ -356,10 +356,10 @@ func TestRule_RequiredUnless(t *testing.T) {
 			description: "success when required_unless is false",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name": "goravel",
+					"name": "laravel",
 				}, map[string]string{
 					"name":  "required",
-					"name1": "required_unless:name,goravel,goravel1",
+					"name1": "required_unless:name,laravel,laravel1",
 				})
 				assert.Nil(t, err, c.description)
 				assert.NotNil(t, validator, c.description)
@@ -370,7 +370,7 @@ func TestRule_RequiredUnless(t *testing.T) {
 			description: "error when required_unless is true and key is empty",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
+					"name":  "laravel",
 					"name1": "",
 				}, map[string]string{
 					"name":  "required",
@@ -387,7 +387,7 @@ func TestRule_RequiredUnless(t *testing.T) {
 			description: "error when required_unless is true and key isn't exist",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name": "goravel",
+					"name": "laravel",
 				}, map[string]string{
 					"name":  "required",
 					"name1": "required_unless:name,hello,hello1",
@@ -413,8 +413,8 @@ func TestRule_RequiredWith(t *testing.T) {
 			description: "success when required_with is true",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
-					"name2": "goravel2",
+					"name":  "laravel",
+					"name2": "laravel2",
 				}, map[string]string{
 					"name":  "required",
 					"name2": "required_with:name,name1",
@@ -441,8 +441,8 @@ func TestRule_RequiredWith(t *testing.T) {
 			description: "error when required_with is true and key is empty",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
-					"name1": "goravel1",
+					"name":  "laravel",
+					"name1": "laravel1",
 					"name2": "",
 				}, map[string]string{
 					"name":  "required",
@@ -460,8 +460,8 @@ func TestRule_RequiredWith(t *testing.T) {
 			description: "error when required_with is true and key isn't exist",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
-					"name1": "goravel1",
+					"name":  "laravel",
+					"name1": "laravel1",
 				}, map[string]string{
 					"name":  "required",
 					"name1": "required",
@@ -488,9 +488,9 @@ func TestRule_RequiredWithAll(t *testing.T) {
 			description: "success when required_with_all is true",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
-					"name1": "goravel1",
-					"name2": "goravel2",
+					"name":  "laravel",
+					"name1": "laravel1",
+					"name2": "laravel2",
 				}, map[string]string{
 					"name":  "required",
 					"name1": "required",
@@ -505,9 +505,9 @@ func TestRule_RequiredWithAll(t *testing.T) {
 			description: "success when required_with_all is true",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
+					"name":  "laravel",
 					"name1": "",
-					"name2": "goravel2",
+					"name2": "laravel2",
 				}, map[string]string{
 					"name":  "required",
 					"name2": "required_with_all:name,name1",
@@ -534,8 +534,8 @@ func TestRule_RequiredWithAll(t *testing.T) {
 			description: "error when required_with_all is true and key is empty",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
-					"name1": "goravel1",
+					"name":  "laravel",
+					"name1": "laravel1",
 					"name2": "",
 				}, map[string]string{
 					"name":  "required",
@@ -553,8 +553,8 @@ func TestRule_RequiredWithAll(t *testing.T) {
 			description: "error when required_with is true and key isn't exist",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
-					"name1": "goravel1",
+					"name":  "laravel",
+					"name1": "laravel1",
 				}, map[string]string{
 					"name":  "required",
 					"name1": "required",
@@ -581,8 +581,8 @@ func TestRule_RequiredWithout(t *testing.T) {
 			description: "success when required_without is true",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
-					"name2": "goravel2",
+					"name":  "laravel",
+					"name2": "laravel2",
 				}, map[string]string{
 					"name":  "required",
 					"name2": "required_without:name,name1",
@@ -611,7 +611,7 @@ func TestRule_RequiredWithout(t *testing.T) {
 			description: "error when required_without is true and key is empty",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "goravel",
+					"name":  "laravel",
 					"name2": "",
 				}, map[string]string{
 					"name":  "required",
@@ -628,7 +628,7 @@ func TestRule_RequiredWithout(t *testing.T) {
 			description: "error when required_without is true and key isn't exist",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name": "goravel",
+					"name": "laravel",
 				}, map[string]string{
 					"name":  "required",
 					"name2": "required_without:name,name1",
@@ -654,7 +654,7 @@ func TestRule_RequiredWithoutAll(t *testing.T) {
 			description: "success when required_without_all is true",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name": "goravel",
+					"name": "laravel",
 				}, map[string]string{
 					"name": "required_without_all:name1,name2",
 				})
@@ -697,7 +697,7 @@ func TestRule_RequiredWithoutAll(t *testing.T) {
 			description: "error when required_without_all is true and key isn't exist",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name3": "goravel3",
+					"name3": "laravel3",
 				}, map[string]string{
 					"name": "required_without_all:name1,name2",
 				})
@@ -1619,7 +1619,7 @@ func TestRule_Email(t *testing.T) {
 			description: "success",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name": "hello@goravel.com",
+					"name": "hello@laravel.com",
 				}, map[string]string{
 					"name": "required|email",
 				})
@@ -2360,8 +2360,8 @@ func TestRule_FullUrl(t *testing.T) {
 			description: "success",
 			setup: func(c Case) {
 				validator, err := validation.Make(map[string]any{
-					"name":  "https://www.goravel.dev",
-					"name1": "http://www.goravel.dev",
+					"name":  "https://www.laravel.dev",
+					"name1": "http://www.laravel.dev",
 				}, map[string]string{
 					"name":  "required|full_url",
 					"name1": "required|full_url",

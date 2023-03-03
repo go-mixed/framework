@@ -26,7 +26,7 @@ func TestStorage(t *testing.T) {
 		return
 	}
 
-	file.Create("test.txt", "Goravel")
+	file.Create("test.txt", "Laravel")
 	initConfig()
 
 	var driver filesystem.Driver
@@ -38,15 +38,15 @@ func TestStorage(t *testing.T) {
 		},
 		{
 			disk: "oss",
-			url:  "https://goravel.oss-cn-beijing.aliyuncs.com/",
+			url:  "https://laravel.oss-cn-beijing.aliyuncs.com/",
 		},
 		{
 			disk: "cos",
-			url:  "https://goravel-1257814968.cos.ap-beijing.myqcloud.com/",
+			url:  "https://laravel-1257814968.cos.ap-beijing.myqcloud.com/",
 		},
 		{
 			disk: "s3",
-			url:  "https://goravel.s3.us-east-2.amazonaws.com/",
+			url:  "https://laravel.s3.us-east-2.amazonaws.com/",
 		},
 		{
 			disk: "custom",
@@ -61,7 +61,7 @@ func TestStorage(t *testing.T) {
 		{
 			name: "Put",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("Put/1.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("Put/1.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("Put/1.txt"), name)
 				assert.True(t, driver.Missing("Put/2.txt"), name)
 			},
@@ -69,11 +69,11 @@ func TestStorage(t *testing.T) {
 		{
 			name: "Get",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("Get/1.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("Get/1.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("Get/1.txt"), name)
 				data, err := driver.Get("Get/1.txt")
 				assert.Nil(t, err, name)
-				assert.Equal(t, "Goravel", data, name)
+				assert.Equal(t, "Laravel", data, name)
 				length, err := driver.Size("Get/1.txt")
 				assert.Nil(t, err, name)
 				assert.Equal(t, int64(7), length, name)
@@ -89,7 +89,7 @@ func TestStorage(t *testing.T) {
 				assert.True(t, driver.Exists(path), name)
 				data, err := driver.Get(path)
 				assert.Nil(t, err, name)
-				assert.Equal(t, "Goravel", data, name)
+				assert.Equal(t, "Laravel", data, name)
 			},
 		},
 		{
@@ -113,7 +113,7 @@ func TestStorage(t *testing.T) {
 				assert.True(t, driver.Exists(path), name)
 				data, err := driver.Get(path)
 				assert.Nil(t, err, name)
-				assert.Equal(t, "Goravel", data, name)
+				assert.Equal(t, "Laravel", data, name)
 
 				path, err = driver.PutFileAs("PutFileAs", fileInfo, "text1.txt")
 				assert.Nil(t, err, name)
@@ -121,7 +121,7 @@ func TestStorage(t *testing.T) {
 				assert.True(t, driver.Exists(path), name)
 				data, err = driver.Get(path)
 				assert.Nil(t, err, name)
-				assert.Equal(t, "Goravel", data, name)
+				assert.Equal(t, "Laravel", data, name)
 			},
 		},
 		{
@@ -143,7 +143,7 @@ func TestStorage(t *testing.T) {
 		{
 			name: "Url",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("Url/1.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("Url/1.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("Url/1.txt"), name)
 				assert.Equal(t, disk.url+"Url/1.txt", driver.Url("Url/1.txt"), name)
 				if disk.disk != "local" && disk.disk != "custom" {
@@ -152,14 +152,14 @@ func TestStorage(t *testing.T) {
 					content, err := ioutil.ReadAll(resp.Body)
 					resp.Body.Close()
 					assert.Nil(t, err, name)
-					assert.Equal(t, "Goravel", string(content), name)
+					assert.Equal(t, "Laravel", string(content), name)
 				}
 			},
 		},
 		{
 			name: "TemporaryUrl",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("TemporaryUrl/1.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("TemporaryUrl/1.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("TemporaryUrl/1.txt"), name)
 				url, err := driver.TemporaryUrl("TemporaryUrl/1.txt", time.Now().Add(5*time.Second))
 				assert.Nil(t, err, name)
@@ -170,14 +170,14 @@ func TestStorage(t *testing.T) {
 					content, err := ioutil.ReadAll(resp.Body)
 					resp.Body.Close()
 					assert.Nil(t, err, name)
-					assert.Equal(t, "Goravel", string(content), name)
+					assert.Equal(t, "Laravel", string(content), name)
 				}
 			},
 		},
 		{
 			name: "Copy",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("Copy/1.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("Copy/1.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("Copy/1.txt"), name)
 				assert.Nil(t, driver.Copy("Copy/1.txt", "Copy1/1.txt"), name)
 				assert.True(t, driver.Exists("Copy/1.txt"), name)
@@ -187,7 +187,7 @@ func TestStorage(t *testing.T) {
 		{
 			name: "Move",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("Move/1.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("Move/1.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("Move/1.txt"), name)
 				assert.Nil(t, driver.Move("Move/1.txt", "Move1/1.txt"), name)
 				assert.True(t, driver.Missing("Move/1.txt"), name)
@@ -197,7 +197,7 @@ func TestStorage(t *testing.T) {
 		{
 			name: "Delete",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("Delete/1.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("Delete/1.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("Delete/1.txt"), name)
 				assert.Nil(t, driver.Delete("Delete/1.txt"), name)
 				assert.True(t, driver.Missing("Delete/1.txt"), name)
@@ -214,7 +214,7 @@ func TestStorage(t *testing.T) {
 		{
 			name: "DeleteDirectory",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("DeleteDirectory/1.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("DeleteDirectory/1.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("DeleteDirectory/1.txt"), name)
 				assert.Nil(t, driver.DeleteDirectory("DeleteDirectory"), name)
 				assert.True(t, driver.Missing("DeleteDirectory/1.txt"), name)
@@ -223,10 +223,10 @@ func TestStorage(t *testing.T) {
 		{
 			name: "Files",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("Files/1.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("Files/2.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("Files/3/3.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("Files/3/4/4.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("Files/1.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("Files/2.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("Files/3/3.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("Files/3/4/4.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("Files/1.txt"), name)
 				assert.True(t, driver.Exists("Files/2.txt"), name)
 				assert.True(t, driver.Exists("Files/3/3.txt"), name)
@@ -248,10 +248,10 @@ func TestStorage(t *testing.T) {
 		{
 			name: "AllFiles",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("AllFiles/1.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("AllFiles/2.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("AllFiles/3/3.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("AllFiles/3/4/4.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("AllFiles/1.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("AllFiles/2.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("AllFiles/3/3.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("AllFiles/3/4/4.txt", "Laravel"), name)
 				assert.True(t, driver.Exists("AllFiles/1.txt"), name)
 				assert.True(t, driver.Exists("AllFiles/2.txt"), name)
 				assert.True(t, driver.Exists("AllFiles/3/3.txt"), name)
@@ -273,10 +273,10 @@ func TestStorage(t *testing.T) {
 		{
 			name: "Directories",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("Directories/1.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("Directories/2.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("Directories/3/3.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("Directories/3/5/5.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("Directories/1.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("Directories/2.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("Directories/3/3.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("Directories/3/5/5.txt", "Laravel"), name)
 				assert.Nil(t, driver.MakeDirectory("Directories/3/4"), name)
 				assert.True(t, driver.Exists("Directories/1.txt"), name)
 				assert.True(t, driver.Exists("Directories/2.txt"), name)
@@ -300,10 +300,10 @@ func TestStorage(t *testing.T) {
 		{
 			name: "AllDirectories",
 			setup: func(name string, disk TestDisk) {
-				assert.Nil(t, driver.Put("AllDirectories/1.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("AllDirectories/2.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("AllDirectories/3/3.txt", "Goravel"), name)
-				assert.Nil(t, driver.Put("AllDirectories/3/5/6/6.txt", "Goravel"), name)
+				assert.Nil(t, driver.Put("AllDirectories/1.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("AllDirectories/2.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("AllDirectories/3/3.txt", "Laravel"), name)
+				assert.Nil(t, driver.Put("AllDirectories/3/5/6/6.txt", "Laravel"), name)
 				assert.Nil(t, driver.MakeDirectory("AllDirectories/3/4"), name)
 				assert.True(t, driver.Exists("AllDirectories/1.txt"), name)
 				assert.True(t, driver.Exists("AllDirectories/2.txt"), name)

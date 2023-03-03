@@ -18,7 +18,7 @@ type Application struct {
 
 func NewApplication() console.IArtisan {
 	instance := cli.NewApp()
-	instance.Name = "Goravel Framework"
+	instance.Name = "Laravel Framework"
 	instance.Usage = support.Version
 	instance.UsageText = "artisan [global options] command [options] [arguments...]"
 
@@ -96,7 +96,7 @@ func printResult(command string) {
 	case "make:command":
 		color.Greenln("Console command created successfully")
 	case "-V", "--version":
-		color.Greenln("Goravel Framework " + support.Version)
+		color.Greenln("Laravel Framework " + support.Version)
 	}
 }
 

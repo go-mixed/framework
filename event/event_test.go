@@ -51,7 +51,7 @@ func (s *EventTestSuite) SetupTest() {
 
 func (s *EventTestSuite) TestEvent() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "app.name").Return("goravel").Times(3)
+	mockConfig.On("GetString", "app.name").Return("laravel").Times(3)
 	mockConfig.On("GetString", "queue.default").Return("redis").Twice()
 	mockConfig.On("GetString", "queue.connections.redis.queue", "default").Return("default").Times(3)
 	mockConfig.On("GetString", "queue.connections.redis.driver").Return("redis").Times(3)
@@ -83,7 +83,7 @@ func (s *EventTestSuite) TestEvent() {
 
 	time.Sleep(3 * time.Second)
 	s.Nil(ievent.Job(&TestEvent{}, []eventcontract.Arg{
-		{Type: "string", Value: "Goravel"},
+		{Type: "string", Value: "Laravel"},
 		{Type: "int", Value: 1},
 	}).Dispatch())
 	time.Sleep(1 * time.Second)
@@ -95,7 +95,7 @@ func (s *EventTestSuite) TestEvent() {
 
 func (s *EventTestSuite) TestCancelEvent() {
 	mockConfig := mock.Config()
-	mockConfig.On("GetString", "app.name").Return("goravel").Twice()
+	mockConfig.On("GetString", "app.name").Return("laravel").Twice()
 	mockConfig.On("GetString", "queue.default").Return("redis").Once()
 	mockConfig.On("GetString", "queue.connections.redis.queue", "default").Return("default").Twice()
 	mockConfig.On("GetString", "queue.connections.redis.driver").Return("redis").Once()
@@ -127,7 +127,7 @@ func (s *EventTestSuite) TestCancelEvent() {
 
 	time.Sleep(3 * time.Second)
 	s.EqualError(ievent.Job(&TestCancelEvent{}, []eventcontract.Arg{
-		{Type: "string", Value: "Goravel"},
+		{Type: "string", Value: "Laravel"},
 		{Type: "int", Value: 1},
 	}).Dispatch(), "cancel")
 	time.Sleep(1 * time.Second)

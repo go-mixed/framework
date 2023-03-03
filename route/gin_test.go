@@ -84,7 +84,7 @@ func TestRun(t *testing.T) {
 			route = NewGin()
 			route.Get("/", func(ctx httpcontract.Context) {
 				ctx.Response().Json(200, httpcontract.Json{
-					"Hello": "Goravel",
+					"Hello": "Laravel",
 				})
 			})
 			if err := test.setup(test.host); err == nil {
@@ -95,7 +95,7 @@ func TestRun(t *testing.T) {
 				assert.Nil(t, err)
 				body, err := ioutil.ReadAll(resp.Body)
 				assert.Nil(t, err)
-				assert.Equal(t, "{\"Hello\":\"Goravel\"}", string(body))
+				assert.Equal(t, "{\"Hello\":\"Laravel\"}", string(body))
 			}
 			mockConfig.AssertExpectations(t)
 		})
@@ -165,7 +165,7 @@ func TestRunTLS(t *testing.T) {
 			route = NewGin()
 			route.Get("/", func(ctx httpcontract.Context) {
 				ctx.Response().Json(200, httpcontract.Json{
-					"Hello": "Goravel",
+					"Hello": "Laravel",
 				})
 			})
 			if err := test.setup(test.host); err == nil {
@@ -180,7 +180,7 @@ func TestRunTLS(t *testing.T) {
 				assert.Nil(t, err)
 				body, err := ioutil.ReadAll(resp.Body)
 				assert.Nil(t, err)
-				assert.Equal(t, "{\"Hello\":\"Goravel\"}", string(body))
+				assert.Equal(t, "{\"Hello\":\"Laravel\"}", string(body))
 			}
 			mockConfig.AssertExpectations(t)
 		})
@@ -243,7 +243,7 @@ func TestRunTLSWithCert(t *testing.T) {
 			route = NewGin()
 			route.Get("/", func(ctx httpcontract.Context) {
 				ctx.Response().Json(200, httpcontract.Json{
-					"Hello": "Goravel",
+					"Hello": "Laravel",
 				})
 			})
 			if err := test.setup(test.host); err == nil {
@@ -258,7 +258,7 @@ func TestRunTLSWithCert(t *testing.T) {
 				assert.Nil(t, err)
 				body, err := ioutil.ReadAll(resp.Body)
 				assert.Nil(t, err)
-				assert.Equal(t, "{\"Hello\":\"Goravel\"}", string(body))
+				assert.Equal(t, "{\"Hello\":\"Laravel\"}", string(body))
 			}
 			mockConfig.AssertExpectations(t)
 		})
@@ -288,7 +288,7 @@ func TestGinRequest(t *testing.T) {
 		{
 			name:   "Methods",
 			method: "GET",
-			url:    "/methods/1?name=Goravel",
+			url:    "/methods/1?name=Laravel",
 			setup: func(method, url string) error {
 				gin.Get("/methods/{id}", func(ctx httpcontract.Context) {
 					ctx.Response().Success().Json(httpcontract.Json{
@@ -308,12 +308,12 @@ func TestGinRequest(t *testing.T) {
 				if err != nil {
 					return err
 				}
-				req.Header.Set("Hello", "goravel")
+				req.Header.Set("Hello", "laravel")
 
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"full_url\":\"\",\"header\":\"goravel\",\"id\":\"1\",\"ip\":\"\",\"method\":\"GET\",\"name\":\"Goravel\",\"path\":\"/methods/1\",\"url\":\"\"}",
+			expectBody: "{\"full_url\":\"\",\"header\":\"laravel\",\"id\":\"1\",\"ip\":\"\",\"method\":\"GET\",\"name\":\"Laravel\",\"path\":\"/methods/1\",\"url\":\"\"}",
 		},
 		{
 			name:   "Headers",
@@ -330,12 +330,12 @@ func TestGinRequest(t *testing.T) {
 				if err != nil {
 					return err
 				}
-				req.Header.Set("Hello", "Goravel")
+				req.Header.Set("Hello", "Laravel")
 
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"Hello\":[\"Goravel\"]}",
+			expectBody: "{\"Hello\":[\"Laravel\"]}",
 		},
 		{
 			name:   "Route",
@@ -563,7 +563,7 @@ func TestGinRequest(t *testing.T) {
 
 				payload := &bytes.Buffer{}
 				writer := multipart.NewWriter(payload)
-				if err := writer.WriteField("name", "Goravel"); err != nil {
+				if err := writer.WriteField("name", "Laravel"); err != nil {
 					return err
 				}
 				if err := writer.Close(); err != nil {
@@ -576,7 +576,7 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"name\":\"Goravel\",\"name1\":\"Hello\"}",
+			expectBody: "{\"name\":\"Laravel\",\"name1\":\"Hello\"}",
 		},
 		{
 			name:   "Json",
@@ -592,7 +592,7 @@ func TestGinRequest(t *testing.T) {
 				})
 
 				payload := strings.NewReader(`{
-					"name": "Goravel",
+					"name": "Laravel",
 					"info": {"avatar": "logo"}
 				}`)
 				req, _ = http.NewRequest(method, url, payload)
@@ -601,7 +601,7 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"avatar\":\"logo\",\"info\":\"\",\"name\":\"Goravel\"}",
+			expectBody: "{\"avatar\":\"logo\",\"info\":\"\",\"name\":\"Laravel\"}",
 		},
 		{
 			name:   "Bind",
@@ -620,7 +620,7 @@ func TestGinRequest(t *testing.T) {
 				})
 
 				payload := strings.NewReader(`{
-					"Name": "Goravel"
+					"Name": "Laravel"
 				}`)
 				req, _ = http.NewRequest(method, url, payload)
 				req.Header.Set("Content-Type", "application/json")
@@ -628,12 +628,12 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"name\":\"Goravel\"}",
+			expectBody: "{\"name\":\"Laravel\"}",
 		},
 		{
 			name:   "Query",
 			method: "GET",
-			url:    "/query?string=Goravel&int=1&int64=2&bool1=1&bool2=true&bool3=on&bool4=yes&bool5=0&error=a",
+			url:    "/query?string=Laravel&int=1&int64=2&bool1=1&bool2=true&bool3=on&bool4=yes&bool5=0&error=a",
 			setup: func(method, url string) error {
 				gin.Get("/query", func(ctx httpcontract.Context) {
 					ctx.Response().Success().Json(httpcontract.Json{
@@ -657,12 +657,12 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"bool1\":true,\"bool2\":true,\"bool3\":true,\"bool4\":true,\"bool5\":false,\"error\":0,\"int\":1,\"int64\":2,\"int64_default\":22,\"int_default\":11,\"string\":\"Goravel\"}",
+			expectBody: "{\"bool1\":true,\"bool2\":true,\"bool3\":true,\"bool4\":true,\"bool5\":false,\"error\":0,\"int\":1,\"int64\":2,\"int64_default\":22,\"int_default\":11,\"string\":\"Laravel\"}",
 		},
 		{
 			name:   "QueryArray",
 			method: "GET",
-			url:    "/query-array?name=Goravel&name=Goravel1",
+			url:    "/query-array?name=Laravel&name=Laravel1",
 			setup: func(method, url string) error {
 				gin.Get("/query-array", func(ctx httpcontract.Context) {
 					ctx.Response().Success().Json(httpcontract.Json{
@@ -676,12 +676,12 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"name\":[\"Goravel\",\"Goravel1\"]}",
+			expectBody: "{\"name\":[\"Laravel\",\"Laravel1\"]}",
 		},
 		{
 			name:   "QueryMap",
 			method: "GET",
-			url:    "/query-map?name[a]=Goravel&name[b]=Goravel1",
+			url:    "/query-map?name[a]=Laravel&name[b]=Laravel1",
 			setup: func(method, url string) error {
 				gin.Get("/query-map", func(ctx httpcontract.Context) {
 					ctx.Response().Success().Json(httpcontract.Json{
@@ -695,7 +695,7 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"name\":{\"a\":\"Goravel\",\"b\":\"Goravel1\"}}",
+			expectBody: "{\"name\":{\"a\":\"Laravel\",\"b\":\"Laravel1\"}}",
 		},
 		{
 			name:   "File",
@@ -764,7 +764,7 @@ func TestGinRequest(t *testing.T) {
 		{
 			name:   "GET with validator and validate pass",
 			method: "GET",
-			url:    "/validator/validate/success?name=Goravel",
+			url:    "/validator/validate/success?name=Laravel",
 			setup: func(method, url string) error {
 				gin.Get("/validator/validate/success", func(ctx httpcontract.Context) {
 					mockValication, _, _ := mock.Validation()
@@ -804,12 +804,12 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"name\":\"Goravel\"}",
+			expectBody: "{\"name\":\"Laravel\"}",
 		},
 		{
 			name:   "GET with validator but validate fail",
 			method: "GET",
-			url:    "/validator/validate/fail?name=Goravel",
+			url:    "/validator/validate/fail?name=Laravel",
 			setup: func(method, url string) error {
 				gin.Get("/validator/validate/fail", func(ctx httpcontract.Context) {
 					mockValication, _, _ := mock.Validation()
@@ -846,7 +846,7 @@ func TestGinRequest(t *testing.T) {
 		{
 			name:   "GET with validator and validate request pass",
 			method: "GET",
-			url:    "/validator/validate-request/success?name=Goravel",
+			url:    "/validator/validate-request/success?name=Laravel",
 			setup: func(method, url string) error {
 				gin.Get("/validator/validate-request/success", func(ctx httpcontract.Context) {
 					mockValication, _, _ := mock.Validation()
@@ -877,12 +877,12 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"name\":\"Goravel1\"}",
+			expectBody: "{\"name\":\"Laravel1\"}",
 		},
 		{
 			name:   "GET with validator but validate request fail",
 			method: "GET",
-			url:    "/validator/validate-request/fail?name1=Goravel",
+			url:    "/validator/validate-request/fail?name1=Laravel",
 			setup: func(method, url string) error {
 				gin.Get("/validator/validate-request/fail", func(ctx httpcontract.Context) {
 					mockValication, _, _ := mock.Validation()
@@ -951,7 +951,7 @@ func TestGinRequest(t *testing.T) {
 				})
 
 				payload := strings.NewReader(`{
-					"name": "Goravel"
+					"name": "Laravel"
 				}`)
 				req, _ = http.NewRequest(method, url, payload)
 				req.Header.Set("Content-Type", "application/json")
@@ -959,7 +959,7 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"name\":\"Goravel\"}",
+			expectBody: "{\"name\":\"Laravel\"}",
 		},
 		{
 			name:   "POST with validator and validate fail",
@@ -987,7 +987,7 @@ func TestGinRequest(t *testing.T) {
 					})
 				})
 				payload := strings.NewReader(`{
-					"name": "Goravel"
+					"name": "Laravel"
 				}`)
 				req, _ = http.NewRequest(method, url, payload)
 				req.Header.Set("Content-Type", "application/json")
@@ -1023,7 +1023,7 @@ func TestGinRequest(t *testing.T) {
 				})
 
 				payload := strings.NewReader(`{
-					"name": "Goravel"
+					"name": "Laravel"
 				}`)
 				req, _ = http.NewRequest(method, url, payload)
 				req.Header.Set("Content-Type", "application/json")
@@ -1031,7 +1031,7 @@ func TestGinRequest(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "{\"name\":\"Goravel1\"}",
+			expectBody: "{\"name\":\"Laravel1\"}",
 		},
 		{
 			name:   "POST with validator and validate request fail",
@@ -1059,7 +1059,7 @@ func TestGinRequest(t *testing.T) {
 				})
 
 				payload := strings.NewReader(`{
-					"name1": "Goravel"
+					"name1": "Laravel"
 				}`)
 				req, _ = http.NewRequest(method, url, payload)
 				req.Header.Set("Content-Type", "application/json")
@@ -1091,7 +1091,7 @@ func TestGinRequest(t *testing.T) {
 					})
 				})
 				payload := strings.NewReader(`{
-					"name": "Goravel"
+					"name": "Laravel"
 				}`)
 				req, _ = http.NewRequest(method, url, payload)
 				req.Header.Set("Content-Type", "application/json")
@@ -1147,7 +1147,7 @@ func TestGinResponse(t *testing.T) {
 			url:    "/data",
 			setup: func(method, url string) error {
 				gin.Get("/data", func(ctx httpcontract.Context) {
-					ctx.Response().Data(http.StatusOK, "text/html; charset=utf-8", []byte("<b>Goravel</b>"))
+					ctx.Response().Data(http.StatusOK, "text/html; charset=utf-8", []byte("<b>Laravel</b>"))
 				})
 
 				var err error
@@ -1159,7 +1159,7 @@ func TestGinResponse(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "<b>Goravel</b>",
+			expectBody: "<b>Laravel</b>",
 		},
 		{
 			name:   "Success Data",
@@ -1167,7 +1167,7 @@ func TestGinResponse(t *testing.T) {
 			url:    "/success/data",
 			setup: func(method, url string) error {
 				gin.Get("/success/data", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Data("text/html; charset=utf-8", []byte("<b>Goravel</b>"))
+					ctx.Response().Success().Data("text/html; charset=utf-8", []byte("<b>Laravel</b>"))
 				})
 
 				var err error
@@ -1179,7 +1179,7 @@ func TestGinResponse(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "<b>Goravel</b>",
+			expectBody: "<b>Laravel</b>",
 		},
 		{
 			name:   "Json",
@@ -1209,7 +1209,7 @@ func TestGinResponse(t *testing.T) {
 			url:    "/string",
 			setup: func(method, url string) error {
 				gin.Get("/string", func(ctx httpcontract.Context) {
-					ctx.Response().String(http.StatusCreated, "Goravel")
+					ctx.Response().String(http.StatusCreated, "Laravel")
 				})
 
 				var err error
@@ -1221,7 +1221,7 @@ func TestGinResponse(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusCreated,
-			expectBody: "Goravel",
+			expectBody: "Laravel",
 		},
 		{
 			name:   "Success Json",
@@ -1251,7 +1251,7 @@ func TestGinResponse(t *testing.T) {
 			url:    "/success/string",
 			setup: func(method, url string) error {
 				gin.Get("/success/string", func(ctx httpcontract.Context) {
-					ctx.Response().Success().String("Goravel")
+					ctx.Response().Success().String("Laravel")
 				})
 
 				var err error
@@ -1263,7 +1263,7 @@ func TestGinResponse(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "Goravel",
+			expectBody: "Laravel",
 		},
 		{
 			name:   "File",
@@ -1309,7 +1309,7 @@ func TestGinResponse(t *testing.T) {
 			url:    "/header",
 			setup: func(method, url string) error {
 				gin.Get("/header", func(ctx httpcontract.Context) {
-					ctx.Response().Header("Hello", "goravel").String(http.StatusOK, "Goravel")
+					ctx.Response().Header("Hello", "laravel").String(http.StatusOK, "Laravel")
 				})
 
 				var err error
@@ -1321,8 +1321,8 @@ func TestGinResponse(t *testing.T) {
 				return nil
 			},
 			expectCode:   http.StatusOK,
-			expectBody:   "Goravel",
-			expectHeader: "goravel",
+			expectBody:   "Laravel",
+			expectHeader: "laravel",
 		},
 		{
 			name:   "Origin",
@@ -1330,16 +1330,16 @@ func TestGinResponse(t *testing.T) {
 			url:    "/origin",
 			setup: func(method, url string) error {
 				gin.GlobalMiddleware(func(ctx httpcontract.Context) {
-					ctx.Response().Header("global", "goravel")
+					ctx.Response().Header("global", "laravel")
 					ctx.Request().Next()
 
-					assert.Equal(t, "Goravel", ctx.Response().Origin().Body().String())
-					assert.Equal(t, "goravel", ctx.Response().Origin().Header().Get("global"))
+					assert.Equal(t, "Laravel", ctx.Response().Origin().Body().String())
+					assert.Equal(t, "laravel", ctx.Response().Origin().Header().Get("global"))
 					assert.Equal(t, 7, ctx.Response().Origin().Size())
 					assert.Equal(t, 200, ctx.Response().Origin().Status())
 				})
 				gin.Get("/origin", func(ctx httpcontract.Context) {
-					ctx.Response().String(http.StatusOK, "Goravel")
+					ctx.Response().String(http.StatusOK, "Laravel")
 				})
 
 				var err error
@@ -1351,7 +1351,7 @@ func TestGinResponse(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusOK,
-			expectBody: "Goravel",
+			expectBody: "Laravel",
 		},
 		{
 			name:   "Redirect",
@@ -1359,7 +1359,7 @@ func TestGinResponse(t *testing.T) {
 			url:    "/redirect",
 			setup: func(method, url string) error {
 				gin.Get("/redirect", func(ctx httpcontract.Context) {
-					ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
+					ctx.Response().Redirect(http.StatusMovedPermanently, "https://laravel.dev")
 				})
 
 				var err error
@@ -1371,7 +1371,7 @@ func TestGinResponse(t *testing.T) {
 				return nil
 			},
 			expectCode: http.StatusMovedPermanently,
-			expectBody: "<a href=\"https://goravel.dev\">Moved Permanently</a>.\n\n",
+			expectBody: "<a href=\"https://laravel.dev\">Moved Permanently</a>.\n\n",
 		},
 	}
 

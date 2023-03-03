@@ -62,7 +62,7 @@ func TestRun(t *testing.T) {
 					Name: "success",
 				})
 
-				assert.Equal(t, &TestResponse{Code: http.StatusOK, Message: "Goravel: server: goravel-server, client: goravel-client"}, res)
+				assert.Equal(t, &TestResponse{Code: http.StatusOK, Message: "Laravel: server: laravel-server, client: laravel-client"}, res)
 				assert.Nil(t, err)
 			},
 		},
@@ -172,7 +172,7 @@ func serverInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo,
 		md = metadata.New(nil)
 	}
 
-	ctx = context.WithValue(ctx, "server", "goravel-server")
+	ctx = context.WithValue(ctx, "server", "laravel-server")
 	if len(md["client"]) > 0 {
 		ctx = context.WithValue(ctx, "client", md["client"][0])
 	}
@@ -188,7 +188,7 @@ func clientInterceptor(ctx context.Context, method string, req, reply any, cc *g
 		md = md.Copy()
 	}
 
-	md["client"] = []string{"goravel-client"}
+	md["client"] = []string{"laravel-client"}
 
 	if err := invoker(metadata.NewOutgoingContext(ctx, md), method, req, reply, cc, opts...); err != nil {
 		return err
@@ -204,7 +204,7 @@ func (r *TestController) Get(ctx context.Context, req *TestRequest) (*TestRespon
 	if req.GetName() == "success" {
 		return &TestResponse{
 			Code:    http.StatusOK,
-			Message: fmt.Sprintf("Goravel: server: %s, client: %s", ctx.Value("server"), ctx.Value("client")),
+			Message: fmt.Sprintf("Laravel: server: %s, client: %s", ctx.Value("server"), ctx.Value("client")),
 		}, nil
 	} else {
 		return nil, errors.New("error")

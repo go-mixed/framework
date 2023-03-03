@@ -17,8 +17,8 @@ import (
 	"gopkg.in/go-mixed/framework.v1/support/time"
 )
 
-var singleLog = "storage/logs/goravel.log"
-var dailyLog = fmt.Sprintf("storage/logs/goravel-%s.log", time.Now().Format("2006-01-02"))
+var singleLog = "storage/logs/laravel.log"
+var dailyLog = fmt.Sprintf("storage/logs/laravel-%s.log", time.Now().Format("2006-01-02"))
 
 type LogrusTestSuite struct {
 	suite.Suite
@@ -66,13 +66,13 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockDriverConfig(mockConfig)
 
 				log, _ = NewLogger(context.Background(), "stack")
-				log.Debug("Goravel")
+				log.Debug("Laravel")
 			},
 			assert: func() {
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.debug: Goravel"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.debug: Goravel"))
+				assert.True(s.T(), file.Contain(singleLog, "test.debug: Laravel"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.debug: Laravel"))
 			},
 		},
 		{
@@ -82,7 +82,7 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockConfig.On("GetString", "logging.channels.single.level").Return("info").Once()
 
 				log, _ = NewLogger(context.Background(), "stack")
-				log.Debug("Goravel")
+				log.Debug("Laravel")
 			},
 			assert: func() {
 				assert.False(s.T(), file.Exists(dailyLog))
@@ -95,13 +95,13 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockDriverConfig(mockConfig)
 
 				log, _ = NewLogger(context.Background(), "stack")
-				log.Debugf("Goravel: %s", "World")
+				log.Debugf("Laravel: %s", "World")
 			},
 			assert: func() {
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.debug: Goravel: World"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.debug: Goravel: World"))
+				assert.True(s.T(), file.Contain(singleLog, "test.debug: Laravel: World"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.debug: Laravel: World"))
 			},
 		},
 		{
@@ -110,13 +110,13 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockDriverConfig(mockConfig)
 
 				log, _ = NewLogger(context.Background(), "stack")
-				log.Info("Goravel")
+				log.Info("Laravel")
 			},
 			assert: func() {
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.info: Goravel"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.info: Goravel"))
+				assert.True(s.T(), file.Contain(singleLog, "test.info: Laravel"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.info: Laravel"))
 			},
 		},
 		{
@@ -125,13 +125,13 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockDriverConfig(mockConfig)
 
 				log, _ = NewLogger(context.Background(), "stack")
-				log.Infof("Goravel: %s", "World")
+				log.Infof("Laravel: %s", "World")
 			},
 			assert: func() {
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.info: Goravel: World"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.info: Goravel: World"))
+				assert.True(s.T(), file.Contain(singleLog, "test.info: Laravel: World"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.info: Laravel: World"))
 			},
 		},
 		{
@@ -140,13 +140,13 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockDriverConfig(mockConfig)
 
 				log, _ = NewLogger(context.Background(), "stack")
-				log.Warning("Goravel")
+				log.Warning("Laravel")
 			},
 			assert: func() {
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.warning: Goravel"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.warning: Goravel"))
+				assert.True(s.T(), file.Contain(singleLog, "test.warning: Laravel"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.warning: Laravel"))
 			},
 		},
 		{
@@ -155,13 +155,13 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockDriverConfig(mockConfig)
 
 				log, _ = NewLogger(context.Background(), "stack")
-				log.Warningf("Goravel: %s", "World")
+				log.Warningf("Laravel: %s", "World")
 			},
 			assert: func() {
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.warning: Goravel: World"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.warning: Goravel: World"))
+				assert.True(s.T(), file.Contain(singleLog, "test.warning: Laravel: World"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.warning: Laravel: World"))
 			},
 		},
 		{
@@ -170,13 +170,13 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockDriverConfig(mockConfig)
 
 				log, _ = NewLogger(context.Background(), "stack")
-				log.Error("Goravel")
+				log.Error("Laravel")
 			},
 			assert: func() {
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.error: Goravel"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.error: Goravel"))
+				assert.True(s.T(), file.Contain(singleLog, "test.error: Laravel"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.error: Laravel"))
 			},
 		},
 		{
@@ -185,13 +185,13 @@ func (s *LogrusTestSuite) TestLogrus() {
 				mockDriverConfig(mockConfig)
 
 				log, _ = NewLogger(context.Background(), "stack")
-				log.Errorf("Goravel: %s", "World")
+				log.Errorf("Laravel: %s", "World")
 			},
 			assert: func() {
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.error: Goravel: World"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.error: Goravel: World"))
+				assert.True(s.T(), file.Contain(singleLog, "test.error: Laravel: World"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.error: Laravel: World"))
 			},
 		},
 		{
@@ -203,12 +203,12 @@ func (s *LogrusTestSuite) TestLogrus() {
 			},
 			assert: func() {
 				assert.Panics(s.T(), func() {
-					log.Panic("Goravel")
+					log.Panic("Laravel")
 				})
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.panic: Goravel"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.panic: Goravel"))
+				assert.True(s.T(), file.Contain(singleLog, "test.panic: Laravel"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.panic: Laravel"))
 			},
 		},
 		{
@@ -220,12 +220,12 @@ func (s *LogrusTestSuite) TestLogrus() {
 			},
 			assert: func() {
 				assert.Panics(s.T(), func() {
-					log.Panicf("Goravel: %s", "World")
+					log.Panicf("Laravel: %s", "World")
 				})
 				assert.True(s.T(), file.Exists(dailyLog))
 				assert.True(s.T(), file.Exists(singleLog))
-				assert.True(s.T(), file.Contain(singleLog, "test.panic: Goravel: World"))
-				assert.True(s.T(), file.Contain(dailyLog, "test.panic: Goravel: World"))
+				assert.True(s.T(), file.Contain(singleLog, "test.panic: Laravel: World"))
+				assert.True(s.T(), file.Contain(dailyLog, "test.panic: Laravel: World"))
 			},
 		},
 	}
@@ -245,18 +245,18 @@ func (s *LogrusTestSuite) TestTestWriter() {
 	log := WrapLogger(NewTestWriter())
 	assert.Equal(s.T(), log.WithContext(context.Background()), &TestWriter{})
 	assert.NotPanics(s.T(), func() {
-		log.Debug("Goravel")
-		log.Debugf("Goravel")
-		log.Info("Goravel")
-		log.Infof("Goravel")
-		log.Warning("Goravel")
-		log.Warningf("Goravel")
-		log.Error("Goravel")
-		log.Errorf("Goravel")
-		log.Fatal("Goravel")
-		log.Fatalf("Goravel")
-		log.Panic("Goravel")
-		log.Panicf("Goravel")
+		log.Debug("Laravel")
+		log.Debugf("Laravel")
+		log.Info("Laravel")
+		log.Infof("Laravel")
+		log.Warning("Laravel")
+		log.Warningf("Laravel")
+		log.Error("Laravel")
+		log.Errorf("Laravel")
+		log.Fatal("Laravel")
+		log.Fatalf("Laravel")
+		log.Panic("Laravel")
+		log.Panicf("Laravel")
 	})
 }
 
@@ -266,7 +266,7 @@ func TestLogrus_Fatal(t *testing.T) {
 	log, _ := NewLogger(context.Background(), "stack")
 
 	if os.Getenv("FATAL") == "1" {
-		log.Fatal("Goravel")
+		log.Fatal("Laravel")
 		return
 	}
 	cmd := exec.Command(os.Args[0], "-test.run=TestLogrus_Fatal")
@@ -276,8 +276,8 @@ func TestLogrus_Fatal(t *testing.T) {
 	assert.EqualError(t, err, "exit status 1")
 	assert.True(t, file.Exists(dailyLog))
 	assert.True(t, file.Exists(singleLog))
-	assert.True(t, file.Contain(singleLog, "test.fatal: Goravel"))
-	assert.True(t, file.Contain(dailyLog, "test.fatal: Goravel"))
+	assert.True(t, file.Contain(singleLog, "test.fatal: Laravel"))
+	assert.True(t, file.Contain(dailyLog, "test.fatal: Laravel"))
 	file.Remove("storage")
 }
 
@@ -287,7 +287,7 @@ func TestLogrus_Fatalf(t *testing.T) {
 	log, _ := NewLogger(context.Background(), "stack")
 
 	if os.Getenv("FATAL") == "1" {
-		log.Fatalf("Goravel")
+		log.Fatalf("Laravel")
 		return
 	}
 	cmd := exec.Command(os.Args[0], "-test.run=TestLogrus_Fatal")
@@ -297,8 +297,8 @@ func TestLogrus_Fatalf(t *testing.T) {
 	assert.EqualError(t, err, "exit status 1")
 	assert.True(t, file.Exists(dailyLog))
 	assert.True(t, file.Exists(singleLog))
-	assert.True(t, file.Contain(singleLog, "test.fatal: Goravel"))
-	assert.True(t, file.Contain(dailyLog, "test.fatal: Goravel"))
+	assert.True(t, file.Contain(singleLog, "test.fatal: Laravel"))
+	assert.True(t, file.Contain(dailyLog, "test.fatal: Laravel"))
 	file.Remove("storage")
 }
 

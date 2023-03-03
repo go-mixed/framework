@@ -34,7 +34,7 @@ func TestSqliteDocker(t *testing.T) {
 	assert.NotNil(t, db)
 	assert.Nil(t, err)
 
-	file.Remove("goravel")
+	file.Remove("laravel")
 }
 
 func TestSqlserverDocker(t *testing.T) {

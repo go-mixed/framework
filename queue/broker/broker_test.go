@@ -29,7 +29,7 @@ func TestRedis(t *testing.T) {
 	mockConfig.On("GetString", "database.redis.default.port").Return("6379").Once()
 	mockConfig.On("GetInt", "database.redis.default.database").Return(0).Once()
 	mockConfig.On("GetString", "queue.connections.redis.queue", "default").Return("default").Once()
-	mockConfig.On("GetString", "app.name").Return("goravel").Once()
+	mockConfig.On("GetString", "app.name").Return("laravel").Once()
 
 	server, _ := NewRedisBroker("redis")
 	assert.NotNil(t, server)
@@ -90,7 +90,7 @@ func TestGetRedisConfig(t *testing.T) {
 	mockConfig.On("GetString", "database.redis.default.port").Return("6379").Once()
 	mockConfig.On("GetInt", "database.redis.default.database").Return(0).Once()
 	mockConfig.On("GetString", "queue.connections.redis.queue", "default").Return("default").Once()
-	mockConfig.On("GetString", "app.name").Return("goravel").Once()
+	mockConfig.On("GetString", "app.name").Return("laravel").Once()
 
 	redisConfig, database, queue := getRedisConfig("redis")
 	assert.Equal(t, "127.0.0.1:6379", redisConfig)

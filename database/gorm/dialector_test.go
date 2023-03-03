@@ -90,12 +90,12 @@ func TestDialector(t *testing.T) {
 		},
 		{
 			description: "error driver",
-			connection:  "goravel",
+			connection:  "laravel",
 			setup: func() {
-				mockConfig.On("GetString", "database.connections.goravel.driver").
-					Return("goravel").Once()
+				mockConfig.On("GetString", "database.connections.laravel.driver").
+					Return("laravel").Once()
 			},
-			expectErr: errors.New(fmt.Sprintf("err database driver: %s, only support mysql, postgresql, sqlite and sqlserver", "goravel")),
+			expectErr: errors.New(fmt.Sprintf("err database driver: %s, only support mysql, postgresql, sqlite and sqlserver", "laravel")),
 		},
 	}
 

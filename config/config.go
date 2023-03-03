@@ -36,7 +36,7 @@ func NewConfig(envPath string) *Config {
 			panic(err.Error())
 		}
 	}
-	conf.vip.SetEnvPrefix("goravel")
+	conf.vip.SetEnvPrefix("laravel")
 	conf.vip.AutomaticEnv()
 
 	return conf

@@ -14,7 +14,7 @@ import (
 
 func TestApplication(t *testing.T) {
 	mockArtisan := mock.Artisan()
-	mockArtisan.On("Call", "test --name Goravel argument0 argument1").Return().Times(3)
+	mockArtisan.On("Call", "test --name Laravel argument0 argument1").Return().Times(3)
 
 	immediatelyCall := 0
 	delayIfStillRunningCall := 0
@@ -33,7 +33,7 @@ func TestApplication(t *testing.T) {
 			time.Sleep(61 * time.Second)
 			skipIfStillRunningCall++
 		}).EveryMinute().SkipIfStillRunning(),
-		app.Command("test --name Goravel argument0 argument1").EveryMinute(),
+		app.Command("test --name Laravel argument0 argument1").EveryMinute(),
 	})
 
 	second, _ := strconv.Atoi(time.Now().Format("05"))

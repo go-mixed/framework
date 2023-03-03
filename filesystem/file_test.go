@@ -47,7 +47,7 @@ func (s *FileTestSuite) TestGetClientOriginalExtension() {
 }
 
 func (s *FileTestSuite) TestHashName() {
-	s.Len(testFile.HashName("goravel"), 51)
+	s.Len(testFile.HashName("laravel"), 51)
 }
 
 func (s *FileTestSuite) TestExtension() {

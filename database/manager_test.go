@@ -52,7 +52,7 @@ func TestOrmSuite(t *testing.T) {
 	}
 	testPostgresqlDB = postgresqlDB
 
-	_, _, sqliteDB, err := gorm.SqliteDocker("goravel")
+	_, _, sqliteDB, err := gorm.SqliteDocker("laravel")
 	if err != nil {
 		log.Fatalf("Get sqlite error: %s", err)
 	}
@@ -66,7 +66,7 @@ func TestOrmSuite(t *testing.T) {
 
 	suite.Run(t, new(OrmSuite))
 
-	file.Remove("goravel")
+	file.Remove("laravel")
 
 	if err := mysqlPool.Purge(mysqlDocker); err != nil {
 		log.Fatalf("Could not purge resource: %s", err)
@@ -161,19 +161,19 @@ func (s *OrmSuite) TestTransactionError() {
 func newTestManager() *DatabaseManager {
 	m := NewDatabaseManager()
 
-	m.Extend(ormcontract.DriverMysql.String(), func(name string) (ormcontract.IOrm, error) {
+	m.Extend(ormcontract.DriverMysql.String(), func(name string, args ...any) (ormcontract.IOrm, error) {
 		return WrapDB(context.Background(), testMysqlDB), nil
 	})
 
-	m.Extend(ormcontract.DriverPostgresql.String(), func(name string) (ormcontract.IOrm, error) {
+	m.Extend(ormcontract.DriverPostgresql.String(), func(name string, args ...any) (ormcontract.IOrm, error) {
 		return WrapDB(context.Background(), testPostgresqlDB), nil
 	})
 
-	m.Extend(ormcontract.DriverSqlite.String(), func(name string) (ormcontract.IOrm, error) {
+	m.Extend(ormcontract.DriverSqlite.String(), func(name string, args ...any) (ormcontract.IOrm, error) {
 		return WrapDB(context.Background(), testSqliteDB), nil
 	})
 
-	m.Extend(ormcontract.DriverSqlserver.String(), func(name string) (ormcontract.IOrm, error) {
+	m.Extend(ormcontract.DriverSqlserver.String(), func(name string, args ...any) (ormcontract.IOrm, error) {
 		return WrapDB(context.Background(), testSqlserverDB), nil
 	})
 

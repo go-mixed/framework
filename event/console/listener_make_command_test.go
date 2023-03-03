@@ -16,9 +16,9 @@ func TestListenerMakeCommand(t *testing.T) {
 	err := listenerMakeCommand.Handle(mockContext)
 	assert.EqualError(t, err, "Not enough arguments (missing: name) ")
 
-	mockContext.On("Argument", 0).Return("GoravelListen").Once()
+	mockContext.On("Argument", 0).Return("LaravelListen").Once()
 	err = listenerMakeCommand.Handle(mockContext)
 	assert.Nil(t, err)
-	assert.True(t, file.Exists("app/listeners/goravel_listen.go"))
+	assert.True(t, file.Exists("app/listeners/laravel_listen.go"))
 	assert.True(t, file.Remove("app"))
 }

@@ -262,7 +262,7 @@ func TestGinGroup(t *testing.T) {
 			method:     "GET",
 			url:        "/middlewares/1",
 			expectCode: http.StatusOK,
-			expectBody: "{\"ctx\":\"Goravel\",\"ctx1\":\"Hello\",\"id\":\"1\"}",
+			expectBody: "{\"ctx\":\"Laravel\",\"ctx1\":\"Hello\",\"id\":\"1\"}",
 		},
 		{
 			name: "Multiple Prefix",
@@ -281,8 +281,8 @@ func TestGinGroup(t *testing.T) {
 		{
 			name: "Multiple Prefix Group Middleware",
 			setup: func(req *http.Request) {
-				gin.Prefix("group1").Middleware(contextMiddleware()).Group(func(route1 route.Route) {
-					route1.Prefix("group2").Middleware(contextMiddleware1()).Group(func(route2 route.Route) {
+				gin.Prefix("group1").Middleware(contextMiddleware()).Group(func(route1 route.IRoute) {
+					route1.Prefix("group2").Middleware(contextMiddleware1()).Group(func(route2 route.IRoute) {
 						route2.Get("/middleware/{id}", func(ctx httpcontract.Context) {
 							ctx.Response().Success().Json(httpcontract.Json{
 								"id":   ctx.Request().Input("id"),
@@ -303,13 +303,13 @@ func TestGinGroup(t *testing.T) {
 			method:     "GET",
 			url:        "/group1/group2/middleware/1",
 			expectCode: http.StatusOK,
-			expectBody: "{\"ctx\":\"Goravel\",\"ctx1\":\"Hello\",\"id\":\"1\"}",
+			expectBody: "{\"ctx\":\"Laravel\",\"ctx1\":\"Hello\",\"id\":\"1\"}",
 		},
 		{
 			name: "Multiple Group Middleware",
 			setup: func(req *http.Request) {
-				gin.Prefix("group1").Middleware(contextMiddleware()).Group(func(route1 route.Route) {
-					route1.Prefix("group2").Middleware(contextMiddleware1()).Group(func(route2 route.Route) {
+				gin.Prefix("group1").Middleware(contextMiddleware()).Group(func(route1 route.IRoute) {
+					route1.Prefix("group2").Middleware(contextMiddleware1()).Group(func(route2 route.IRoute) {
 						route2.Get("/middleware/{id}", func(ctx httpcontract.Context) {
 							ctx.Response().Success().Json(httpcontract.Json{
 								"id":   ctx.Request().Input("id"),
@@ -330,13 +330,13 @@ func TestGinGroup(t *testing.T) {
 			method:     "GET",
 			url:        "/group1/middleware/1",
 			expectCode: http.StatusOK,
-			expectBody: "{\"ctx\":\"Goravel\",\"ctx2\":\"World\",\"id\":\"1\"}",
+			expectBody: "{\"ctx\":\"Laravel\",\"ctx2\":\"World\",\"id\":\"1\"}",
 		},
 		{
 			name: "Global Middleware",
 			setup: func(req *http.Request) {
 				gin.GlobalMiddleware(func(ctx httpcontract.Context) {
-					ctx.WithValue("global", "goravel")
+					ctx.WithValue("global", "laravel")
 					ctx.Request().Next()
 				})
 				gin.Get("/global-middleware", func(ctx httpcontract.Context) {
@@ -348,7 +348,7 @@ func TestGinGroup(t *testing.T) {
 			method:     "GET",
 			url:        "/global-middleware",
 			expectCode: http.StatusOK,
-			expectBody: "{\"global\":\"goravel\"}",
+			expectBody: "{\"global\":\"laravel\"}",
 		},
 	}
 	for _, test := range tests {
@@ -376,7 +376,7 @@ func abortMiddleware() httpcontract.Middleware {
 
 func contextMiddleware() httpcontract.Middleware {
 	return func(ctx httpcontract.Context) {
-		ctx.WithValue("ctx", "Goravel")
+		ctx.WithValue("ctx", "Laravel")
 
 		ctx.Request().Next()
 	}

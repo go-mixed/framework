@@ -68,7 +68,7 @@ func (s *ApplicationTestSuite) TestSendMailBy25Port() {
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
-		Content(mail.Content{Subject: "Goravel Test", Html: "<h1>Hello Goravel</h1>"}).
+		Content(mail.Content{Subject: "Laravel Test", Html: "<h1>Hello Laravel</h1>"}).
 		Send())
 }
 
@@ -87,7 +87,7 @@ func (s *ApplicationTestSuite) TestSendMailBy465Port() {
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
-		Content(mail.Content{Subject: "Goravel Test", Html: "<h1>Hello Goravel</h1>"}).
+		Content(mail.Content{Subject: "Laravel Test", Html: "<h1>Hello Laravel</h1>"}).
 		Send())
 }
 
@@ -96,7 +96,7 @@ func (s *ApplicationTestSuite) TestSendMailBy587Port() {
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
-		Content(mail.Content{Subject: "Goravel Test", Html: "<h1>Hello Goravel</h1>"}).
+		Content(mail.Content{Subject: "Laravel Test", Html: "<h1>Hello Laravel</h1>"}).
 		Send())
 }
 
@@ -106,7 +106,7 @@ func (s *ApplicationTestSuite) TestSendMailWithFrom() {
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
-		Content(mail.Content{Subject: "Goravel Test With From", Html: "<h1>Hello Goravel</h1>"}).
+		Content(mail.Content{Subject: "Laravel Test With From", Html: "<h1>Hello Laravel</h1>"}).
 		Send())
 }
 
@@ -135,7 +135,7 @@ func (s *ApplicationTestSuite) TestQueueMail() {
 		Cc([]string{config.Env("MAIL_CC").(string)}).
 		Bcc([]string{config.Env("MAIL_BCC").(string)}).
 		Attach([]string{"../logo.png"}).
-		Content(mail.Content{Subject: "Goravel Test Queue", Html: "<h1>Hello Goravel</h1>"}).
+		Content(mail.Content{Subject: "Laravel Test Queue", Html: "<h1>Hello Laravel</h1>"}).
 		Queue(nil))
 	time.Sleep(1 * time.Second)
 
@@ -145,7 +145,7 @@ func (s *ApplicationTestSuite) TestQueueMail() {
 func initConfig(redisPort string) {
 	newConfig := configinstance.NewConfig("../.env")
 	newConfig.Add("app", map[string]any{
-		"name": "goravel",
+		"name": "laravel",
 	})
 	newConfig.Add("mail", map[string]any{
 		"host": newConfig.Env("MAIL_HOST", ""),

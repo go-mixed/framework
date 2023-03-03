@@ -24,7 +24,7 @@ func (s *GateTestSuite) SetupTest() {
 }
 
 func (s *GateTestSuite) TestWithContext() {
-	ctx := context.WithValue(context.Background(), "hello", "goravel")
+	ctx := context.WithValue(context.Background(), "hello", "laravel")
 
 	gate := NewGate(ctx)
 	gate.Define("create", func(ctx context.Context, arguments map[string]any) access.IResponse {
@@ -36,7 +36,7 @@ func (s *GateTestSuite) TestWithContext() {
 		}
 	})
 
-	assert.Equal(s.T(), NewDenyResponse("goravel"), gate.Inspect("create", map[string]any{
+	assert.Equal(s.T(), NewDenyResponse("laravel"), gate.Inspect("create", map[string]any{
 		"user": "2",
 	}))
 }
