@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/contracts/database/orm"
+	"gorm.io/gorm"
 )
 
 func getOrm() orm.IOrm {
@@ -21,6 +22,10 @@ func DB() (*sql.DB, error) {
 
 func Query() orm.DB {
 	return getOrm().Query()
+}
+
+func Gorm() *gorm.DB {
+	return getOrm().Gorm()
 }
 
 func Transaction(txFunc func(tx orm.Transaction) error) error {
