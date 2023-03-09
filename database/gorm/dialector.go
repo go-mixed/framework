@@ -52,7 +52,8 @@ func mysqlDialector(connection string, config contractsdatabase.Config) gorm.Dia
 	}
 
 	return mysql.New(mysql.Config{
-		DSN: dsn,
+		DSN:               dsn,
+		DefaultStringSize: 200,
 	})
 }
 
