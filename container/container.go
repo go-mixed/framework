@@ -75,6 +75,8 @@ func registerProvider[VT VTConstraint](key tKey) error {
 
 func Bind[VT VTConstraint](abstract VT, concrete Concrete, singleton bool) {
 	key := toTKey[VT](abstract)
+	_resolved := resolved(key)
+
 	bindingList.Store(key, concreteContainer{
 		concrete: concrete,
 		shared:   singleton,
@@ -93,7 +95,7 @@ func Bind[VT VTConstraint](abstract VT, concrete Concrete, singleton bool) {
 	// If the abstract type was already resolved in this container we'll fire the
 	// rebound listener so that any objects which have already gotten resolved
 	// can have their copy of the object updated via the listener callbacks.
-	if resolved(key) {
+	if _resolved {
 		rebound(key)
 	}
 }
