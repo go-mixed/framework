@@ -3,6 +3,7 @@ package config
 import (
 	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/contracts/config"
+	"time"
 )
 
 func getConfig() config.IConfig {
@@ -41,4 +42,12 @@ func GetBool(path string, defaultValue ...any) bool {
 
 func GetMap(path string) map[string]any {
 	return getConfig().GetMap(path)
+}
+
+func GetDuration(path string) time.Duration {
+	return getConfig().GetDuration(path)
+}
+
+func GetTime(path string) time.Time {
+	return getConfig().GetTime(path)
 }

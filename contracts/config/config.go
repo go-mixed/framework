@@ -1,5 +1,7 @@
 package config
 
+import "time"
+
 //go:generate mockery --name=Config
 type IConfig interface {
 	//Env Get config from env.
@@ -16,4 +18,7 @@ type IConfig interface {
 	GetBool(path string, defaultValue ...any) bool
 
 	GetMap(path string) map[string]any
+
+	GetDuration(path string) time.Duration
+	GetTime(path string) time.Time
 }

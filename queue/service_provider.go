@@ -24,6 +24,9 @@ func (sp *ServiceProvider) Register() {
 		m.Extend("redis", func(driverName string, args ...any) (queue.IBroker, error) {
 			return broker.NewRedisBroker(driverName)
 		})
+		m.Extend("amqp", func(driverName string, args ...any) (queue.IBroker, error) {
+			return broker.NewAmqpBroker(driverName)
+		})
 
 		return m, nil
 	})

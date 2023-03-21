@@ -3,6 +3,7 @@ package config
 import (
 	"gopkg.in/go-mixed/framework.v1/contracts/config"
 	"os"
+	"time"
 
 	"github.com/gookit/color"
 	"github.com/spf13/cast"
@@ -123,4 +124,14 @@ func (conf *Config) GetMap(path string) map[string]any {
 	}
 
 	return map[string]any{}
+}
+
+func (conf *Config) GetDuration(path string) time.Duration {
+	value := conf.Get(path)
+	return cast.ToDuration(value)
+}
+
+func (conf *Config) GetTime(path string) time.Time {
+	value := conf.Get(path)
+	return cast.ToTime(value)
 }
