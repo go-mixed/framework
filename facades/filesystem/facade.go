@@ -8,7 +8,7 @@ import (
 )
 
 func getFilesystem() filesystem.IStorage {
-	return container.MustMake[filesystem.IStorage]("filesystem")
+	return container.MustMakeAs("filesystem", filesystem.IStorage(nil))
 }
 
 func Disk(disk string) filesystem.IStorage {

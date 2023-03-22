@@ -6,7 +6,7 @@ import (
 )
 
 func getValidation() validation.IValidation {
-	return container.MustMake[validation.IValidation]("validation")
+	return container.MustMakeAs("validation", validation.IValidation(nil))
 }
 
 func Make(data any, rules map[string]string, options ...validation.Option) (validation.Validator, error) {

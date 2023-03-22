@@ -1,10 +1,11 @@
-package filesystem
+package disk
 
 import (
 	"context"
 	"errors"
 	"fmt"
 	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/contracts/manager"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"io/ioutil"
 	"os"
@@ -33,7 +34,7 @@ func NewLocal(disk string) (*Local, error) {
 }
 
 func (r *Local) Disk(disk string) filesystem.IStorage {
-	return container.MustMake[*FilesystemManager]("filesystem.manager").Disk(disk)
+	return container.MustMakeAs("filesystem.manager", manager.IManager[filesystem.IStorage](nil)).MustDriver(disk)
 }
 
 func (r *Local) AllDirectories(path string) ([]string, error) {
@@ -128,7 +129,7 @@ func (r *Local) Exists(file string) bool {
 
 func (r *Local) Files(path string) ([]string, error) {
 	var files []string
-	fileInfo, err := ioutil.ReadDir(r.fullPath(path))
+	fileInfo, err := os.ReadDir(r.fullPath(path))
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +143,7 @@ func (r *Local) Files(path string) ([]string, error) {
 }
 
 func (r *Local) Get(file string) (string, error) {
-	data, err := ioutil.ReadFile(r.fullPath(file))
+	data, err := os.ReadFile(r.fullPath(file))
 	if err != nil {
 		return "", err
 	}
@@ -199,7 +200,7 @@ func (r *Local) PutFile(filePath string, source filesystem.File) (string, error)
 }
 
 func (r *Local) PutFileAs(filePath string, source filesystem.File, name string) (string, error) {
-	data, err := ioutil.ReadFile(source.File())
+	data, err := os.ReadFile(source.File())
 	if err != nil {
 		return "", err
 	}

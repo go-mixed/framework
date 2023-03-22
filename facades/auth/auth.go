@@ -7,7 +7,7 @@ import (
 )
 
 func getAuth() auth.IAuth {
-	return container.MustMake[auth.IAuth]("auth")
+	return container.MustMakeAs("auth", auth.IAuth(nil))
 }
 
 func Guard(name string) auth.IAuth {

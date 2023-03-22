@@ -9,7 +9,7 @@ import (
 )
 
 func getOrm() orm.IOrm {
-	return container.MustMake[orm.IOrm]("db")
+	return container.MustMakeAs("db", orm.IOrm(nil))
 }
 
 func Connection(name string) orm.IOrm {

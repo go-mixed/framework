@@ -7,7 +7,7 @@ import (
 )
 
 func getConfig() config.IConfig {
-	return container.MustMake[config.IConfig]("config")
+	return container.MustMakeAs("config", config.IConfig(nil))
 }
 
 // Env Get config from env.

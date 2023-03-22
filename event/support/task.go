@@ -52,7 +52,7 @@ func (t *Task) Dispatch() error {
 }
 
 func (t *Task) dispatchAsync(listener event.Listener) error {
-	b := container.MustMake[queue.IBroker]("queue.connection")
+	b := container.MustMakeAs("queue.connection", queue.IBroker(nil))
 
 	var args []queue.Argument
 	for _, arg := range t.handledArgs {

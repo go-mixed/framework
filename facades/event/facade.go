@@ -6,7 +6,7 @@ import (
 )
 
 func getEvent() event.IInstance {
-	return container.MustMake[event.IInstance]("event")
+	return container.MustMakeAs("event", event.IInstance(nil))
 }
 
 func Register(event map[event.Event][]event.Listener) {

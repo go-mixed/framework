@@ -6,7 +6,7 @@ import (
 )
 
 func getSchedule() schedule.ISchedule {
-	return container.MustMake[schedule.ISchedule]("schedule")
+	return container.MustMakeAs("schedule", schedule.ISchedule(nil))
 }
 
 func Call(callback func()) schedule.Event {

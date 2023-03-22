@@ -6,7 +6,7 @@ import (
 )
 
 func getArtisan() console.IArtisan {
-	return container.MustMake[console.IArtisan]("artisan")
+	return container.MustMakeAs("artisan", console.IArtisan(nil))
 }
 
 func Register(commands []console.Command) {

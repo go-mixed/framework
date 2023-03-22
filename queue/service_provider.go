@@ -41,7 +41,7 @@ func (sp *ServiceProvider) Register() {
 
 	// default broker
 	container.Singleton(queue.IBroker(nil), func(args ...any) (any, error) {
-		return container.MustMake[*QueueManager]("queue.manager").DefaultDriver()
+		return container.MustMakeAs("queue.manager", (*QueueManager)(nil)).DefaultDriver()
 	})
 	container.Alias("queue", queue.IBroker(nil))
 	container.Alias("queue.connection", queue.IBroker(nil))
@@ -60,5 +60,6 @@ func (sp *ServiceProvider) Boot() {
 func (sp *ServiceProvider) registerCommands() {
 	artisan.Register([]console.Command{
 		&queueConsole.JobMakeCommand{},
+		&queueConsole.QueueWorkCommand{},
 	})
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func getHttp() http.IRateLimiter {
-	return container.MustMake[http.IRateLimiter]("http")
+	return container.MustMakeAs("http", http.IRateLimiter(nil))
 }
 
 func For(name string, callback func(ctx http.Context) http.ILimit) {

@@ -16,7 +16,7 @@ func (log *ServiceProvider) Register() {
 	container.Alias("log.manager", (*LogManager)(nil))
 
 	container.Singleton((*contractslog.ILog)(nil), func(args ...any) (any, error) {
-		return container.MustMake[*LogManager]("log.manager").MustDefaultDriver(), nil
+		return container.MustMakeAs("log.manager", (*LogManager)(nil)).DefaultDriver()
 	})
 	container.Alias(contractslog.ILog(nil), (*contractslog.ILog)(nil))
 	container.Alias("log", (*contractslog.ILog)(nil))

@@ -2,6 +2,7 @@ package filesystem
 
 import (
 	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/filesystem/disk"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -81,8 +82,8 @@ func TestStorage(t *testing.T) {
 		},
 		{
 			name: "PutFile_Text",
-			setup: func(name string, disk TestDisk) {
-				fileInfo, err := NewFile("./test.txt")
+			setup: func(name string, disk1 TestDisk) {
+				fileInfo, err := disk.NewFile("./test.txt")
 				assert.Nil(t, err, name)
 				path, err := driver.PutFile("PutFile", fileInfo)
 				assert.Nil(t, err, name)
@@ -94,8 +95,8 @@ func TestStorage(t *testing.T) {
 		},
 		{
 			name: "PutFile_Image",
-			setup: func(name string, disk TestDisk) {
-				fileInfo, err := NewFile("../logo.png")
+			setup: func(name string, disk1 TestDisk) {
+				fileInfo, err := disk.NewFile("../logo.png")
 				assert.Nil(t, err, name)
 				path, err := driver.PutFile("PutFile", fileInfo)
 				assert.Nil(t, err, name)
@@ -104,8 +105,8 @@ func TestStorage(t *testing.T) {
 		},
 		{
 			name: "PutFileAs_Text",
-			setup: func(name string, disk TestDisk) {
-				fileInfo, err := NewFile("./test.txt")
+			setup: func(name string, disk1 TestDisk) {
+				fileInfo, err := disk.NewFile("./test.txt")
 				assert.Nil(t, err, name)
 				path, err := driver.PutFileAs("PutFileAs", fileInfo, "text")
 				assert.Nil(t, err, name)
@@ -126,8 +127,8 @@ func TestStorage(t *testing.T) {
 		},
 		{
 			name: "PutFileAs_Image",
-			setup: func(name string, disk TestDisk) {
-				fileInfo, err := NewFile("../logo.png")
+			setup: func(name string, disk1 TestDisk) {
+				fileInfo, err := disk.NewFile("../logo.png")
 				assert.Nil(t, err, name)
 				path, err := driver.PutFileAs("PutFileAs", fileInfo, "image")
 				assert.Nil(t, err, name)

@@ -1,13 +1,10 @@
 package console
 
 import (
-	"strconv"
-
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/gookit/color"
-
 	"gopkg.in/go-mixed/framework.v1/contracts/console"
 	"gopkg.in/go-mixed/framework.v1/contracts/console/command"
 )
@@ -30,9 +27,9 @@ func (receiver *MigrateRollbackCommand) Extend() command.Extend {
 	return command.Extend{
 		Category: "migrate",
 		Flags: []command.Flag{
-			{
+			&command.IntFlag{
 				Name:  "step",
-				Value: "1",
+				Value: 1,
 				Usage: "rollback steps",
 			},
 		},
@@ -51,13 +48,7 @@ func (receiver *MigrateRollbackCommand) Handle(ctx console.Context) error {
 		return nil
 	}
 
-	stepString := "-" + ctx.Option("step")
-	step, err := strconv.Atoi(stepString)
-	if err != nil {
-		color.Redln("Migration failed: invalid step", ctx.Option("step"))
-
-		return nil
-	}
+	step := -ctx.IntOption("step")
 
 	if err := m.Steps(step); err != nil && err != migrate.ErrNoChange && err != migrate.ErrNilVersion {
 		switch err.(type) {

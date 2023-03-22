@@ -2,6 +2,7 @@ package http
 
 import (
 	"errors"
+	"gopkg.in/go-mixed/framework.v1/filesystem/disk"
 	"gopkg.in/go-mixed/framework.v1/validation"
 	"net/http"
 
@@ -13,7 +14,6 @@ import (
 	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
 	validatecontract "gopkg.in/go-mixed/framework.v1/contracts/validation"
 	iValidation "gopkg.in/go-mixed/framework.v1/facades/validation"
-	"gopkg.in/go-mixed/framework.v1/filesystem"
 )
 
 type GinRequest struct {
@@ -232,7 +232,7 @@ func (r *GinRequest) File(name string) (contractsfilesystem.File, error) {
 		return nil, err
 	}
 
-	return filesystem.NewFileFromRequest(file)
+	return disk.NewFileFromRequest(file)
 }
 
 func (r *GinRequest) Header(key, defaultValue string) string {

@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"gopkg.in/go-mixed/framework.v1/cache/store"
 	"log"
 	"testing"
 	"time"
@@ -281,7 +282,7 @@ func getRedisDocker() (*dockertest.Pool, *dockertest.Resource, cache.IStore, err
 		return nil, nil, nil, err
 	}
 
-	var store cache.IStore
+	var istore cache.IStore
 	if err := pool.Retry(func() error {
 		var err error
 		mockConfig := mock.Config()
@@ -292,21 +293,21 @@ func getRedisDocker() (*dockertest.Pool, *dockertest.Resource, cache.IStore, err
 		mockConfig.On("GetString", "database.redis.default.password").Return(resource.GetPort("")).Once()
 		mockConfig.On("GetInt", "database.redis.default.database").Return(0).Once()
 		mockConfig.On("GetString", "cache.prefix").Return("laravel_cache").Once()
-		store, err = NewRedis("redis", context.Background())
+		istore, err = store.NewRedis("redis", context.Background())
 
 		return err
 	}); err != nil {
 		return nil, nil, nil, err
 	}
 
-	return pool, resource, store, nil
+	return pool, resource, istore, nil
 }
 
-func getMemoryStore() (*Memory, error) {
+func getMemoryStore() (*store.Memory, error) {
 	mockConfig := mock.Config()
 	mockConfig.On("GetString", "cache.prefix").Return("laravel_cache").Once()
 
-	memory, err := NewMemory()
+	memory, err := store.NewMemory()
 	if err != nil {
 		return nil, err
 	}

@@ -27,7 +27,7 @@ func (m *QueueManager) DefaultConnectionName() string {
 }
 
 func (m *QueueManager) makeConnection(connectionName string) (queue.IBroker, error) {
-	driver := config.GetString("queue.connection."+connectionName+".driver", "")
+	driver := config.GetString("queue.connections."+connectionName+".driver", "")
 
 	if m.HasCustomCreator(driver) {
 		instance, err := m.CallCustomCreator(driver, connectionName)

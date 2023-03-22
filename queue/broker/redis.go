@@ -35,7 +35,7 @@ func NewRedisBroker(connectionName string) (*RedisBroker, error) {
 	b := &RedisBroker{
 		machineryBroker{
 			server:           machinery.NewServer(cnf, broker, backend, lock),
-			jobMap:           container.MustMake[queue.IJobMap]("queue.job_map"),
+			jobMap:           container.MustMakeAs("queue.job_map", queue.IJobMap(nil)),
 			defaultQueueName: queueName,
 		},
 	}

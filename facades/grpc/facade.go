@@ -8,7 +8,7 @@ import (
 )
 
 func getGrpc() cgrpc.IGrpc {
-	return container.MustMake[cgrpc.IGrpc]("grpc")
+	return container.MustMakeAs("grpc", cgrpc.IGrpc(nil))
 }
 
 func Run(host string) error {

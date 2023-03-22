@@ -200,12 +200,15 @@ func resolve[T any](key tKey, args ...any) (T, error) {
 }
 
 // Make Resolve the given type from the container.
+//
+//	Example: container.Make[*QueueManager]("queue.manager")
 func Make[T any, VT VTConstraint](abstract VT, args ...any) (T, error) {
 	key := toTKey[VT](abstract)
 	key = getAlias(key)
 	return resolve[T](key, args...)
 }
 
+// MustMake Resolve the given type from the container or panic.
 func MustMake[T any, VT VTConstraint](abstract VT, args ...any) T {
 	instance, err := Make[T](abstract, args...)
 	if err != nil {
@@ -213,6 +216,18 @@ func MustMake[T any, VT VTConstraint](abstract VT, args ...any) T {
 	}
 
 	return instance
+}
+
+// MakeAs Resolve the actualType from the container. Avoid generic writing style
+//
+//	Example: container.MakeAs("queue.manager", (*QueueManager)(nil))
+func MakeAs[T any, VT VTConstraint](abstract VT, actualType T, args ...any) (T, error) {
+	return Make[T](abstract, args...)
+}
+
+// MustMakeAs Resolve the given type from the container or panic. Avoid generic writing style
+func MustMakeAs[T any, VT VTConstraint](abstract VT, actualType T, args ...any) T {
+	return MustMake[T](abstract, args...)
 }
 
 func rebound(key tKey) {

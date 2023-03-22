@@ -11,10 +11,10 @@ type ServiceProvider struct {
 }
 
 func (receiver *ServiceProvider) Register() {
-	container.Singleton((*Application)(nil), func(args ...any) (any, error) {
-		return NewApplication(), nil
+	container.Singleton((*Console)(nil), func(args ...any) (any, error) {
+		return NewConsole(), nil
 	})
-	container.Alias("artisan", (*Application)(nil))
+	container.Alias("artisan", (*Console)(nil))
 }
 
 func (receiver *ServiceProvider) Boot() {

@@ -23,7 +23,7 @@ func (m *FilesystemManager) DefaultDiskName() string {
 }
 
 func (m *FilesystemManager) Disk(name string) filesystem.IStorage {
-	return m.Manager.MustDriver(name)
+	return m.MustDriver(name)
 }
 
 func (m *FilesystemManager) makeDisk(diskName string) (filesystem.IStorage, error) {

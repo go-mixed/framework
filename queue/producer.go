@@ -28,12 +28,12 @@ func (p *Producer) AddJob(job queue.IBrokerJob) queue.IProducer {
 }
 
 func (p *Producer) Dispatch() error {
-	b := container.MustMake[*QueueManager]("queue.manager").Connection(p.connection)
+	b := container.MustMakeAs("queue.manager", (*QueueManager)(nil)).Connection(p.connection)
 	return b.AddJob(p.Jobs...)
 }
 
 func (p *Producer) DispatchSync() error {
-	b := container.MustMake[*QueueManager]("queue.manager").Connection("sync")
+	b := container.MustMakeAs("queue.manager", (*QueueManager)(nil)).Connection("sync")
 	return b.AddJob(p.Jobs...)
 }
 

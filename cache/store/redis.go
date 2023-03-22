@@ -1,4 +1,4 @@
-package cache
+package store
 
 import (
 	"context"
@@ -50,7 +50,7 @@ func NewRedis(storeName string, ctx context.Context) (*Redis, error) {
 }
 
 func (r *Redis) Store(storeName string) cachecontract.IStore {
-	return container.MustMake[manager.IManager[cachecontract.IStore]]("cache.manager").MustDriver(storeName)
+	return container.MustMakeAs("cache.manager", manager.IManager[cachecontract.IStore](nil)).MustDriver(storeName)
 }
 
 func (r *Redis) WithContext(ctx context.Context) cachecontract.IStore {

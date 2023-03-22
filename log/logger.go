@@ -36,7 +36,7 @@ func NewLogger(ctx context.Context, channelName string) (*Logger, error) {
 }
 
 func (r *Logger) Channel(name string) log.ILog {
-	return container.MustMake[*LogManager]("log.manager").Channel(name)
+	return container.MustMakeAs("log.manager", (*LogManager)(nil)).Channel(name)
 }
 
 func (r *Logger) WithContext(ctx context.Context) log.Writer {

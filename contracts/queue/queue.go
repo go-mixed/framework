@@ -3,6 +3,8 @@ package queue
 //go:generate mockery --name=IBroker
 type IBroker interface {
 	IConsumer
+
+	Connection(name string) IBroker
 	AddJob(jobs ...IBrokerJob) error
 	AddChainJobs(jobs ...IBrokerJob) error
 }

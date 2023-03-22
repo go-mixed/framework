@@ -7,7 +7,7 @@ import (
 )
 
 func getLogger() log.ILog {
-	return container.MustMake[log.ILog]("log")
+	return container.MustMakeAs("log", log.ILog(nil))
 }
 
 func WithContext(ctx context.Context) log.Writer {

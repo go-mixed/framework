@@ -7,7 +7,7 @@ import (
 )
 
 func getGate() access.IGate {
-	return container.MustMake[access.IGate]("gate")
+	return container.MustMakeAs("gate", access.IGate(nil))
 }
 
 func WithContext(ctx context.Context) access.IGate {

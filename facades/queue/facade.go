@@ -7,15 +7,15 @@ import (
 )
 
 func getJobMap() queue.IJobMap {
-	return container.MustMake[queue.IJobMap]("queue.job_map")
+	return container.MustMakeAs("queue.job_map", queue.IJobMap(nil))
 }
 
 func getProducer() queue.IProducer {
-	return container.MustMake[queue.IProducer]("queue.producer")
+	return container.MustMakeAs("queue.producer", queue.IProducer(nil))
 }
 
 func getManager() *queue2.QueueManager {
-	return container.MustMake[*queue2.QueueManager]("queue.manager")
+	return container.MustMakeAs("queue.manager", (*queue2.QueueManager)(nil))
 }
 
 func Register(jobs ...queue.IJob) queue.IJobMap {

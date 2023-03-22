@@ -8,7 +8,7 @@ import (
 )
 
 func getRoute() route.IRouteEngine {
-	return container.MustMake[route.IRouteEngine]("route")
+	return container.MustMakeAs("route", route.IRouteEngine(nil))
 }
 
 func Run(host ...string) error {

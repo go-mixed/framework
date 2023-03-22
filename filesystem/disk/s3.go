@@ -1,9 +1,10 @@
-package filesystem
+package disk
 
 import (
 	"context"
 	"fmt"
 	"gopkg.in/go-mixed/framework.v1/container"
+	"gopkg.in/go-mixed/framework.v1/contracts/manager"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"gopkg.in/go-mixed/framework.v1/facades/log"
 	"io/ioutil"
@@ -60,7 +61,7 @@ func NewS3(ctx context.Context, disk string) (*S3, error) {
 }
 
 func (r *S3) Disk(disk string) filesystem.IStorage {
-	return container.MustMake[*FilesystemManager]("filesystem.manager").Disk(disk)
+	return container.MustMakeAs("filesystem.manager", manager.IManager[filesystem.IStorage](nil)).MustDriver(disk)
 }
 
 func (r *S3) AllDirectories(path string) ([]string, error) {

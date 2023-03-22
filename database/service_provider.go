@@ -20,7 +20,7 @@ func (database *ServiceProvider) Register() {
 	container.Alias("database.manager", (*DatabaseManager)(nil))
 
 	container.Singleton((orm.IOrm)(nil), func(args ...any) (any, error) {
-		return container.MustMake[*DatabaseManager]("database.manager").DefaultDriver()
+		return container.MustMakeAs("database.manager", (*DatabaseManager)(nil)).DefaultDriver()
 	})
 	container.Alias("database", (orm.IOrm)(nil))
 	container.Alias("db", (orm.IOrm)(nil))

@@ -6,7 +6,7 @@ import (
 )
 
 func getMail() mail.IMail {
-	return container.MustMake[mail.IMail]("mail")
+	return container.MustMakeAs("mail", mail.IMail(nil))
 }
 
 func Content(content mail.Content) mail.IMail {

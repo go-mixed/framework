@@ -1,4 +1,4 @@
-package cache
+package store
 
 import (
 	"context"
@@ -27,7 +27,7 @@ func NewMemory() (*Memory, error) {
 }
 
 func (r *Memory) Store(storeName string) cachecontract.IStore {
-	return container.MustMake[manager.IManager[cachecontract.IStore]]("cache.manager").MustDriver(storeName)
+	return container.MustMakeAs("cache.manager", manager.IManager[cachecontract.IStore](nil)).MustDriver(storeName)
 }
 
 func (r *Memory) WithContext(ctx context.Context) cachecontract.IStore {
