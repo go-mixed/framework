@@ -13,7 +13,7 @@ var testCommand = 0
 
 func TestRun(t *testing.T) {
 	cli := NewConsole()
-	cli.Register([]console.Command{
+	cli.Register([]console.ICommand{
 		&TestCommand{},
 	})
 

@@ -35,7 +35,7 @@ func (database *ServiceProvider) Boot() {
 }
 
 func (database *ServiceProvider) registerCommands() {
-	artisan.Register([]contractconsole.Command{
+	artisan.Register([]contractconsole.ICommand{
 		&console.JwtSecretCommand{},
 		&console.PolicyMakeCommand{},
 	})

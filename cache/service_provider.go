@@ -41,7 +41,7 @@ func (sp *ServiceProvider) Boot() {
 }
 
 func (sp *ServiceProvider) registerCommands() {
-	artisan.Register([]console2.Command{
+	artisan.Register([]console2.ICommand{
 		&console.ClearCommand{},
 	})
 }

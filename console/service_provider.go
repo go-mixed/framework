@@ -10,19 +10,19 @@ import (
 type ServiceProvider struct {
 }
 
-func (receiver *ServiceProvider) Register() {
+func (sp *ServiceProvider) Register() {
 	container.Singleton((*Console)(nil), func(args ...any) (any, error) {
 		return NewConsole(), nil
 	})
 	container.Alias("artisan", (*Console)(nil))
 }
 
-func (receiver *ServiceProvider) Boot() {
-	receiver.registerCommands()
+func (sp *ServiceProvider) Boot() {
+	sp.registerCommands()
 }
 
-func (receiver *ServiceProvider) registerCommands() {
-	artisan.Register([]console2.Command{
+func (sp *ServiceProvider) registerCommands() {
+	artisan.Register([]console2.ICommand{
 		&console.ListCommand{},
 		&console.KeyGenerateCommand{},
 		&console.MakeCommand{},

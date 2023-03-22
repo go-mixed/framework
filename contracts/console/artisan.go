@@ -3,7 +3,7 @@ package console
 //go:generate mockery --name=Artisan
 type IArtisan interface {
 	//Register commands.
-	Register(commands []Command)
+	Register(commands []ICommand)
 
 	//Call Run an Artisan console command by name.
 	Call(command string)

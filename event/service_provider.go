@@ -23,7 +23,7 @@ func (receiver *ServiceProvider) Boot() {
 }
 
 func (receiver *ServiceProvider) registerCommands() {
-	artisan.Register([]console.Command{
+	artisan.Register([]console.ICommand{
 		&eventConsole.EventMakeCommand{},
 		&eventConsole.ListenerMakeCommand{},
 	})

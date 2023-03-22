@@ -33,7 +33,7 @@ func (database *ServiceProvider) Boot() {
 }
 
 func (database *ServiceProvider) registerCommands() {
-	artisan.Register([]consolecontract.Command{
+	artisan.Register([]consolecontract.ICommand{
 		&console.MigrateMakeCommand{},
 		&console.MigrateCommand{},
 		&console.MigrateRollbackCommand{},

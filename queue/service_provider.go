@@ -58,7 +58,7 @@ func (sp *ServiceProvider) Boot() {
 }
 
 func (sp *ServiceProvider) registerCommands() {
-	artisan.Register([]console.Command{
+	artisan.Register([]console.ICommand{
 		&queueConsole.JobMakeCommand{},
 		&queueConsole.QueueWorkCommand{},
 	})

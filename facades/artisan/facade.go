@@ -9,7 +9,7 @@ func getArtisan() console.IArtisan {
 	return container.MustMakeAs("artisan", console.IArtisan(nil))
 }
 
-func Register(commands []console.Command) {
+func Register(commands []console.ICommand) {
 	getArtisan().Register(commands)
 }
 

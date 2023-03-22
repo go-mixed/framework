@@ -23,7 +23,7 @@ func (_m *Artisan) CallAndExit(command string) {
 }
 
 // Register provides a mock function with given fields: commands
-func (_m *Artisan) Register(commands []console.Command) {
+func (_m *Artisan) Register(commands []console.ICommand) {
 	_m.Called(commands)
 }
 

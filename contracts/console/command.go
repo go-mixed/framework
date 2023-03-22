@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type Command interface {
+type ICommand interface {
 	//Signature The name and signature of the console command.
 	Signature() string
 	//Description The console command description.
@@ -37,4 +37,5 @@ type Context interface {
 	Float64SliceOption(name string) []float64
 
 	NumOptions() int
+	HasOption(name string) bool
 }

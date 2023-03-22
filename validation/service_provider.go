@@ -23,7 +23,7 @@ func (sp *ServiceProvider) Boot() {
 }
 
 func (sp *ServiceProvider) registerCommands() {
-	artisan.Register([]consolecontract.Command{
+	artisan.Register([]consolecontract.ICommand{
 		&console.RuleMakeCommand{},
 	})
 }

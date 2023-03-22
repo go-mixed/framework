@@ -4,13 +4,7 @@ import "github.com/urfave/cli/v2"
 
 type Extend struct {
 	Category string
-	Flags    []cli.Flag
-}
-
-type Context interface {
-	Argument(index int) string
-	Arguments() []string
-	Option(key string) string
+	Flags    []Flag
 }
 
 type Flag = cli.Flag
@@ -31,3 +25,10 @@ type BoolFlag = cli.BoolFlag
 
 type DurationFlag = cli.DurationFlag
 type TimeFlag = cli.TimestampFlag
+
+type ExitCoder = cli.ExitCoder
+type MultiError = cli.MultiError
+
+func Exit(message any, code int) ExitCoder {
+	return cli.Exit(message, code)
+}
