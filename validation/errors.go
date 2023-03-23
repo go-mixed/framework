@@ -1,6 +1,9 @@
 package validation
 
-import "github.com/gookit/validate"
+import (
+	"encoding/json"
+	"github.com/gookit/validate"
+)
 
 type Errors struct {
 	errors validate.Errors
@@ -27,6 +30,11 @@ func (r *Errors) Get(key string) map[string]string {
 
 func (r *Errors) All() map[string]map[string]string {
 	return r.errors.All()
+}
+
+func (r *Errors) String() string {
+	s, _ := json.Marshal(r.All())
+	return string(s)
 }
 
 func (r *Errors) Has(key string) bool {
