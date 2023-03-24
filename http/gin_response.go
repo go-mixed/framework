@@ -68,16 +68,58 @@ func NewGinSuccess(instance *gin.Context) httpcontract.ResponseSuccess {
 	return &GinSuccess{instance}
 }
 
+type JsonRes struct {
+	Code int    `json:"code"`
+	Msg  string `json:"msg"`
+	Data any    `json:"data,omitempty"`
+	Err  error  `json:"err,omitempty"`
+}
+
 func (r *GinSuccess) Data(contentType string, data []byte) {
 	r.instance.Data(http.StatusOK, contentType, data)
 }
 
-func (r *GinSuccess) Json(obj any) {
-	r.instance.JSON(http.StatusOK, obj)
+func (r *GinSuccess) Json(code int, msg string, data any) {
+	r.instance.JSON(http.StatusOK, &JsonRes{
+		Code: code,
+		Msg:  msg,
+		Data: data,
+	})
 }
 
 func (r *GinSuccess) String(format string, values ...any) {
 	r.instance.String(http.StatusOK, format, values...)
+}
+
+func (r *GinResponse) Error() httpcontract.ResponseError {
+	return NewGinError(r.instance)
+}
+
+type GinError struct {
+	instance *gin.Context
+}
+
+func NewGinError(instance *gin.Context) httpcontract.ResponseError {
+	return &GinError{instance}
+}
+
+func (r *GinError) Data(contentType string, data []byte) {
+	r.instance.Data(http.StatusInternalServerError, contentType, data)
+}
+
+func (r *GinError) Json(code int, msg string, err error) {
+	if msg == "" {
+		msg = err.Error()
+	}
+	r.instance.JSON(http.StatusInternalServerError, &JsonRes{
+		Code: code,
+		Msg:  msg,
+		Err:  err,
+	})
+}
+
+func (r *GinError) String(format string, values ...any) {
+	r.instance.String(http.StatusInternalServerError, format, values...)
 }
 
 func GinResponseMiddleware() httpcontract.Middleware {

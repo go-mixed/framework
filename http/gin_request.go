@@ -130,6 +130,10 @@ func (r *GinRequest) Bind(obj any) error {
 	return r.instance.ShouldBind(obj)
 }
 
+func (r *GinRequest) ShouldBindJSON(obj any) error {
+	return r.instance.ShouldBindJSON(obj)
+}
+
 func (r *GinRequest) Input(key string, defaultValue ...string) string {
 	data := make(map[string]any)
 	if err := r.Bind(&data); err == nil {

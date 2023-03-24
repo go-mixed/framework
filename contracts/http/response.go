@@ -18,13 +18,21 @@ type Response interface {
 	Redirect(code int, location string)
 	String(code int, format string, values ...any)
 	Success() ResponseSuccess
+	Error() ResponseError
 	Writer() http.ResponseWriter
 }
 
 //go:generate mockery --name=ResponseSuccess
 type ResponseSuccess interface {
 	Data(contentType string, data []byte)
-	Json(obj any)
+	Json(code int, msg string, data any)
+	String(format string, values ...any)
+}
+
+//go:generate mockery --name=ResponseSuccess
+type ResponseError interface {
+	Data(contentType string, data []byte)
+	Json(code int, msg string, err error)
 	String(format string, values ...any)
 }
 

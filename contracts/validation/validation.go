@@ -21,6 +21,7 @@ type Errors interface {
 	One(key ...string) string
 	Get(key string) map[string]string
 	All() map[string]map[string]string
+	String() string
 	Has(key string) bool
 }
 
