@@ -25,15 +25,7 @@ func NewConsole() console.IArtisan {
 
 func (c *Console) Register(commands []console.ICommand) {
 	for _, item := range commands {
-		cliCommand := cli.Command{
-			Name:  item.Signature(),
-			Usage: item.Description(),
-			Action: func(ctx *cli.Context) error {
-				return item.Handle(&CliContext{ctx})
-			},
-			Category: item.Extend().Category,
-			Flags:    item.Extend().Flags,
-		}
+		cliCommand := WrapICommand(item)
 
 		c.instance.Commands = append(c.instance.Commands, &cliCommand)
 	}

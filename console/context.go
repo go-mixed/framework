@@ -12,6 +12,18 @@ type CliContext struct {
 
 var _ console.Context = (*CliContext)(nil)
 
+func WrapICommand(cmd console.ICommand) cli.Command {
+	return cli.Command{
+		Name:  cmd.Signature(),
+		Usage: cmd.Description(),
+		Action: func(context *cli.Context) error {
+			return cmd.Handle(&CliContext{context})
+		},
+		Category: cmd.Extend().Category,
+		Flags:    cmd.Extend().Flags,
+	}
+}
+
 func (r *CliContext) Option(name string) any {
 	return r.instance.Value(name)
 }
