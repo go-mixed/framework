@@ -53,7 +53,7 @@ func getAmqpConfig(connectionName string) (brokerUrl, queueName string, amqpConf
 	host := config.GetString(keyPrefix + "host")
 	username := config.GetString(keyPrefix + "username")
 	password := config.GetString(keyPrefix + "password")
-	port := config.GetInt(keyPrefix+"port", "")
+	port := config.GetInt(keyPrefix+"port", 0)
 	vhost := config.GetString(keyPrefix+"vhost", "/")
 
 	brokerUrl = fmt.Sprintf("amqp://%s:%s@%s:%d/%s", username, password, host, port, strings.TrimLeft(vhost, "/"))
