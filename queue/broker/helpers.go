@@ -13,7 +13,7 @@ func encodeArgs(args []queue.Argument) []tasks.Arg {
 	var mArgs []tasks.Arg
 	for _, arg := range args {
 		mArgs = append(mArgs, tasks.Arg{
-			Name:  "",
+			Name:  arg.Name,
 			Type:  arg.Type,
 			Value: arg.Value,
 		})

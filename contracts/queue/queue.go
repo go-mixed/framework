@@ -14,6 +14,7 @@ type IConsumer interface {
 }
 
 type Argument struct {
+	Name  string
 	Type  string
 	Value any
 }
