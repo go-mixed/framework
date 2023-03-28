@@ -1,11 +1,11 @@
 package conv
 
-func ConvertArgs2[A1 any](args ...any) (a1 A1) {
+func ConvertArgs1[A1 any](args ...any) (a1 A1) {
 	a1, _, _, _, _, _, _, _, _, _ = ConvertArgs10[A1, any, any, any, any, any, any, any, any, any](args...)
 	return
 }
 
-func ConvertArgs1[A1 any, A2 any](args ...any) (a1 A1, a2 A2) {
+func ConvertArgs2[A1 any, A2 any](args ...any) (a1 A1, a2 A2) {
 	a1, a2, _, _, _, _, _, _, _, _ = ConvertArgs10[A1, A2, any, any, any, any, any, any, any, any](args...)
 	return
 }
