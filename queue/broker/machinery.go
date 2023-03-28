@@ -89,5 +89,6 @@ func (b *machineryBroker) RunServe(queueName string, concurrentCount int) error 
 		queueName = GetQueueName(b.connectionName, queueName)
 	}
 	worker := b.server.NewWorker(queueName, concurrentCount)
+	worker.Queue = queueName
 	return worker.Launch()
 }

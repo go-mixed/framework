@@ -63,7 +63,7 @@ func MakeJobWithName[T Argument | any](name string, args ...T) IBrokerJob {
 			mArgs = append(mArgs, _args)
 		} else {
 			mArgs = append(mArgs, Argument{
-				Type:  reflect.TypeOf(args).Name(),
+				Type:  reflect.TypeOf(arg).Name(),
 				Value: arg,
 			})
 		}
