@@ -39,6 +39,7 @@ func NewAmqpBroker(connectionName string) (*AmqpBroker, error) {
 			server:           machinery.NewServer(cnf, broker, backend, lock),
 			jobMap:           container.MustMakeAs("queue.job_map", queue.IJobMap(nil)),
 			defaultQueueName: queueName,
+			connectionName:   connectionName,
 		},
 	}
 	if err := b.registerTasks(); err != nil {
