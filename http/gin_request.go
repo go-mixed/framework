@@ -130,8 +130,16 @@ func (r *GinRequest) Bind(obj any) error {
 	return r.instance.ShouldBind(obj)
 }
 
+func (r *GinRequest) ShouldBind(obj any) error {
+	return r.instance.ShouldBind(obj)
+}
+
 func (r *GinRequest) ShouldBindJSON(obj any) error {
 	return r.instance.ShouldBindJSON(obj)
+}
+
+func (r *GinRequest) ShouldBindUri(obj any) error {
+	return r.instance.ShouldBindUri(obj)
 }
 
 func (r *GinRequest) Input(key string, defaultValue ...string) string {

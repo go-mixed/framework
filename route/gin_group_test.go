@@ -51,7 +51,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Post",
 			setup: func(req *http.Request) {
 				gin.Post("/input/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -65,7 +65,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Put",
 			setup: func(req *http.Request) {
 				gin.Put("/input/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -79,7 +79,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Delete",
 			setup: func(req *http.Request) {
 				gin.Delete("/input/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -93,7 +93,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Options",
 			setup: func(req *http.Request) {
 				gin.Options("/input/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -106,7 +106,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Patch",
 			setup: func(req *http.Request) {
 				gin.Patch("/input/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -120,7 +120,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Any Get",
 			setup: func(req *http.Request) {
 				gin.Any("/any/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -134,7 +134,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Any Post",
 			setup: func(req *http.Request) {
 				gin.Any("/any/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -148,7 +148,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Any Put",
 			setup: func(req *http.Request) {
 				gin.Any("/any/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -162,7 +162,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Any Delete",
 			setup: func(req *http.Request) {
 				gin.Any("/any/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -183,7 +183,7 @@ func TestGinGroup(t *testing.T) {
 				mockConfig.On("GetBool", "cors.supports_credentials").Return(false).Once()
 				gin.GlobalMiddleware(middleware.Cors())
 				gin.Any("/any/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -198,7 +198,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Any Patch",
 			setup: func(req *http.Request) {
 				gin.Any("/any/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -239,7 +239,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Abort Middleware",
 			setup: func(req *http.Request) {
 				gin.Middleware(abortMiddleware()).Get("/middleware/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -252,7 +252,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Multiple Middleware",
 			setup: func(req *http.Request) {
 				gin.Middleware(contextMiddleware(), contextMiddleware1()).Get("/middlewares/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id":   ctx.Request().Input("id"),
 						"ctx":  ctx.Value("ctx"),
 						"ctx1": ctx.Value("ctx1"),
@@ -268,7 +268,7 @@ func TestGinGroup(t *testing.T) {
 			name: "Multiple Prefix",
 			setup: func(req *http.Request) {
 				gin.Prefix("prefix1").Prefix("prefix2").Get("input/{id}", func(ctx httpcontract.Context) {
-					ctx.Response().Success().Json(httpcontract.Json{
+					ctx.Response().Success().Json(200, "success", httpcontract.Json{
 						"id": ctx.Request().Input("id"),
 					})
 				})
@@ -284,7 +284,7 @@ func TestGinGroup(t *testing.T) {
 				gin.Prefix("group1").Middleware(contextMiddleware()).Group(func(route1 route.IRoute) {
 					route1.Prefix("group2").Middleware(contextMiddleware1()).Group(func(route2 route.IRoute) {
 						route2.Get("/middleware/{id}", func(ctx httpcontract.Context) {
-							ctx.Response().Success().Json(httpcontract.Json{
+							ctx.Response().Success().Json(200, "success", httpcontract.Json{
 								"id":   ctx.Request().Input("id"),
 								"ctx":  ctx.Value("ctx").(string),
 								"ctx1": ctx.Value("ctx1").(string),
@@ -292,7 +292,7 @@ func TestGinGroup(t *testing.T) {
 						})
 					})
 					route1.Middleware(contextMiddleware2()).Get("/middleware/{id}", func(ctx httpcontract.Context) {
-						ctx.Response().Success().Json(httpcontract.Json{
+						ctx.Response().Success().Json(200, "success", httpcontract.Json{
 							"id":   ctx.Request().Input("id"),
 							"ctx":  ctx.Value("ctx").(string),
 							"ctx2": ctx.Value("ctx2").(string),
@@ -311,7 +311,7 @@ func TestGinGroup(t *testing.T) {
 				gin.Prefix("group1").Middleware(contextMiddleware()).Group(func(route1 route.IRoute) {
 					route1.Prefix("group2").Middleware(contextMiddleware1()).Group(func(route2 route.IRoute) {
 						route2.Get("/middleware/{id}", func(ctx httpcontract.Context) {
-							ctx.Response().Success().Json(httpcontract.Json{
+							ctx.Response().Success().Json(200, "success", httpcontract.Json{
 								"id":   ctx.Request().Input("id"),
 								"ctx":  ctx.Value("ctx").(string),
 								"ctx1": ctx.Value("ctx1").(string),
@@ -319,7 +319,7 @@ func TestGinGroup(t *testing.T) {
 						})
 					})
 					route1.Middleware(contextMiddleware2()).Get("/middleware/{id}", func(ctx httpcontract.Context) {
-						ctx.Response().Success().Json(httpcontract.Json{
+						ctx.Response().Success().Json(200, "success", httpcontract.Json{
 							"id":   ctx.Request().Input("id"),
 							"ctx":  ctx.Value("ctx").(string),
 							"ctx2": ctx.Value("ctx2").(string),
