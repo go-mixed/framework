@@ -32,6 +32,10 @@ func Transaction(txFunc func(tx orm.Transaction) error) error {
 	return getOrm().Transaction(txFunc)
 }
 
+func GormTransaction(txFunc func(tx *gorm.DB) error) error {
+	return Gorm().Transaction(txFunc)
+}
+
 func WithContext(ctx context.Context) orm.IOrm {
 	return getOrm().WithContext(ctx)
 }
