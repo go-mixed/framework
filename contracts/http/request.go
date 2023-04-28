@@ -35,6 +35,7 @@ type Request interface {
 	// Bind Retrieve JSON and bind to obj
 	Bind(obj any) error
 	ShouldBind(obj any) error
+	ShouldBindQuery(obj any) error
 	ShouldBindJSON(obj any) error
 	ShouldBindUri(obj any) error
 	// Input Retrieve data by order: json, form, query, route

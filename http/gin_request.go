@@ -142,6 +142,10 @@ func (r *GinRequest) ShouldBindUri(obj any) error {
 	return r.instance.ShouldBindUri(obj)
 }
 
+func (r *GinRequest) ShouldBindQuery(obj any) error {
+	return r.instance.ShouldBindQuery(obj)
+}
+
 func (r *GinRequest) Input(key string, defaultValue ...string) string {
 	data := make(map[string]any)
 	if err := r.Bind(&data); err == nil {
