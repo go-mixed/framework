@@ -22,6 +22,8 @@ func NewRedisBroker(connectionName string, queueName string) (*RedisBroker, erro
 	brokerUrl, database, defaultQueueName := getRedisConfig(connectionName)
 	if queueName == "" {
 		queueName = defaultQueueName
+	} else {
+		queueName = GetQueueName(connectionName, queueName)
 	}
 
 	cnf := &configinstance.Config{

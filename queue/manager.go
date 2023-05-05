@@ -31,6 +31,9 @@ func (m *QueueManager) makeConnection(connectionQueueName string) (queue.IBroker
 	segments := strings.SplitN(connectionQueueName, "|", 2)
 	var queueName string
 	connectionName := segments[0]
+	if connectionName == "" {
+		connectionName = m.DefaultConnectionName()
+	}
 	if len(segments) == 1 {
 		queueName = ""
 	} else {

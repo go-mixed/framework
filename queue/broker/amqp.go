@@ -23,6 +23,8 @@ func NewAmqpBroker(connectionName string, queueName string) (*AmqpBroker, error)
 	brokerUrl, defaultQueueName, amqpConfig := getAmqpConfig(connectionName)
 	if queueName == "" {
 		queueName = defaultQueueName
+	} else {
+		queueName = GetQueueName(connectionName, queueName)
 	}
 
 	cnf := &configinstance.Config{
