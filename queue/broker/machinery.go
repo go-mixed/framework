@@ -19,8 +19,8 @@ type machineryBroker struct {
 	defaultQueueName string
 }
 
-func (b *machineryBroker) Connection(name string) queue.IBroker {
-	return container.MustMakeAs("queue.manager", manager.IManager[queue.IBroker](nil)).MustDriver(name)
+func (b *machineryBroker) Connection(name string, queueName string) queue.IBroker {
+	return container.MustMakeAs("queue.manager", manager.IManager[queue.IBroker](nil)).MustDriver(name + "|" + queueName)
 }
 
 func (b *machineryBroker) registerTasks() error {
@@ -88,7 +88,7 @@ func (b *machineryBroker) RunServe(queueName string, concurrentCount int) error 
 	} else {
 		queueName = GetQueueName(b.connectionName, queueName)
 	}
-	worker := b.server.NewWorker(queueName, concurrentCount)
-	worker.Queue = queueName
+
+	worker := b.server.NewCustomQueueWorker("queue-worker", concurrentCount, queueName)
 	return worker.Launch()
 }

@@ -2,7 +2,6 @@ package queue
 
 import (
 	"gopkg.in/go-mixed/framework.v1/container"
-	"gopkg.in/go-mixed/framework.v1/queue/broker"
 	"time"
 
 	"gopkg.in/go-mixed/framework.v1/contracts/queue"
@@ -28,7 +27,11 @@ func (p *Producer) AddJob(job queue.IBrokerJob) queue.IProducer {
 }
 
 func (p *Producer) Dispatch() error {
-	b := container.MustMakeAs("queue.manager", (*QueueManager)(nil)).Connection(p.connection)
+	driver := p.connection
+	if p.queue != "" {
+		driver = p.connection + "|" + p.queue
+	}
+	b := container.MustMakeAs("queue.manager", (*QueueManager)(nil)).Connection(driver)
 	return b.AddJob(p.Jobs...)
 }
 
@@ -43,7 +46,7 @@ func (p *Producer) OnConnection(connection string) queue.IProducer {
 }
 
 func (p *Producer) OnQueue(queue string) queue.IProducer {
-	p.queue = broker.GetQueueName(p.connection, queue)
+	p.queue = queue
 	return p
 }
 

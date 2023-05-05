@@ -53,5 +53,5 @@ func (c *QueueWorkCommand) Handle(ctx console.Context) error {
 
 	color.Greenln("Run queue worker")
 
-	return container.MustMakeAs("queue", queue2.IBroker(nil)).Connection(connectionName).RunServe(queueName, workers)
+	return container.MustMakeAs("queue", queue2.IBroker(nil)).Connection(connectionName, queueName).RunServe(queueName, workers)
 }

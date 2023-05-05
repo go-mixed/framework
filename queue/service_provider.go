@@ -19,13 +19,13 @@ func (sp *ServiceProvider) Register() {
 	container.Singleton((*QueueManager)(nil), func(args ...any) (any, error) {
 		m := NewQueueManager()
 		m.Extend("sync", func(driverName string, args ...any) (queue.IBroker, error) {
-			return broker.NewSyncBroker(driverName), nil
+			return broker.NewSyncBroker(driverName, args[0].(string)), nil
 		})
 		m.Extend("redis", func(driverName string, args ...any) (queue.IBroker, error) {
-			return broker.NewRedisBroker(driverName)
+			return broker.NewRedisBroker(driverName, args[0].(string))
 		})
 		m.Extend("amqp", func(driverName string, args ...any) (queue.IBroker, error) {
-			return broker.NewAmqpBroker(driverName)
+			return broker.NewAmqpBroker(driverName, args[0].(string))
 		})
 
 		return m, nil

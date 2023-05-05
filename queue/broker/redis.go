@@ -18,8 +18,11 @@ type RedisBroker struct {
 
 var _ queue.IBroker = (*RedisBroker)(nil)
 
-func NewRedisBroker(connectionName string) (*RedisBroker, error) {
-	brokerUrl, database, queueName := getRedisConfig(connectionName)
+func NewRedisBroker(connectionName string, queueName string) (*RedisBroker, error) {
+	brokerUrl, database, defaultQueueName := getRedisConfig(connectionName)
+	if queueName == "" {
+		queueName = defaultQueueName
+	}
 
 	cnf := &configinstance.Config{
 		//Broker:          brokerUrl,

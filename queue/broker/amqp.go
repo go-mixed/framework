@@ -19,8 +19,11 @@ type AmqpBroker struct {
 
 var _ queue.IBroker = (*AmqpBroker)(nil)
 
-func NewAmqpBroker(connectionName string) (*AmqpBroker, error) {
-	brokerUrl, queueName, amqpConfig := getAmqpConfig(connectionName)
+func NewAmqpBroker(connectionName string, queueName string) (*AmqpBroker, error) {
+	brokerUrl, defaultQueueName, amqpConfig := getAmqpConfig(connectionName)
+	if queueName == "" {
+		queueName = defaultQueueName
+	}
 
 	cnf := &configinstance.Config{
 		Broker:          brokerUrl,

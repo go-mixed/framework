@@ -13,14 +13,14 @@ type SyncBroker struct {
 
 var _ queue.IBroker = (*SyncBroker)(nil)
 
-func NewSyncBroker(connection string) *SyncBroker {
+func NewSyncBroker(connection string, queueName string) *SyncBroker {
 	return &SyncBroker{
 		jobMap: container.MustMakeAs("queue.job_map", queue.IJobMap(nil)),
 	}
 }
 
-func (s *SyncBroker) Connection(name string) queue.IBroker {
-	return container.MustMakeAs("queue.manager", manager.IManager[queue.IBroker](nil)).MustDriver(name)
+func (s *SyncBroker) Connection(name string, queueName string) queue.IBroker {
+	return container.MustMakeAs("queue.manager", manager.IManager[queue.IBroker](nil)).MustDriver(name + "|" + queueName)
 }
 
 func (s *SyncBroker) RunServe(queueName string, concurrentCount int) error {

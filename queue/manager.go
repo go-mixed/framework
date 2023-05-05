@@ -6,6 +6,7 @@ import (
 	"gopkg.in/go-mixed/framework.v1/contracts/queue"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"gopkg.in/go-mixed/framework.v1/support/manager"
+	"strings"
 )
 
 type QueueManager struct {
@@ -26,11 +27,20 @@ func (m *QueueManager) DefaultConnectionName() string {
 	return config.GetString("queue.default")
 }
 
-func (m *QueueManager) makeConnection(connectionName string) (queue.IBroker, error) {
+func (m *QueueManager) makeConnection(connectionQueueName string) (queue.IBroker, error) {
+	segments := strings.SplitN(connectionQueueName, "|", 2)
+	var queueName string
+	connectionName := segments[0]
+	if len(segments) == 1 {
+		queueName = ""
+	} else {
+		queueName = segments[1]
+	}
+
 	driver := config.GetString("queue.connections."+connectionName+".driver", "")
 
 	if m.HasCustomCreator(driver) {
-		instance, err := m.CallCustomCreator(driver, connectionName)
+		instance, err := m.CallCustomCreator(driver, connectionName, queueName)
 		if err != nil {
 			color.Redf("[Queue] Initialize queue driver \"%s.%s\" error: %v\n", connectionName, driver, err)
 			return nil, errors.Errorf("[Cache] Initialize queue \"%s.%s\" error: %v\n", connectionName, driver, err)
