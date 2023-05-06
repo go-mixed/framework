@@ -13,7 +13,7 @@ type SyncBroker struct {
 
 var _ queue.IBroker = (*SyncBroker)(nil)
 
-func NewSyncBroker(connection string, queueName string) *SyncBroker {
+func NewSyncBroker(connection string) *SyncBroker {
 	return &SyncBroker{
 		jobMap: container.MustMakeAs("queue.job_map", queue.IJobMap(nil)),
 	}
@@ -25,6 +25,14 @@ func (s *SyncBroker) Connection(name string, queueName string) queue.IBroker {
 
 func (s *SyncBroker) RunServe(queueName string, concurrentCount int) error {
 	return nil
+}
+
+func (s *SyncBroker) AddJobWithQueue(queueName string, jobs ...queue.IBrokerJob) error {
+	return s.AddJob(jobs...)
+}
+
+func (s *SyncBroker) AddChainJobsWithQueue(queueName string, jobs ...queue.IBrokerJob) error {
+	return s.AddChainJobs(jobs...)
 }
 
 func (s *SyncBroker) AddJob(jobs ...queue.IBrokerJob) error {

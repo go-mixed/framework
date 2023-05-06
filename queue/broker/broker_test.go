@@ -77,7 +77,7 @@ func TestGetQueueName(t *testing.T) {
 	for _, test := range tests {
 		beforeEach()
 		test.setup()
-		queueName := GetQueueName(test.connection, test.queue)
+		queueName := makeFullQueueName(test.connection, test.queue)
 		assert.Equal(t, test.expectQueueName, queueName, test.description)
 	}
 }

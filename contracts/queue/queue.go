@@ -6,7 +6,9 @@ type IBroker interface {
 
 	Connection(name string, queue string) IBroker
 	AddJob(jobs ...IBrokerJob) error
+	AddJobWithQueue(queueName string, jobs ...IBrokerJob) error
 	AddChainJobs(jobs ...IBrokerJob) error
+	AddChainJobsWithQueue(queueName string, jobs ...IBrokerJob) error
 }
 
 type IConsumer interface {

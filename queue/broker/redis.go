@@ -18,17 +18,12 @@ type RedisBroker struct {
 
 var _ queue.IBroker = (*RedisBroker)(nil)
 
-func NewRedisBroker(connectionName string, queueName string) (*RedisBroker, error) {
+func NewRedisBroker(connectionName string) (*RedisBroker, error) {
 	brokerUrl, database, defaultQueueName := getRedisConfig(connectionName)
-	if queueName == "" {
-		queueName = defaultQueueName
-	} else {
-		queueName = GetQueueName(connectionName, queueName)
-	}
 
 	cnf := &configinstance.Config{
 		//Broker:          brokerUrl,
-		DefaultQueue:    queueName,
+		DefaultQueue:    defaultQueueName,
 		Redis:           &configinstance.RedisConfig{},
 		ResultsExpireIn: int(config.GetDuration("queue.result_expire").Seconds()),
 	}
@@ -41,7 +36,7 @@ func NewRedisBroker(connectionName string, queueName string) (*RedisBroker, erro
 		machineryBroker{
 			server:           machinery.NewServer(cnf, broker, backend, lock),
 			jobMap:           container.MustMakeAs("queue.job_map", queue.IJobMap(nil)),
-			defaultQueueName: queueName,
+			defaultQueueName: defaultQueueName,
 			connectionName:   connectionName,
 		},
 	}
@@ -54,7 +49,7 @@ func NewRedisBroker(connectionName string, queueName string) (*RedisBroker, erro
 
 func getRedisConfig(queueConnection string) (brokerUrl string, database int, queue string) {
 	connection := config.GetString(fmt.Sprintf("queue.connections.%s.connection", queueConnection))
-	queue = GetQueueName(queueConnection, "")
+	queue = makeFullQueueName(queueConnection, "")
 
 	keyPrefix := fmt.Sprintf("database.redis.%s.", connection)
 	host := config.GetString(keyPrefix + "host")

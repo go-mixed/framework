@@ -51,7 +51,7 @@ func eventsToJobMap(events map[event.Event][]event.Listener) (map[string]any, er
 	return jobMap, nil
 }
 
-func GetQueueName(connection, queue string) string {
+func makeFullQueueName(connection, queue string) string {
 	appName := config.GetString("app.name")
 	if appName == "" {
 		appName = "laravel"

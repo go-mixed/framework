@@ -27,17 +27,13 @@ func (p *Producer) AddJob(job queue.IBrokerJob) queue.IProducer {
 }
 
 func (p *Producer) Dispatch() error {
-	driver := p.connection
-	if p.queue != "" {
-		driver = p.connection + "|" + p.queue
-	}
-	b := container.MustMakeAs("queue.manager", (*QueueManager)(nil)).Connection(driver)
-	return b.AddJob(p.Jobs...)
+	b := container.MustMakeAs("queue.manager", (*QueueManager)(nil)).Connection(p.connection)
+	return b.AddJobWithQueue(p.queue, p.Jobs...)
 }
 
 func (p *Producer) DispatchSync() error {
 	b := container.MustMakeAs("queue.manager", (*QueueManager)(nil)).Connection("sync")
-	return b.AddJob(p.Jobs...)
+	return b.AddJobWithQueue(p.queue, p.Jobs...)
 }
 
 func (p *Producer) OnConnection(connection string) queue.IProducer {

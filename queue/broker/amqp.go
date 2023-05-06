@@ -19,17 +19,12 @@ type AmqpBroker struct {
 
 var _ queue.IBroker = (*AmqpBroker)(nil)
 
-func NewAmqpBroker(connectionName string, queueName string) (*AmqpBroker, error) {
+func NewAmqpBroker(connectionName string) (*AmqpBroker, error) {
 	brokerUrl, defaultQueueName, amqpConfig := getAmqpConfig(connectionName)
-	if queueName == "" {
-		queueName = defaultQueueName
-	} else {
-		queueName = GetQueueName(connectionName, queueName)
-	}
 
 	cnf := &configinstance.Config{
 		Broker:          brokerUrl,
-		DefaultQueue:    queueName,
+		DefaultQueue:    defaultQueueName,
 		ResultBackend:   brokerUrl,
 		ResultsExpireIn: int(config.GetDuration("queue.result_expire").Seconds()),
 		AMQP:            &amqpConfig,
@@ -43,7 +38,7 @@ func NewAmqpBroker(connectionName string, queueName string) (*AmqpBroker, error)
 		machineryBroker{
 			server:           machinery.NewServer(cnf, broker, backend, lock),
 			jobMap:           container.MustMakeAs("queue.job_map", queue.IJobMap(nil)),
-			defaultQueueName: queueName,
+			defaultQueueName: defaultQueueName,
 			connectionName:   connectionName,
 		},
 	}
@@ -63,7 +58,7 @@ func getAmqpConfig(connectionName string) (brokerUrl, queueName string, amqpConf
 	vhost := config.GetString(keyPrefix+"vhost", "/")
 
 	brokerUrl = fmt.Sprintf("amqp://%s:%s@%s:%d/%s", username, password, host, port, strings.TrimLeft(vhost, "/"))
-	queueName = GetQueueName(connectionName, "")
+	queueName = makeFullQueueName(connectionName, "")
 	amqpConfig = configinstance.AMQPConfig{
 		Exchange:         config.GetString(keyPrefix+"exchange", "machinery_exchange"),
 		ExchangeType:     config.GetString(keyPrefix+"exchange_type", "direct"),

@@ -43,22 +43,44 @@ func (b *machineryBroker) registerTasks() error {
 }
 
 func (b *machineryBroker) AddJob(jobs ...queue.IBrokerJob) error {
+	return b.AddJobWithQueue("", jobs...)
+}
+
+func (b *machineryBroker) AddJobWithQueue(queueName string, jobs ...queue.IBrokerJob) error {
+	if queueName == "" {
+		queueName = b.defaultQueueName
+	} else {
+		queueName = makeFullQueueName(b.connectionName, queueName)
+	}
+
 	var err error
 	for _, job := range jobs {
-		err = multierr.Append(err, b.sendToTask(job))
+		err = multierr.Append(err, b.sendToTask(queueName, job))
 	}
 	return err
 }
 
 func (b *machineryBroker) AddChainJobs(jobs ...queue.IBrokerJob) error {
+	return b.AddChainJobsWithQueue("", jobs...)
+}
+
+func (b *machineryBroker) AddChainJobsWithQueue(queueName string, jobs ...queue.IBrokerJob) error {
+	if queueName == "" {
+		queueName = b.defaultQueueName
+	} else {
+		queueName = makeFullQueueName(b.connectionName, queueName)
+	}
+
 	var signatures []*tasks.Signature
 	for _, job := range jobs {
 		signatures = append(signatures, &tasks.Signature{
-			Name: job.Signature(),
-			Args: encodeArgs(job.Arguments()),
-			ETA:  job.ETA(),
+			Name:       job.Signature(),
+			Args:       encodeArgs(job.Arguments()),
+			ETA:        job.ETA(),
+			RoutingKey: queueName,
 		})
 	}
+
 	chain, err := tasks.NewChain(signatures...)
 	if err != nil {
 		return err
@@ -68,12 +90,12 @@ func (b *machineryBroker) AddChainJobs(jobs ...queue.IBrokerJob) error {
 	return err
 }
 
-func (b *machineryBroker) sendToTask(job queue.IBrokerJob) error {
-
+func (b *machineryBroker) sendToTask(queueName string, job queue.IBrokerJob) error {
 	_, err := b.server.SendTask(&tasks.Signature{
-		Name: job.Signature(),
-		Args: encodeArgs(job.Arguments()),
-		ETA:  job.ETA(),
+		Name:       job.Signature(),
+		Args:       encodeArgs(job.Arguments()),
+		ETA:        job.ETA(),
+		RoutingKey: queueName,
 	})
 
 	return err
@@ -86,7 +108,7 @@ func (b *machineryBroker) RunServe(queueName string, concurrentCount int) error 
 	if queueName == "" {
 		queueName = b.defaultQueueName
 	} else {
-		queueName = GetQueueName(b.connectionName, queueName)
+		queueName = makeFullQueueName(b.connectionName, queueName)
 	}
 
 	worker := b.server.NewCustomQueueWorker("queue-worker", concurrentCount, queueName)
