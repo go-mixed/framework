@@ -19,8 +19,8 @@ type machineryBroker struct {
 	defaultQueueName string
 }
 
-func (b *machineryBroker) Connection(name string, queueName string) queue.IBroker {
-	return container.MustMakeAs("queue.manager", manager.IManager[queue.IBroker](nil)).MustDriver(name + "|" + queueName)
+func (b *machineryBroker) Connection(name string) queue.IBroker {
+	return container.MustMakeAs("queue.manager", manager.IManager[queue.IBroker](nil)).MustDriver(name)
 }
 
 func (b *machineryBroker) registerTasks() error {

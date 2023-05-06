@@ -19,8 +19,8 @@ func NewSyncBroker(connection string) *SyncBroker {
 	}
 }
 
-func (s *SyncBroker) Connection(name string, queueName string) queue.IBroker {
-	return container.MustMakeAs("queue.manager", manager.IManager[queue.IBroker](nil)).MustDriver(name + "|" + queueName)
+func (s *SyncBroker) Connection(name string) queue.IBroker {
+	return container.MustMakeAs("queue.manager", manager.IManager[queue.IBroker](nil)).MustDriver(name)
 }
 
 func (s *SyncBroker) RunServe(queueName string, concurrentCount int) error {

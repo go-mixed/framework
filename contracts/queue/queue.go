@@ -4,7 +4,7 @@ package queue
 type IBroker interface {
 	IConsumer
 
-	Connection(name string, queue string) IBroker
+	Connection(name string) IBroker
 	AddJob(jobs ...IBrokerJob) error
 	AddJobWithQueue(queueName string, jobs ...IBrokerJob) error
 	AddChainJobs(jobs ...IBrokerJob) error
