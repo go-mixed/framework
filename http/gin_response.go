@@ -36,6 +36,12 @@ func (r *GinResponse) Header(key, value string) httpcontract.Response {
 	return r
 }
 
+func (r *GinResponse) SetCookie(name, value string, maxAge int, path, domain string, secure, httpOnly bool) httpcontract.Response {
+	r.instance.SetCookie(name, value, maxAge, path, domain, secure, httpOnly)
+
+	return r
+}
+
 func (r *GinResponse) Json(code int, obj any) {
 	r.instance.JSON(code, obj)
 }

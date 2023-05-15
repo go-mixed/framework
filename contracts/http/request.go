@@ -54,6 +54,8 @@ type Request interface {
 
 	Validate(rules map[string]string, options ...validation.Option) (validation.Validator, error)
 	ValidateRequest(request FormRequest) (validation.Errors, error)
+
+	Cookie(name string) (string, error)
 }
 
 type FormRequest interface {

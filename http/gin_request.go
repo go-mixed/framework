@@ -359,3 +359,7 @@ func (r *GinRequest) ValidateRequest(request httpcontract.FormRequest) (validate
 func stringToBool(value string) bool {
 	return value == "1" || value == "true" || value == "on" || value == "yes"
 }
+
+func (r *GinRequest) Cookie(name string) (string, error) {
+	return r.instance.Cookie(name)
+}

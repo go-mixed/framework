@@ -13,6 +13,7 @@ type Response interface {
 	Download(filepath, filename string)
 	File(filepath string)
 	Header(key, value string) Response
+	SetCookie(name, value string, maxAge int, path, domain string, secure, httpOnly bool) Response
 	Json(code int, obj any)
 	Origin() ResponseOrigin
 	Redirect(code int, location string)
