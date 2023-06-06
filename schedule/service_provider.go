@@ -10,7 +10,7 @@ type ServiceProvider struct {
 
 func (sp *ServiceProvider) Register() {
 	container.Singleton((schedule.ISchedule)(nil), func(args ...any) (any, error) {
-		return NewApplication(), nil
+		return NewSchedule(), nil
 	})
 	container.Alias("schedule", (schedule.ISchedule)(nil))
 }

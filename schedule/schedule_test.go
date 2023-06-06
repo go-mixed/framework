@@ -20,7 +20,7 @@ func TestApplication(t *testing.T) {
 	delayIfStillRunningCall := 0
 	skipIfStillRunningCall := 0
 
-	app := NewApplication()
+	app := NewSchedule()
 	app.Register([]schedule.Event{
 		app.Call(func() {
 			immediatelyCall++

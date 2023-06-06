@@ -2,6 +2,7 @@ package log
 
 import (
 	"context"
+	"github.com/robfig/cron/v3"
 	"gopkg.in/go-mixed/framework.v1/container"
 	"gopkg.in/go-mixed/framework.v1/contracts/log"
 )
@@ -64,4 +65,24 @@ func Panic(args ...any) {
 
 func Panicf(format string, args ...any) {
 	getLogger().Panicf(format, args...)
+}
+
+// Logger is a logger for cron.
+type cronLog struct {
+}
+
+func (c cronLog) Info(msg string, keysAndValues ...interface{}) {
+	Infof(msg, keysAndValues...)
+}
+
+func (c cronLog) Error(err error, msg string, keysAndValues ...interface{}) {
+	keysAndValues = append([]any{"error", err}, keysAndValues...)
+	Errorf(msg, keysAndValues...)
+}
+
+// 验证cronLog是否实现了cron.Logger接口
+var _ cron.Logger = (*cronLog)(nil)
+
+func CronLog() cron.Logger {
+	return &cronLog{}
 }
