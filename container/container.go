@@ -123,7 +123,7 @@ func Instance[VT VTConstraint](abstract VT, instance any) any {
 		c.resolved = true
 		c.shared = true
 
-		// it cannot use the CompareAndSwap because concreteContainer.concrete is uncomparable type
+		// it cannot use the CompareAndSwap because concreteContainer.concrete is incomparable type
 		bindingList.Store(key, c)
 	}
 
@@ -187,7 +187,7 @@ func resolve[T any](key tKey, args ...any) (T, error) {
 			}
 			c.resolved = true
 
-			// it cannot use the CompareAndSwap because concreteContainer.concrete is uncomparable type
+			// it cannot use the CompareAndSwap because concreteContainer.concrete is incomparable type
 			bindingList.Store(key, c)
 		}
 	}
