@@ -153,6 +153,6 @@ func (r *Memory) RememberForever(key string, callback func() any) (any, error) {
 	return val, nil
 }
 
-func (r *Memory) ClearPrefix() error {
+func (r *Memory) ClearPrefix(delPrefix string) error {
 	return errors.New("not support")
 }
