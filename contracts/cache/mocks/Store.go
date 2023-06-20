@@ -243,6 +243,20 @@ func (_m *Store) WithContext(ctx context.Context) contractscache.IStore {
 	return r0
 }
 
+// Put provides a mock function with given fields: key, value, sec
+func (_m *Store) ClearPrefix(delPrefix string) error {
+	ret := _m.Called(delPrefix)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(delPrefix string) error); ok {
+		r0 = rf(delPrefix)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 type mockConstructorTestingTNewStore interface {
 	mock.TestingT
 	Cleanup(func())
