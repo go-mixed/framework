@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/patrickmn/go-cache"
-
+	"github.com/pkg/errors"
 	cachecontract "gopkg.in/go-mixed/framework.v1/contracts/cache"
 )
 
@@ -151,4 +151,8 @@ func (r *Memory) RememberForever(key string, callback func() any) (any, error) {
 	}
 
 	return val, nil
+}
+
+func (r *Memory) ClearPrefix() error {
+	return errors.New("not support")
 }

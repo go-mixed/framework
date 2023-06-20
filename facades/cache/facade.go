@@ -80,3 +80,9 @@ func Forget(key string) bool {
 func Flush() bool {
 	return getDefaultStore().Flush()
 }
+
+// Clear cache key prefix.
+func ClearPrefix(delPrefix string) error {
+	return getDefaultStore().ClearPrefix(delPrefix)
+}
+

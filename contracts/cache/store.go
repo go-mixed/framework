@@ -32,4 +32,7 @@ type IStore interface {
 	Forget(key string) bool
 	//Flush Remove all items from the cache.
 	Flush() bool
+	// Clear cache key prefix.
+	ClearPrefix(delPrefix string) error
+
 }
