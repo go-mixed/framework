@@ -2,15 +2,15 @@ package store
 
 import (
 	"context"
+	"fmt"
+	"github.com/go-redis/redis/v8"
+	"github.com/pkg/errors"
 	"gopkg.in/go-mixed/framework.v1/container"
+	cachecontract "gopkg.in/go-mixed/framework.v1/contracts/cache"
 	"gopkg.in/go-mixed/framework.v1/contracts/manager"
 	"gopkg.in/go-mixed/framework.v1/facades/config"
 	"strconv"
 	"time"
-
-	"github.com/go-redis/redis/v8"
-	"github.com/pkg/errors"
-	cachecontract "gopkg.in/go-mixed/framework.v1/contracts/cache"
 )
 
 type Redis struct {
@@ -209,10 +209,14 @@ func (r *Redis) ClearPrefix(delPrefix string) error {
 	var cursor uint64
 	for {
 		var err error
-		_, cursor, err = r.redis.Scan(r.ctx, cursor,  prefix() + delPrefix + ":*", 0).Result()
+		key, cursor, err := r.redis.Scan(r.ctx, cursor,  prefix() + delPrefix + "*", 100).Result()
 		if err != nil {
 			return err
 		}
+		if len(key) > 0 {
+			r.redis.Del(r.ctx, key...)
+		}
+		fmt.Println(key, cursor)
 
 		// 没有更多key了
 		if cursor == 0 {
