@@ -519,7 +519,7 @@ func (r *Query) UpdateColumns(values any) error {
 	if len(r.instance.Statement.Selects) > 0 {
 		for _, val := range r.instance.Statement.Selects {
 			if val == orm.Associations {
-				return r.instance.Session(&gorm.Session{FullSaveAssociations: true}).Updates(values).Error
+				return r.instance.Session(&gorm.Session{FullSaveAssociations: true}).UpdateColumns(values).Error
 			}
 		}
 
@@ -529,7 +529,7 @@ func (r *Query) UpdateColumns(values any) error {
 	if len(r.instance.Statement.Omits) > 0 {
 		for _, val := range r.instance.Statement.Omits {
 			if val == orm.Associations {
-				return r.instance.Omit(orm.Associations).Updates(values).Error
+				return r.instance.Omit(orm.Associations).UpdateColumns(values).Error
 			}
 		}
 
