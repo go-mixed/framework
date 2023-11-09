@@ -66,6 +66,9 @@ type Query interface {
 	Where(query any, args ...any) Query
 	WithTrashed() Query
 	With(query string, args ...any) Query
+
+	UpdateColumn(column string, value any) error
+	UpdateColumns(values any) error
 }
 
 //go:generate mockery --name=Association

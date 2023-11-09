@@ -507,6 +507,38 @@ func (r *Query) Updates(values any) error {
 	return r.instance.Omit(orm.Associations).Updates(values).Error
 }
 
+func (r *Query) UpdateColumn(column string, value any) error {
+	return r.instance.UpdateColumn(column, value).Error
+}
+
+func (r *Query) UpdateColumns(values any) error {
+	if len(r.instance.Statement.Selects) > 0 && len(r.instance.Statement.Omits) > 0 {
+		return errors.New("cannot set Select and Omits at the same time")
+	}
+
+	if len(r.instance.Statement.Selects) > 0 {
+		for _, val := range r.instance.Statement.Selects {
+			if val == orm.Associations {
+				return r.instance.Session(&gorm.Session{FullSaveAssociations: true}).Updates(values).Error
+			}
+		}
+
+		return r.instance.UpdateColumns(values).Error
+	}
+
+	if len(r.instance.Statement.Omits) > 0 {
+		for _, val := range r.instance.Statement.Omits {
+			if val == orm.Associations {
+				return r.instance.Omit(orm.Associations).Updates(values).Error
+			}
+		}
+
+		return r.instance.UpdateColumns(values).Error
+	}
+
+	return r.instance.Omit(orm.Associations).UpdateColumns(values).Error
+}
+
 func (r *Query) Where(query any, args ...any) contractsorm.Query {
 	tx := r.instance.Where(query, args...)
 
