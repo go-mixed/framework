@@ -1,6 +1,7 @@
 package route
 
 import (
+	"github.com/gin-gonic/gin"
 	"gopkg.in/go-mixed/framework.v1/container"
 	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
 	"gopkg.in/go-mixed/framework.v1/contracts/route"
@@ -64,4 +65,7 @@ func StaticFile(relativePath, filepath string) {
 }
 func StaticFS(relativePath string, fs http.FileSystem) {
 	getRoute().StaticFS(relativePath, fs)
+}
+func GetRoutes() []gin.RouteInfo {
+	return getRoute().GetRoutes()
 }

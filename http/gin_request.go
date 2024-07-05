@@ -363,3 +363,7 @@ func stringToBool(value string) bool {
 func (r *GinRequest) Cookie(name string) (string, error) {
 	return r.instance.Cookie(name)
 }
+
+func (r *GinRequest) All() map[string]any {
+	return r.instance.Keys
+}

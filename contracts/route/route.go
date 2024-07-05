@@ -1,6 +1,7 @@
 package route
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 
 	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
@@ -12,6 +13,7 @@ type GroupFunc func(routes IRoute)
 type IRouteEngine interface {
 	IRoute
 	Run(host ...string) error
+	GetRoutes() []gin.RouteInfo
 	RunTLS(host ...string) error
 	RunTLSWithCert(host, certFile, keyFile string) error
 	ServeHTTP(writer http.ResponseWriter, request *http.Request)

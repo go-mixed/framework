@@ -2,11 +2,10 @@ package route
 
 import (
 	"errors"
-	"gopkg.in/go-mixed/framework.v1/facades/config"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gookit/color"
+	"gopkg.in/go-mixed/framework.v1/facades/config"
+	"net/http"
 
 	httpcontract "gopkg.in/go-mixed/framework.v1/contracts/http"
 	"gopkg.in/go-mixed/framework.v1/contracts/route"
@@ -47,6 +46,10 @@ func (r *Gin) Run(host ...string) error {
 	color.Greenln("[HTTP] Listening and serving HTTP on " + host[0])
 
 	return r.instance.Run([]string{host[0]}...)
+}
+
+func (r *Gin) GetRoutes() []gin.RouteInfo {
+	return r.instance.Routes()
 }
 
 func (r *Gin) RunTLS(host ...string) error {
