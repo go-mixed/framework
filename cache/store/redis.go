@@ -207,16 +207,18 @@ func (r *Redis) RememberForever(key string, callback func() any) (any, error) {
 
 func (r *Redis) ClearPrefix(delPrefix string) error {
 	var cursor uint64
+	var keys []string
+	var err error
+
 	for {
-		var err error
-		key, cursor, err := r.redis.Scan(r.ctx, cursor,  prefix() + delPrefix + "*", 100).Result()
+		keys, cursor, err = r.redis.Scan(r.ctx, cursor, prefix() + delPrefix + "*", 100).Result()
 		if err != nil {
 			return err
 		}
-		if len(key) > 0 {
-			r.redis.Del(r.ctx, key...)
+		if len(keys) > 0 {
+			r.redis.Del(r.ctx, keys...)
 		}
-		fmt.Println(key, cursor)
+		fmt.Println(keys, cursor)
 
 		// 没有更多key了
 		if cursor == 0 {
